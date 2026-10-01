@@ -114,3 +114,43 @@ def sync_player_match_stats(fixture_id):
         raise e
     finally:
         db.close()
+
+
+def sync_completed_fixture_stats(limit=2):
+    db = SessionLocal()
+
+    total_added = 0
+    total_updated = 0
+    total_skipped = 0
+
+    try:
+        completed_fixtures = (
+        db.query(Fixture)
+        .filter(
+            Fixture.status == "FT",
+            ~Fixture.player_stats.any()
+        )
+        .order_by(Fixture.fixture_date.desc())
+        .limit(limit)
+        .all()
+)
+
+        for fixture in completed_fixtures:
+            result = sync_player_match_stats(fixture.id)
+            total_added += result["added"]
+            total_updated += result["updated"]
+            total_skipped += result["skipped"]
+
+        return {
+            "fixtures_processed": len(completed_fixtures),
+            "added": total_added,
+            "updated": total_updated,
+            "skipped": total_skipped,
+        }
+
+    except Exception as e:
+        # db.rollback()
+        raise e
+    finally:
+        db.close()
+    
