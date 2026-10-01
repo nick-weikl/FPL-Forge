@@ -51,3 +51,22 @@ def get_premier_league_players(page=1):
     response.raise_for_status()
 
     return response.json()
+
+
+def get_premier_league_fixtures():
+    url = f"{BASE_URL}/fixtures"
+
+    params = {
+        "league": 39,
+        "season": 2024
+    }
+
+    response = requests.get(
+        url,
+        headers=headers,
+        params=params
+    )
+
+    response.raise_for_status()
+
+    return response.json()

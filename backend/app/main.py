@@ -3,17 +3,20 @@ from sqlalchemy import text
 from app.database import engine
 from app.database import Base, engine
 from app.models import Team, Player, Fixture, PlayerMatchStat
-from app.services.football_api import get_premier_league_teams
+from app.services.football_api import get_premier_league_fixtures, get_premier_league_teams
 from app.services.team_service import sync_premier_league_teams
 from app.database import SessionLocal
 from app.services.player_service import sync_premier_league_players
 from app.routes.players import router as players_router
 from app.routes.teams import router as teams_router
+from app.services.fixture_service import sync_premier_league_fixtures
+from app.routes.fixtures import router as fixtures_router
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 app.include_router(players_router)
+app.include_router(fixtures_router)
 app.include_router(teams_router)
 
 
@@ -39,22 +42,32 @@ def sync_teams():
     return sync_premier_league_teams()
 
 
-@app.get("/api/teams")
-def get_teams():
+# @app.get("/api/teams")
+# def get_teams():
 
-    db = SessionLocal()
+#     db = SessionLocal()
 
-    try:
+#     try:
 
-        teams = db.query(Team).all()
+#         teams = db.query(Team).all()
 
-        return teams
+#         return teams
 
-    finally:
+#     finally:
 
-        db.close()
+#         db.close()
 
 
 @app.post("/sync/players")
 def sync_players():
     return sync_premier_league_players()
+
+
+@app.post("/sync/fixtures")
+def sync_fixtures():
+    return sync_premier_league_fixtures()
+
+
+# @app.get("/api/fixtures")
+# def get_fixtures():
+#     return get_premier_league_fixtures()
