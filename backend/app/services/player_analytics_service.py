@@ -1,5 +1,8 @@
 from app.database import SessionLocal
 from app.models import PlayerMatchStat
+from app.models import fixture
+from app.models.fixture import Fixture
+from app.services.fixture_analytics_service import get_upcoming_fixtures
 
 
 def get_player_summary(player_id):
@@ -58,7 +61,7 @@ def get_player_summary(player_id):
             "total_yellow_cards": total_yellow_cards,
             "total_red_cards": total_red_cards,
             "matches_played": matches_played,
-            "average_rating": average_rating,
+            "average_rating": round(average_rating, 2) if average_rating is not None else None,
             "goals_per_90": round(goals_per_90, 2),
             "assists_per_90": round(assists_per_90, 2),
             "shots_per_90": round(shots_per_90, 2),
@@ -68,4 +71,68 @@ def get_player_summary(player_id):
         return {"error": str(e)}
     finally:
         db.close()
+
+
+def get_player_recent_form(player_id, num_matches=5):
+    db = SessionLocal()
+
+    try:
+        player_stats = (
+            db.query(PlayerMatchStat, Fixture)
+            .join(Fixture, PlayerMatchStat.fixture_id == Fixture.id)
+            .filter(PlayerMatchStat.player_id == player_id)
+            .order_by(Fixture.fixture_date.desc())
+            .limit(num_matches)
+            .all()
+        )
+
+        if not player_stats:
+            return {"error": "No stats found for the player"}
+
+        recent_form = [
+            {
+                "match_date": fixture.fixture_date,
+                "goals": stat.goals,
+                "assists": stat.assists,
+                "minutes": stat.minutes,
+                "rating": stat.rating
+            }
+            for stat, fixture in player_stats
+        ]
+
+        return {
+            "player_id": player_id,
+            "recent_form": recent_form
+        }
+    except Exception as e:
+        return {"error": str(e)}
+    finally:
+        db.close()
+
+
+def get_player_analytics(
+        player_id,
+        current_gameweek,
+        recent_matches=5,
+        fixture_limit=5
+    ):
+    summary = get_player_summary(player_id)
+
+    recent_form = get_player_recent_form(
+        player_id,
+        recent_matches
+    )
+
+    upcoming_fixtures = get_upcoming_fixtures(
+        player_id,
+        current_gameweek,
+        fixture_limit
+    )
+
+    return {
+        "player_id": player_id,
+        "summary": summary,
+        "recent_form": recent_form,
+        "upcoming_fixtures": upcoming_fixtures
+    }
 
