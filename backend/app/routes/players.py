@@ -57,3 +57,24 @@ def get_player(
         )
 
     return player
+
+
+@router.get("/{player_id}/summary")
+def get_player_summary(
+    player_id: int,
+    db: Session = Depends(get_db)
+):
+    player = (
+        db.query(Player)
+        .filter(Player.id == player_id)
+        .first()
+    )
+
+    if not player:
+        raise HTTPException(
+            status_code=404,
+            detail="Player not found"
+        )
+
+    from app.services.player_analytics_service import get_player_summary
+    return get_player_summary(player_id)
