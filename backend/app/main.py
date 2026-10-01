@@ -71,3 +71,8 @@ def sync_fixtures():
 # @app.get("/api/fixtures")
 # def get_fixtures():
 #     return get_premier_league_fixtures()
+
+
+@app.get("/api/match-stats")
+def get_match_stats(fixture_id: int):
+    return get_match_stats(fixture_id)

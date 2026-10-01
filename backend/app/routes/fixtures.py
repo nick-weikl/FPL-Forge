@@ -4,6 +4,7 @@ from typing import Optional
 
 from app.database import get_db
 from app.models.fixture import Fixture
+from app.services.player_match_stat_service import sync_player_match_stats
 
 
 router = APIRouter(
@@ -85,3 +86,8 @@ def get_fixtures_by_team_and_gameweek(
     )
 
     return fixtures
+
+
+@router.get("/{fixture_id}/player-stats-test")
+def test_player_stats(fixture_id: int):
+    return sync_player_match_stats(fixture_id)

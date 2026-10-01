@@ -70,3 +70,21 @@ def get_premier_league_fixtures():
     response.raise_for_status()
 
     return response.json()
+
+
+def get_player_match_stats(fixture_id):
+    url = f"{BASE_URL}/fixtures/players"
+
+    params = {
+        "fixture": fixture_id
+    }
+
+    response = requests.get(
+        url,
+        headers=headers,
+        params=params
+    )
+
+    response.raise_for_status()
+
+    return response.json()
