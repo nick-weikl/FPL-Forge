@@ -20,6 +20,8 @@ class Player(Base):
         nullable=False
     )
 
+    price_tenths = Column(Integer, nullable=True)
+
     # Relationship back to Team
     team = relationship("Team", back_populates="players")
 

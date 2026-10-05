@@ -104,7 +104,10 @@ def get_player_metrics(player_id, current_gameweek):
             "average_recent_rating":
                 recent_form_summary["average_recent_rating"],
             "recent_form": recent_form,
-            "upcoming_fixtures": fixture_outlook
+            "upcoming_fixtures": fixture_outlook,
+            "price_tenths": player.price_tenths,
+            "team_id": player.team_id,
+            "team_name": player.team.name if player.team else None,
         }
 
     finally:
