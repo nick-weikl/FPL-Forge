@@ -13,6 +13,7 @@ from app.services.fixture_service import sync_premier_league_fixtures
 from app.routes.fixtures import router as fixtures_router
 from app.routes.sync import router as sync_router
 from app.routes.recommendations import router as recommendations_router
+from app.routes.squads import router as squads_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -21,6 +22,7 @@ app.include_router(players_router)
 app.include_router(fixtures_router)
 app.include_router(teams_router)
 app.include_router(recommendations_router)
+app.include_router(squads_router)
 app.include_router(sync_router)
 
 

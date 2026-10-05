@@ -18,24 +18,12 @@ def sync_premier_league_players():
         while True:
             data = get_premier_league_players(page)
 
-            # print(
-            #     "CURRENT PAGE:",
-            #     data["paging"]["current"],
-            #     "TOTAL PAGES:",
-            #     data["paging"]["total"],
-            #     "RESULTS:",
-            #     data["results"],
-            #     "ERRORS:", 
-            #     data["errors"]
-            # )   
-
             for item in data["response"]:
                 player_data = item["player"]
 
                 api_id = player_data["id"]
                 name = player_data["name"]
 
-                # Statistics is an array
                 statistics = item.get("statistics", [])
 
                 if not statistics:
@@ -45,13 +33,24 @@ def sync_premier_league_players():
                 stat = statistics[0]
 
                 team_data = stat["team"]
-
                 team_api_id = team_data["id"]
 
                 games = stat.get("games", {})
                 position = games.get("position")
 
-                # Find the corresponding team in our own database
+                position_mapping = {
+                    "Goalkeeper": "Goalkeeper",
+                    "Defender": "Defender",
+                    "Midfielder": "Midfielder",
+                    "Forward": "Attacker",
+                    "Attacker": "Attacker"
+                }
+
+                position = position_mapping.get(
+                    position,
+                    position
+                )
+
                 team = (
                     db.query(Team)
                     .filter(Team.external_api_id == team_api_id)
@@ -62,7 +61,6 @@ def sync_premier_league_players():
                     skipped += 1
                     continue
 
-                # Check whether this player is already stored
                 existing_player = (
                     db.query(Player)
                     .filter(Player.external_api_id == api_id)
@@ -93,7 +91,10 @@ def sync_premier_league_players():
             current_page = data["paging"]["current"]
             total_pages = data["paging"]["total"]
 
-            if current_page >= max_free_pages or current_page >= total_pages:
+            if (
+                current_page >= max_free_pages
+                or current_page >= total_pages
+            ):
                 break
 
             page += 1
