@@ -3,6 +3,128 @@ from app.models.player import Player
 from app.services.player_scoring_service import (
     get_ranked_players_by_position
 )
+from app.services.squad_service import validate_squad
+
+
+def build_transfer_result(
+    player,
+    ranked_players,
+    owned_player_ids,
+    team_counts,
+    bank_tenths=0,
+    limit=5
+):
+    """
+    Builds transfer recommendations for one outgoing player
+    using rankings that have already been calculated.
+    """
+
+    current_player_price = player.price_tenths
+
+    if current_player_price is None:
+        return {
+            "error": "Current player does not have price data"
+        }
+
+    current_player_score = None
+
+    for ranked_player in ranked_players:
+        if ranked_player["player_id"] == player.id:
+            current_player_score = ranked_player["overall_score"]
+            break
+
+    if current_player_score is None:
+        return {
+            "error": "Current player does not have a valid score"
+        }
+
+    available_budget = (
+        current_player_price + bank_tenths
+    )
+
+    owned_player_ids_set = set(owned_player_ids)
+
+    candidates = []
+
+    for candidate in ranked_players:
+
+        candidate_id = candidate["player_id"]
+
+        # Cannot transfer a player to themselves
+        if candidate_id == player.id:
+            continue
+
+        # Cannot recommend somebody already owned
+        if candidate_id in owned_player_ids_set:
+            continue
+
+        candidate_price = candidate.get("price_tenths")
+        candidate_team_id = candidate.get("team_id")
+
+        if (
+            candidate_price is None
+            or candidate_team_id is None
+        ):
+            continue
+
+        # Budget check
+        if candidate_price > available_budget:
+            continue
+
+        # Calculate how many players from this club
+        # remain AFTER selling the outgoing player.
+        existing_team_count = team_counts.get(
+            candidate_team_id,
+            0
+        )
+
+        if candidate_team_id == player.team_id:
+            existing_team_count -= 1
+
+        # Incoming player would create a fourth player
+        if existing_team_count >= 3:
+            continue
+
+        score_gain = round(
+            candidate["overall_score"]
+            - current_player_score,
+            2
+        )
+
+        # We only care about actual upgrades
+        if score_gain <= 0:
+            continue
+
+        candidate_data = candidate.copy()
+
+        candidate_data["score_gain"] = score_gain
+
+        candidate_data["recommendation_strength"] = (
+            get_recommendation_strength(
+                score_gain
+            )
+        )
+
+        candidates.append(candidate_data)
+
+    candidates.sort(
+        key=lambda candidate: candidate["score_gain"],
+        reverse=True
+    )
+
+    return {
+        "current_player_id": player.id,
+        "current_player_score": current_player_score,
+        "current_player_price_tenths":
+            current_player_price,
+        "bank_tenths": bank_tenths,
+        "available_budget_tenths":
+            available_budget,
+        "position": player.position,
+        "upgrade_found": len(candidates) > 0,
+        "candidates": candidates[:limit]
+    }
+
 
 def get_transfer_candidates(
     current_player_id,
@@ -11,12 +133,29 @@ def get_transfer_candidates(
     bank_tenths=0,
     limit=5
 ):
+    squad_validation = validate_squad(
+        owned_player_ids
+    )
+
+    if not squad_validation["valid"]:
+        return {
+            "error": "Invalid squad",
+            "validation": squad_validation
+        }
+
+    if current_player_id not in owned_player_ids:
+        return {
+            "error": "Current player is not in the owned squad"
+        }
+
     db = SessionLocal()
 
     try:
         player = (
             db.query(Player)
-            .filter(Player.id == current_player_id)
+            .filter(
+                Player.id == current_player_id
+            )
             .first()
         )
 
@@ -25,21 +164,13 @@ def get_transfer_candidates(
                 "error": "Player not found"
             }
 
-        if current_player_id not in owned_player_ids:
-            return {
-                "error": "Current player is not in the owned squad"
-            }
-
-        current_player_price = player.price_tenths
-
-        if current_player_price is None:
-            return {
-                "error": "Current player does not have price data"
-            }
-
-        ranked_players = get_ranked_players_by_position(
-            player.position,
-            current_gameweek
+        # Only calculate this player's positional
+        # rankings once.
+        ranked_players = (
+            get_ranked_players_by_position(
+                player.position,
+                current_gameweek
+            )
         )
 
         if (
@@ -48,25 +179,12 @@ def get_transfer_candidates(
         ):
             return ranked_players
 
-        current_player_score = None
-
-        for ranked_player in ranked_players:
-            if ranked_player["player_id"] == current_player_id:
-                current_player_score = ranked_player["overall_score"]
-                break
-
-        if current_player_score is None:
-            return {
-                "error": "Current player does not have a valid score"
-            }
-
-        available_budget = (
-            current_player_price + bank_tenths
-        )
-
+        # Query the whole squad once.
         owned_players = (
             db.query(Player)
-            .filter(Player.id.in_(owned_player_ids))
+            .filter(
+                Player.id.in_(owned_player_ids)
+            )
             .all()
         )
 
@@ -76,88 +194,239 @@ def get_transfer_candidates(
             team_id = owned_player.team_id
 
             team_counts[team_id] = (
-                team_counts.get(team_id, 0) + 1
+                team_counts.get(team_id, 0)
+                + 1
             )
 
-        # Remove the outgoing player from the effective squad
-        current_team_id = player.team_id
+        return build_transfer_result(
+            player=player,
+            ranked_players=ranked_players,
+            owned_player_ids=owned_player_ids,
+            team_counts=team_counts,
+            bank_tenths=bank_tenths,
+            limit=limit
+        )
 
-        if current_team_id in team_counts:
-            team_counts[current_team_id] -= 1
+    finally:
+        db.close()
 
-        candidates = []
 
-        for candidate in ranked_players:
-            # Don't recommend the same player
-            if candidate["player_id"] == current_player_id:
-                continue
+def get_best_squad_transfer(
+    current_gameweek,
+    owned_player_ids,
+    bank_tenths=0
+):
+    # Validate once for the entire optimization.
+    squad_validation = validate_squad(
+        owned_player_ids
+    )
 
-            # Don't recommend a player already owned
-            if candidate["player_id"] in owned_player_ids:
-                continue
+    if not squad_validation["valid"]:
+        return {
+            "error": "Invalid squad",
+            "validation": squad_validation
+        }
 
-            candidate_price = candidate.get("price_tenths")
-            candidate_team_id = candidate.get("team_id")
+    db = SessionLocal()
 
-            # Skip candidates with missing required data
+    try:
+        # Load all 15 players with one query.
+        owned_players = (
+            db.query(Player)
+            .filter(
+                Player.id.in_(owned_player_ids)
+            )
+            .all()
+        )
+
+        owned_players_by_id = {
+            player.id: player
+            for player in owned_players
+        }
+
+        team_counts = {}
+
+        for player in owned_players:
+            team_id = player.team_id
+
+            team_counts[team_id] = (
+                team_counts.get(team_id, 0)
+                + 1
+            )
+
+        # This is the major performance improvement:
+        # calculate each position ranking ONCE.
+        rankings_by_position = {
+            "Goalkeeper":
+                get_ranked_players_by_position(
+                    "Goalkeeper",
+                    current_gameweek
+                ),
+
+            "Defender":
+                get_ranked_players_by_position(
+                    "Defender",
+                    current_gameweek
+                ),
+
+            "Midfielder":
+                get_ranked_players_by_position(
+                    "Midfielder",
+                    current_gameweek
+                ),
+
+            "Attacker":
+                get_ranked_players_by_position(
+                    "Attacker",
+                    current_gameweek
+                )
+        }
+
+        # Catch scoring errors before processing
+        # individual squad members.
+        for position, rankings in (
+            rankings_by_position.items()
+        ):
             if (
-                candidate_price is None
-                or candidate_team_id is None
+                isinstance(rankings, dict)
+                and "error" in rankings
             ):
-                continue
+                return {
+                    "error":
+                        f"Could not rank {position}s",
+                    "details": rankings
+                }
 
-            # Skip unaffordable candidates
-            if candidate_price > available_budget:
-                continue
+        transfer_options = []
+        skipped_players = []
 
-            # Skip players that would create 4 players
-            # from the same Premier League club
-            if team_counts.get(candidate_team_id, 0) >= 3:
-                continue
+        for player_id in owned_player_ids:
 
-            candidate_data = candidate.copy()
-
-            candidate_data["score_gain"] = round(
-                candidate_data["overall_score"]
-                - current_player_score,
-                2
+            player = owned_players_by_id.get(
+                player_id
             )
 
-            candidate_data["recommendation_strength"] = (
-                get_recommendation_strength(
-                    candidate_data["score_gain"]
+            if not player:
+                skipped_players.append({
+                    "player_id": player_id,
+                    "reason": "Player not found"
+                })
+                continue
+
+            ranked_players = (
+                rankings_by_position.get(
+                    player.position
                 )
             )
 
-            candidates.append(candidate_data)
+            if ranked_players is None:
+                skipped_players.append({
+                    "player_id": player_id,
+                    "reason":
+                        "Unsupported player position"
+                })
+                continue
 
-        upgrades = [
-            candidate
-            for candidate in candidates
-            if candidate["score_gain"] > 0
-        ]
+            result = build_transfer_result(
+                player=player,
+                ranked_players=ranked_players,
+                owned_player_ids=owned_player_ids,
+                team_counts=team_counts,
+                bank_tenths=bank_tenths,
+                limit=1
+            )
+
+            if (
+                isinstance(result, dict)
+                and "error" in result
+            ):
+                skipped_players.append({
+                    "player_id": player_id,
+                    "reason": result["error"]
+                })
+                continue
+
+            if not result["upgrade_found"]:
+                continue
+
+            if not result["candidates"]:
+                continue
+
+            best_candidate = (
+                result["candidates"][0]
+            )
+
+            transfer_options.append({
+                "player_out": {
+                    "player_id":
+                        result["current_player_id"],
+                    "position":
+                        result["position"],
+                    "score":
+                        result["current_player_score"],
+                    "price_tenths":
+                        result[
+                            "current_player_price_tenths"
+                        ]
+                },
+
+                "player_in":
+                    best_candidate,
+
+                "score_gain":
+                    best_candidate["score_gain"],
+
+                "recommendation_strength":
+                    best_candidate[
+                        "recommendation_strength"
+                    ],
+
+                "available_budget_tenths":
+                    result[
+                        "available_budget_tenths"
+                    ]
+            })
+
+        transfer_options.sort(
+            key=lambda transfer:
+                transfer["score_gain"],
+            reverse=True
+        )
+
+        if not transfer_options:
+            return {
+                "upgrade_found": False,
+                "best_transfer": None,
+                "alternatives": [],
+                "skipped_players":
+                    skipped_players
+            }
 
         return {
-            "current_player_id": current_player_id,
-            "current_player_score": current_player_score,
-            "current_player_price_tenths": current_player_price,
-            "bank_tenths": bank_tenths,
-            "available_budget_tenths": available_budget,
-            "position": player.position,
-            "upgrade_found": len(upgrades) > 0,
-            "candidates": upgrades[:limit]
+            "upgrade_found": True,
+            "best_transfer":
+                transfer_options[0],
+            "alternatives":
+                transfer_options[1:5],
+            "skipped_players":
+                skipped_players
         }
 
     finally:
         db.close()
 
 
-def get_recommendation_strength(score_gain):
+def get_recommendation_strength(
+    score_gain
+):
     if score_gain <= 0:
         return "none"
+
     elif score_gain >= 2.0:
         return "strong"
+
     elif score_gain >= 1.0:
         return "moderate"
+
     else:
         return "slight"

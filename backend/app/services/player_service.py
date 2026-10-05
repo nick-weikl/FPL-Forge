@@ -12,7 +12,6 @@ def sync_premier_league_players():
     skipped = 0
 
     page = 1
-    max_free_pages = 3
 
     try:
         while True:
@@ -91,11 +90,8 @@ def sync_premier_league_players():
             current_page = data["paging"]["current"]
             total_pages = data["paging"]["total"]
 
-            if (
-                current_page >= max_free_pages
-                or current_page >= total_pages
-            ):
-                break
+            if current_page >= total_pages:
+                break       
 
             page += 1
 

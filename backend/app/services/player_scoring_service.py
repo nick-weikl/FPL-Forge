@@ -3,7 +3,12 @@ from app.models.player import Player
 from app.services.fixture_analytics_service import get_player_fixture_outlook
 from app.services.player_analytics_service import (
     get_player_recent_form,
-    get_player_summary
+    get_player_summary,
+    get_all_player_summaries
+)
+from sqlalchemy.orm import joinedload
+from app.services.fixture_difficulty_service import (
+    get_all_team_strengths
 )
 
 
@@ -43,101 +48,289 @@ def normalize_metric(players, metric_name):
     return players
 
 
-def get_player_metrics(player_id, current_gameweek):
-    db = SessionLocal()
+def get_player_metrics(
+    player_id,
+    current_gameweek,
+    db=None,
+    player=None,
+    team_strengths=None,
+    fixture_outlook_cache=None,
+    summary=None
+):
+    owns_db = db is None
+
+    if owns_db:
+        db = SessionLocal()
 
     try:
-        player = (
-            db.query(Player)
-            .filter(Player.id == player_id)
-            .first()
-        )
+        if player is None:
+            player = (
+                db.query(Player)
+                .options(
+                    joinedload(Player.team)
+                )
+                .filter(Player.id == player_id)
+                .first()
+            )
 
         if not player:
             return {
                 "error": "Player not found"
             }
 
-        summary = get_player_summary(player_id, current_gameweek)
+        if summary is None:
+            summary = get_player_summary(
+                player_id,
+                current_gameweek,
+                db=db
+            )
 
         if "error" in summary:
             return summary
 
-        if summary.get("total_minutes", 0) <= 0:
+        if summary.get(
+            "total_minutes",
+            0
+        ) <= 0:
             return {
-                "error": "Player has no usable match data"
+                "error":
+                    "Player has no usable match data"
             }
 
         recent_form = get_player_recent_form(
             player_id,
             current_gameweek,
-            num_matches=5
+            num_matches=5,
+            db=db
         )
 
-        recent_form_summary = summarize_recent_form(
-            recent_form
+        recent_form_summary = (
+            summarize_recent_form(
+                recent_form
+            )
         )
 
-        fixture_outlook = get_player_fixture_outlook(
-            player_id,
-            current_gameweek,
-            limit=5
+        # Every player on the same club and in the
+        # same position has the same fixture outlook.
+        cache_key = (
+            player.team_id,
+            player.position
         )
+
+        cached_outlook = None
+
+        if fixture_outlook_cache is not None:
+            cached_outlook = (
+                fixture_outlook_cache.get(
+                    cache_key
+                )
+            )
+
+        if cached_outlook is None:
+            raw_outlook = (
+                get_player_fixture_outlook(
+                    player_id=player_id,
+                    current_gameweek=
+                        current_gameweek,
+                    limit=5,
+                    db=db,
+                    player=player,
+                    team_strengths=
+                        team_strengths
+                )
+            )
+
+            if "error" in raw_outlook:
+                return raw_outlook
+
+            cached_outlook = {
+                "average_fixture_difficulty":
+                    raw_outlook[
+                        "average_fixture_difficulty"
+                    ],
+                "fixtures":
+                    raw_outlook["fixtures"]
+            }
+
+            if fixture_outlook_cache is not None:
+                fixture_outlook_cache[
+                    cache_key
+                ] = cached_outlook
+
+        fixture_outlook = {
+            "player_id": player_id,
+            "average_fixture_difficulty":
+                cached_outlook[
+                    "average_fixture_difficulty"
+                ],
+            "fixtures":
+                cached_outlook["fixtures"]
+        }
 
         return {
             "player_id": player_id,
             "position": player.position,
-            "total_minutes": summary.get("total_minutes", 0),
-            "goals_per_90": summary.get("goals_per_90", 0),
-            "assists_per_90": summary.get("assists_per_90", 0),
-            "shots_per_90": summary.get("shots_per_90", 0),
-            "shots_on_target_per_90": summary.get(
-                "shots_on_target_per_90", 0
-            ),
-            "key_passes_per_90": summary.get("key_passes_per_90", 0),
-            "tackles_per_90": summary.get("tackles_per_90", 0),
-            "interceptions_per_90": summary.get("interceptions_per_90", 0),
-            "average_rating": summary.get("average_rating"),
-            "recent_goals": recent_form_summary["recent_goals"],
-            "recent_assists": recent_form_summary["recent_assists"],
-            "recent_minutes": recent_form_summary["recent_minutes"],
+            "total_minutes":
+                summary.get(
+                    "total_minutes",
+                    0
+                ),
+            "goals_per_90":
+                summary.get(
+                    "goals_per_90",
+                    0
+                ),
+            "assists_per_90":
+                summary.get(
+                    "assists_per_90",
+                    0
+                ),
+            "shots_per_90":
+                summary.get(
+                    "shots_per_90",
+                    0
+                ),
+            "shots_on_target_per_90":
+                summary.get(
+                    "shots_on_target_per_90",
+                    0
+                ),
+            "key_passes_per_90":
+                summary.get(
+                    "key_passes_per_90",
+                    0
+                ),
+            "tackles_per_90":
+                summary.get(
+                    "tackles_per_90",
+                    0
+                ),
+            "interceptions_per_90":
+                summary.get(
+                    "interceptions_per_90",
+                    0
+                ),
+            "average_rating":
+                summary.get(
+                    "average_rating"
+                ),
+            "recent_goals":
+                recent_form_summary[
+                    "recent_goals"
+                ],
+            "recent_assists":
+                recent_form_summary[
+                    "recent_assists"
+                ],
+            "recent_minutes":
+                recent_form_summary[
+                    "recent_minutes"
+                ],
             "average_recent_rating":
-                recent_form_summary["average_recent_rating"],
+                recent_form_summary[
+                    "average_recent_rating"
+                ],
             "recent_form": recent_form,
-            "upcoming_fixtures": fixture_outlook,
-            "price_tenths": player.price_tenths,
-            "team_id": player.team_id,
-            "team_name": player.team.name if player.team else None,
+            "upcoming_fixtures":
+                fixture_outlook,
+            "price_tenths":
+                player.price_tenths,
+            "team_id":
+                player.team_id,
+            "team_name":
+                (
+                    player.team.name
+                    if player.team
+                    else None
+                )
         }
 
     finally:
-        db.close()
+        if owns_db:
+            db.close()
 
 
-def get_all_player_metrics(current_gameweek, position=None):
+def get_all_player_metrics(
+    current_gameweek,
+    position=None
+):
     db = SessionLocal()
 
     try:
-        query = db.query(Player)
+        query = (
+            db.query(Player)
+            .options(
+                joinedload(Player.team)
+            )
+        )
 
         if position:
-            query = query.filter(Player.position == position)
+            query = query.filter(
+                Player.position == position
+            )
 
         players = query.all()
+
+        player_ids = [
+            player.id
+            for player in players
+        ]
+
+        summaries_by_player_id = (
+            get_all_player_summaries(
+                current_gameweek=current_gameweek,
+                player_ids=player_ids,
+                db=db
+            )
+        )
+
+        # Calculate league strength ONCE.
+        team_strengths = (
+            get_all_team_strengths(
+                current_gameweek,
+                db=db
+            )
+        )
+
+        # Same team + same position = same
+        # future fixture difficulty.
+        fixture_outlook_cache = {}
 
         player_metrics = []
 
         for player in players:
+
+            summary = (
+                summaries_by_player_id.get(
+                    player.id
+                )
+            )
+
+            if not summary:
+                continue
+
             metrics = get_player_metrics(
-                player.id,
-                current_gameweek
+                player_id=player.id,
+                current_gameweek=
+                    current_gameweek,
+                db=db,
+                player=player,
+                team_strengths=
+                    team_strengths,
+                fixture_outlook_cache=
+                    fixture_outlook_cache,
+                summary=summary
             )
 
             if (
                 "error" not in metrics
-                and metrics["total_minutes"] >= 90
+                and metrics[
+                    "total_minutes"
+                ] >= 90
             ):
-                player_metrics.append(metrics)
+                player_metrics.append(
+                    metrics
+                )
 
         return player_metrics
 

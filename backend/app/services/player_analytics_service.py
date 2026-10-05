@@ -3,10 +3,18 @@ from app.models import PlayerMatchStat
 from app.models import fixture
 from app.models.fixture import Fixture
 from app.services.fixture_analytics_service import get_upcoming_fixtures
+from sqlalchemy import func
 
 
-def get_player_summary(player_id, current_gameweek):
-    db = SessionLocal()
+def get_player_summary(
+    player_id,
+    current_gameweek,
+    db=None
+):
+    owns_db = db is None
+
+    if owns_db:
+        db = SessionLocal()
 
 
     try:
@@ -83,15 +91,220 @@ def get_player_summary(player_id, current_gameweek):
     except Exception as e:
         return {"error": str(e)}
     finally:
-        db.close()
+        if owns_db:
+            db.close()
+
+
+def get_all_player_summaries(
+    current_gameweek,
+    player_ids=None,
+    db=None
+):
+    owns_db = db is None
+
+    if owns_db:
+        db = SessionLocal()
+
+    try:
+        query = (
+            db.query(
+                PlayerMatchStat.player_id,
+
+                func.sum(
+                    PlayerMatchStat.goals
+                ).label("total_goals"),
+
+                func.sum(
+                    PlayerMatchStat.assists
+                ).label("total_assists"),
+
+                func.sum(
+                    PlayerMatchStat.minutes
+                ).label("total_minutes"),
+
+                func.sum(
+                    PlayerMatchStat.shots
+                ).label("total_shots"),
+
+                func.sum(
+                    PlayerMatchStat.shots_on_target
+                ).label("total_shots_on_target"),
+
+                func.sum(
+                    PlayerMatchStat.key_passes
+                ).label("total_key_passes"),
+
+                func.sum(
+                    PlayerMatchStat.tackles
+                ).label("total_tackles"),
+
+                func.sum(
+                    PlayerMatchStat.interceptions
+                ).label("total_interceptions"),
+
+                func.sum(
+                    PlayerMatchStat.yellow_cards
+                ).label("total_yellow_cards"),
+
+                func.sum(
+                    PlayerMatchStat.red_cards
+                ).label("total_red_cards"),
+
+                func.count(
+                    PlayerMatchStat.id
+                ).label("matches_played"),
+
+                func.avg(
+                    PlayerMatchStat.rating
+                ).label("average_rating")
+            )
+            .join(
+                Fixture,
+                PlayerMatchStat.fixture_id
+                == Fixture.id
+            )
+            .filter(
+                Fixture.gameweek
+                <= current_gameweek
+            )
+        )
+
+        if player_ids:
+            query = query.filter(
+                PlayerMatchStat.player_id.in_(
+                    player_ids
+                )
+            )
+
+        rows = (
+            query
+            .group_by(
+                PlayerMatchStat.player_id
+            )
+            .all()
+        )
+
+        summaries = {}
+
+        for row in rows:
+            total_minutes = (
+                row.total_minutes or 0
+            )
+
+            def per_90(value):
+                if total_minutes <= 0:
+                    return 0
+
+                return round(
+                    (
+                        (value or 0)
+                        / total_minutes
+                    ) * 90,
+                    2
+                )
+
+            summaries[row.player_id] = {
+                "player_id":
+                    row.player_id,
+
+                "total_goals":
+                    row.total_goals or 0,
+
+                "total_assists":
+                    row.total_assists or 0,
+
+                "total_minutes":
+                    total_minutes,
+
+                "total_shots":
+                    row.total_shots or 0,
+
+                "total_shots_on_target":
+                    row.total_shots_on_target
+                    or 0,
+
+                "total_key_passes":
+                    row.total_key_passes or 0,
+
+                "total_tackles":
+                    row.total_tackles or 0,
+
+                "total_interceptions":
+                    row.total_interceptions
+                    or 0,
+
+                "total_yellow_cards":
+                    row.total_yellow_cards or 0,
+
+                "total_red_cards":
+                    row.total_red_cards or 0,
+
+                "matches_played":
+                    row.matches_played,
+
+                "average_rating": (
+                    round(
+                        float(row.average_rating),
+                        2
+                    )
+                    if row.average_rating
+                    is not None
+                    else None
+                ),
+
+                "goals_per_90":
+                    per_90(
+                        row.total_goals
+                    ),
+
+                "assists_per_90":
+                    per_90(
+                        row.total_assists
+                    ),
+
+                "shots_per_90":
+                    per_90(
+                        row.total_shots
+                    ),
+
+                "shots_on_target_per_90":
+                    per_90(
+                        row.total_shots_on_target
+                    ),
+
+                "key_passes_per_90":
+                    per_90(
+                        row.total_key_passes
+                    ),
+
+                "tackles_per_90":
+                    per_90(
+                        row.total_tackles
+                    ),
+
+                "interceptions_per_90":
+                    per_90(
+                        row.total_interceptions
+                    )
+            }
+
+        return summaries
+
+    finally:
+        if owns_db:
+            db.close()
 
 
 def get_player_recent_form(
     player_id,
     current_gameweek,
-    num_matches=5
+    num_matches=5,
+    db=None
 ):
-    db = SessionLocal()
+    owns_db = db is None
+
+    if owns_db:
+        db = SessionLocal()
 
     try:
         player_stats = (
@@ -145,10 +358,15 @@ def get_player_analytics(
         recent_matches=5,
         fixture_limit=5
     ):
-    summary = get_player_summary(player_id)
+
+    summary = get_player_summary(
+    player_id,
+    current_gameweek
+    )
 
     recent_form = get_player_recent_form(
         player_id,
+        current_gameweek,
         recent_matches
     )
 
