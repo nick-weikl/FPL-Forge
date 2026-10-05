@@ -1,16 +1,51 @@
-# Python 
-__pychache__/
-*.py[cod]
+# --------------------
+# Python / FastAPI
+# --------------------
 
-# Virtualenv
-venv/
 .venv/
+venv/
+__pycache__/
+*.py[cod]
 
 # Environment variables
 .env
+.env.*
 
-# MacOS
+# Python tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --------------------
+# Node / Vite
+# --------------------
+
+node_modules/
+dist/
+
+# Vite environment files
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# --------------------
+# macOS
+# --------------------
+
 .DS_Store
 
-# VS Code
+# --------------------
+# IDE / editor
+# --------------------
+
 .vscode/
+.idea/
+
+# --------------------
+# Logs
+# --------------------
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
