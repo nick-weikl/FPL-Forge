@@ -54,6 +54,9 @@ def get_player_summary(player_id, current_gameweek):
         assists_per_90 = (total_assists / total_minutes * 90) if total_minutes > 0 else 0
         shots_per_90 = (total_shots / total_minutes * 90) if total_minutes > 0 else 0
         shots_on_target_per_90 = (total_shots_on_target / total_minutes * 90) if total_minutes > 0 else 0
+        key_passes_per_90 = (total_key_passes / total_minutes * 90) if total_minutes > 0 else 0
+        tackles_per_90 = (total_tackles / total_minutes * 90) if total_minutes > 0 else 0
+        interceptions_per_90 = (total_interceptions / total_minutes * 90) if total_minutes > 0 else 0
 
         return {
             "player_id": player_id,
@@ -72,7 +75,10 @@ def get_player_summary(player_id, current_gameweek):
             "goals_per_90": round(goals_per_90, 2),
             "assists_per_90": round(assists_per_90, 2),
             "shots_per_90": round(shots_per_90, 2),
-            "shots_on_target_per_90": round(shots_on_target_per_90, 2)
+            "shots_on_target_per_90": round(shots_on_target_per_90, 2),
+            "key_passes_per_90" : round(key_passes_per_90, 2),
+            "tackles_per_90": round(tackles_per_90, 2),
+            "interceptions_per_90": round(interceptions_per_90, 2),
         }
     except Exception as e:
         return {"error": str(e)}

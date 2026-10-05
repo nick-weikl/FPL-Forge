@@ -33,7 +33,7 @@ def normalize_metric(players, metric_name):
             continue
 
         if max_value == min_value:
-            normalized_value = 0.5
+            normalized_value = 0.0 if max_value == 0 else 0.5
         else:
             normalized_value = (
                 (value - min_value) / (max_value - min_value)
@@ -94,6 +94,9 @@ def get_player_metrics(player_id, current_gameweek):
             "shots_on_target_per_90": summary.get(
                 "shots_on_target_per_90", 0
             ),
+            "key_passes_per_90": summary.get("key_passes_per_90", 0),
+            "tackles_per_90": summary.get("tackles_per_90", 0),
+            "interceptions_per_90": summary.get("interceptions_per_90", 0),
             "average_rating": summary.get("average_rating"),
             "recent_goals": recent_form_summary["recent_goals"],
             "recent_assists": recent_form_summary["recent_assists"],
@@ -207,6 +210,7 @@ def get_forward_scores(current_gameweek):
     players = normalize_metric(players, "assists_per_90")
     players = normalize_metric(players, "shots_per_90")
     players = normalize_metric(players, "shots_on_target_per_90")
+    players = normalize_metric(players, "average_rating")
 
     players = normalize_metric(players, "recent_goals")
     players = normalize_metric(players, "recent_assists")
@@ -214,11 +218,18 @@ def get_forward_scores(current_gameweek):
     players = normalize_metric(players, "average_recent_rating")
 
     for player in players:
+        normalized_performance_rating = (
+            player["normalized_average_rating"]
+            if player["normalized_average_rating"] is not None
+            else 0.5
+        )
+
         score = (
-            player["normalized_goals_per_90"] * 0.35
+            player["normalized_goals_per_90"] * 0.30
             + player["normalized_assists_per_90"] * 0.15
-            + player["normalized_shots_per_90"] * 0.25
-            + player["normalized_shots_on_target_per_90"] * 0.25
+            + player["normalized_shots_per_90"] * 0.20
+            + player["normalized_shots_on_target_per_90"] * 0.20
+            + normalized_performance_rating * 0.15
         )
 
         player["performance_score"] = round(score * 10, 2)
@@ -257,3 +268,222 @@ def get_forward_scores(current_gameweek):
     players.sort(key=lambda x: x["overall_score"], reverse=True)
 
     return players
+
+
+def get_midfielder_scores(current_gameweek):
+    players = get_all_player_metrics(
+        current_gameweek,
+        position="Midfielder"
+    )
+
+    players = normalize_metric(players, "goals_per_90")
+    players = normalize_metric(players, "assists_per_90")
+    players = normalize_metric(players, "shots_per_90")
+    players = normalize_metric(players, "key_passes_per_90")
+    players = normalize_metric(players, "average_rating")
+
+    players = normalize_metric(players, "recent_goals")
+    players = normalize_metric(players, "recent_assists")
+    players = normalize_metric(players, "recent_minutes")
+    players = normalize_metric(players, "average_recent_rating")
+
+    for player in players:
+        normalized_performance_rating = (
+            player["normalized_average_rating"]
+            if player["normalized_average_rating"] is not None
+            else 0.5
+        )
+
+        score = (
+            player["normalized_goals_per_90"] * 0.25
+            + player["normalized_assists_per_90"] * 0.25
+            + player["normalized_shots_per_90"] * 0.15
+            + player["normalized_key_passes_per_90"] * 0.20
+            + normalized_performance_rating * 0.15
+        )
+
+        player["performance_score"] = round(score * 10, 2)
+
+        normalized_recent_rating = (
+            player["normalized_average_recent_rating"]
+            if player["normalized_average_recent_rating"] is not None
+            else 0.5
+        )
+
+        form_score = (
+            player["normalized_recent_goals"] * 0.30
+            + player["normalized_recent_assists"] * 0.25
+            + normalized_recent_rating * 0.25
+            + player["normalized_recent_minutes"] * 0.20
+        )
+
+        player["form_score"] = round(form_score * 10, 2)
+
+        average_fixture_difficulty = (
+            player["upcoming_fixtures"]["average_fixture_difficulty"]
+        )
+
+        player["fixture_score"] = calculate_fixture_score(
+            average_fixture_difficulty
+        )
+
+        overall_score = (
+            player["performance_score"] * 0.40
+            + player["form_score"] * 0.35
+            + player["fixture_score"] * 0.25
+        )
+
+        player["overall_score"] = round(overall_score, 2)
+
+    players.sort(key=lambda x: x["overall_score"], reverse=True)
+
+    return players
+
+
+def get_defender_scores(current_gameweek):
+    players = get_all_player_metrics(
+        current_gameweek,
+        position="Defender"
+    )
+
+    players = normalize_metric(players, "tackles_per_90")
+    players = normalize_metric(players, "interceptions_per_90")
+    players = normalize_metric(players, "average_rating")
+    players = normalize_metric(players, "goals_per_90")
+    players = normalize_metric(players, "assists_per_90")
+
+    players = normalize_metric(players, "recent_goals")
+    players = normalize_metric(players, "recent_assists")
+    players = normalize_metric(players, "recent_minutes")
+    players = normalize_metric(players, "average_recent_rating")
+
+    for player in players:
+        normalized_performance_rating = (
+            player["normalized_average_rating"]
+            if player["normalized_average_rating"] is not None
+            else 0.5
+        )
+
+        score = (
+            player["normalized_tackles_per_90"] * 0.25
+            + player["normalized_interceptions_per_90"] * 0.25
+            + normalized_performance_rating * 0.20
+            + player["normalized_goals_per_90"] * 0.15
+            + player["normalized_assists_per_90"] * 0.15
+        )
+
+        player["performance_score"] = round(score * 10, 2)
+
+        normalized_recent_rating = (
+            player["normalized_average_recent_rating"]
+            if player["normalized_average_recent_rating"] is not None
+            else 0.5
+        )
+
+        form_score = (
+            player["normalized_recent_goals"] * 0.15
+            + player["normalized_recent_assists"] * 0.10
+            + normalized_recent_rating * 0.45
+            + player["normalized_recent_minutes"] * 0.30
+        )
+
+        player["form_score"] = round(form_score * 10, 2)
+
+        average_fixture_difficulty = (
+            player["upcoming_fixtures"]["average_fixture_difficulty"]
+        )
+
+        player["fixture_score"] = calculate_fixture_score(
+            average_fixture_difficulty
+        )
+
+        overall_score = (
+            player["performance_score"] * 0.40
+            + player["form_score"] * 0.35
+            + player["fixture_score"] * 0.25
+        )
+
+        player["overall_score"] = round(overall_score, 2)
+
+    players.sort(key=lambda x: x["overall_score"], reverse=True)
+
+    return players
+
+
+def get_goalkeeper_scores(current_gameweek):
+    players = get_all_player_metrics(
+        current_gameweek,
+        position="Goalkeeper"
+    )
+
+    players = normalize_metric(players, "average_rating")
+
+    players = normalize_metric(players, "recent_minutes")
+    players = normalize_metric(players, "average_recent_rating")
+
+    for player in players:
+        normalized_performance_rating = (
+            player["normalized_average_rating"]
+            if player["normalized_average_rating"] is not None
+            else 0.5
+        )
+
+        performance_score = (normalized_performance_rating * 1.0)
+
+        player["performance_score"] = round(performance_score * 10, 2)
+
+        normalized_recent_rating = (
+            player["normalized_average_recent_rating"]
+            if player["normalized_average_recent_rating"] is not None
+            else 0.5
+        )
+
+        form_score = (
+            normalized_recent_rating * 0.60
+            + player["normalized_recent_minutes"] * 0.40
+        )
+
+        player["form_score"] = round(form_score * 10, 2)
+
+        average_fixture_difficulty = (
+            player["upcoming_fixtures"][
+                "average_fixture_difficulty"
+            ]
+        )
+
+        player["fixture_score"] = calculate_fixture_score(
+            average_fixture_difficulty
+        )
+
+        overall_score = (
+            player["performance_score"] * 0.35
+            + player["form_score"] * 0.30
+            + player["fixture_score"] * 0.35
+        )
+
+        player["overall_score"] = round(overall_score, 2)
+
+    players.sort(key=lambda x: x["overall_score"], reverse=True)
+
+    return players
+
+
+def get_ranked_players_by_position(position, current_gameweek):
+    normalized_position = position.strip().lower()
+
+    position_map = {
+    "goalkeeper": get_goalkeeper_scores,
+    "defender": get_defender_scores,
+    "midfielder": get_midfielder_scores,
+    "attacker": get_forward_scores
+}
+
+    scoring_function = position_map.get(normalized_position)
+
+    if not scoring_function:
+        return {
+            "error": "Invalid position"
+        }
+
+    return scoring_function(current_gameweek)
+    

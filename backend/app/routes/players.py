@@ -8,7 +8,7 @@ from app.services.player_analytics_service import get_player_recent_form
 from app.services.player_analytics_service import get_player_summary
 from app.services.fixture_analytics_service import get_upcoming_fixtures
 from app.services.fixture_analytics_service import get_player_fixture_outlook
-from app.services.player_scoring_service import get_all_player_metrics, get_forward_scores
+from app.services.player_scoring_service import get_all_player_metrics, get_forward_scores, get_midfielder_scores, get_defender_scores, get_goalkeeper_scores, get_ranked_players_by_position
 
 
 router = APIRouter(
@@ -207,3 +207,43 @@ def get_forward_scores_route(
     current_gameweek: int
 ):
     return get_forward_scores(current_gameweek)
+
+
+@router.get("/scores/midfielders")
+def get_midfielder_scores_route(
+    current_gameweek: int
+):
+    return get_midfielder_scores(current_gameweek)
+
+
+@router.get("/scores/defenders")
+def get_defender_scores_route(
+    current_gameweek: int
+):
+    return get_defender_scores(current_gameweek)
+
+
+@router.get("/scores/goalkeepers")
+def get_goalkeeper_scores_route(
+    current_gameweek: int
+):
+    return get_goalkeeper_scores(current_gameweek)
+
+
+@router.get("/scores/ranked")
+def get_ranked_players_route(
+    position: str,
+    current_gameweek: int
+):
+    result = get_ranked_players_by_position(
+        position,
+        current_gameweek
+    )
+
+    if isinstance(result, dict) and "error" in result:
+        raise HTTPException(
+            status_code=400,
+            detail=result["error"]
+        )
+
+    return result
