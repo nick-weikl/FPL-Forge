@@ -1,5 +1,6 @@
 from app.database import SessionLocal
 from app.models.fixture import Fixture
+from app.models.team import Team
 
 
 def get_team_strength(team_id, current_gameweek):
@@ -63,3 +64,115 @@ def get_team_strength(team_id, current_gameweek):
 
     finally:
         db.close()
+
+
+def get_all_team_strengths(current_gameweek):
+    db = SessionLocal()
+
+    try:
+        teams = (
+            db.query(Team)
+            .order_by(Team.id.asc())
+            .all()
+        )
+
+        team_strengths = []
+
+        for team in teams:
+            strength = get_team_strength(
+                team.id,
+                current_gameweek
+            )
+
+            if "error" not in strength:
+                team_strengths.append(strength)
+
+        return team_strengths
+
+    finally:
+        db.close()
+
+
+def get_fixture_difficulty(opponent_team_id, player_position, current_gameweek):
+    team_strengths = get_all_team_strengths(current_gameweek)
+
+    opponent_strength = next(
+        (
+            team
+            for team in team_strengths
+            if team["team_id"] == opponent_team_id
+        ),
+        None
+    )
+
+    if not opponent_strength:
+        return {
+            "error": "Opponent team strength not found"
+        }
+
+    if player_position in ["GK", "DEF"]:
+        attack_values = [
+            team["goals_scored_per_match"]
+            for team in team_strengths
+        ]
+
+        min_attack = min(attack_values)
+        max_attack = max(attack_values)
+
+        opponent_attack = (
+            opponent_strength["goals_scored_per_match"]
+        )
+
+        if max_attack == min_attack:
+            normalized_attack = 0.5
+        else:
+            normalized_attack = (
+                opponent_attack - min_attack
+            ) / (
+                max_attack - min_attack
+            )
+
+        difficulty_score = 1 + (normalized_attack * 4)
+
+
+    elif player_position in ["MID", "FWD"]:
+        conceded_values = [
+            team["goals_conceded_per_match"]
+            for team in team_strengths
+        ]
+
+        min_conceded = min(conceded_values)
+        max_conceded = max(conceded_values)
+
+        opponent_conceded = (
+            opponent_strength["goals_conceded_per_match"]
+        )
+
+        if max_conceded == min_conceded:
+            normalized_conceded = 0.5
+        else:
+            normalized_conceded = (
+                opponent_conceded - min_conceded
+            ) / (
+                max_conceded - min_conceded
+            )
+
+        normalized_defensive_difficulty = (1 - normalized_conceded)
+
+        difficulty_score = 1 + (normalized_defensive_difficulty * 4)
+
+
+    else:
+        return {
+            "error": "Invalid player position"
+        }
+
+    return {
+        "opponent_team_id": opponent_team_id,
+        "player_position": player_position,
+        "difficulty_score": round(difficulty_score, 2),
+        "opponent_goals_scored_per_match":
+            opponent_strength["goals_scored_per_match"],
+        "opponent_goals_conceded_per_match":
+            opponent_strength["goals_conceded_per_match"]
+    }

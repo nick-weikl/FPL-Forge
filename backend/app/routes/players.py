@@ -7,6 +7,7 @@ from app.models.player import Player
 from app.services.player_analytics_service import get_player_recent_form
 from app.services.player_analytics_service import get_player_summary
 from app.services.fixture_analytics_service import get_upcoming_fixtures
+from app.services.fixture_analytics_service import get_player_fixture_outlook
 
 
 router = APIRouter(
@@ -168,3 +169,24 @@ def get_player_analytics_route(
         "recent_form": recent_form,
         "upcoming_fixtures": upcoming_fixtures
     }
+
+
+@router.get("/{player_id}/fixture-outlook")
+def get_player_fixture_outlook_route(
+    player_id: int,
+    current_gameweek: int,
+    limit: int = 5
+):
+    outlook = get_player_fixture_outlook(
+        player_id,
+        current_gameweek,
+        limit
+    )
+
+    if "error" in outlook:
+        raise HTTPException(
+            status_code=404,
+            detail=outlook["error"]
+        )
+
+    return outlook

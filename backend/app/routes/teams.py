@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.team import Team
 from app.services.fixture_difficulty_service import get_team_strength
+from app.services.fixture_difficulty_service import get_fixture_difficulty
 
 
 router = APIRouter(
@@ -55,3 +56,24 @@ def get_team_strength_route(
         )
 
     return strength_data
+
+
+@router.get("/{team_id}/fixture-difficulty")
+def get_fixture_difficulty_route(
+    team_id: int,
+    player_position: str,
+    current_gameweek: int
+):
+    difficulty_data = get_fixture_difficulty(
+        team_id,
+        player_position,
+        current_gameweek
+    )
+
+    if "error" in difficulty_data:
+        raise HTTPException(
+            status_code=400,
+            detail=difficulty_data["error"]
+        )
+
+    return difficulty_data

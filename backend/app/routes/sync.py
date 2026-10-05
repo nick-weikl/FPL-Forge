@@ -27,8 +27,8 @@ def sync_fixtures():
     return sync_premier_league_fixtures()
 
 
-@router.post("/player-match-stats/batch")
-def sync_player_match_stats_batch(
+@router.post("/player-fixture-stats/batch")
+def sync_player_fixture_stats_batch(
     limit: int = Query(default=2, ge=1, le=10)
 ):
     return sync_completed_fixture_stats(limit)
