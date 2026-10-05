@@ -8,6 +8,7 @@ from app.services.player_analytics_service import get_player_recent_form
 from app.services.player_analytics_service import get_player_summary
 from app.services.fixture_analytics_service import get_upcoming_fixtures
 from app.services.fixture_analytics_service import get_player_fixture_outlook
+from app.services.player_scoring_service import get_all_player_metrics, get_forward_scores
 
 
 router = APIRouter(
@@ -86,6 +87,7 @@ def get_player_summary_route(
 @router.get("/{player_id}/recent-form")
 def get_player_recent_form_route(
     player_id: int,
+    current_gameweek: int,
     num_matches: int = 5,
     db: Session = Depends(get_db)
 ):
@@ -101,7 +103,7 @@ def get_player_recent_form_route(
             detail="Player not found"
         )
 
-    return get_player_recent_form(player_id, num_matches)
+    return get_player_recent_form(player_id, current_gameweek, num_matches)
 
 
 @router.get("/{player_id}/upcoming-fixtures")
@@ -190,3 +192,18 @@ def get_player_fixture_outlook_route(
         )
 
     return outlook
+
+
+@router.get("/{player_id}/metrics")
+def get_all_player_metrics_route(
+    current_gameweek: int = 5,
+    position: str = "Attacker"
+):
+    return get_all_player_metrics(current_gameweek, position)
+
+
+@router.get("/scores/forwards")
+def get_forward_scores_route(
+    current_gameweek: int
+):
+    return get_forward_scores(current_gameweek)

@@ -5,14 +5,21 @@ from app.models.fixture import Fixture
 from app.services.fixture_analytics_service import get_upcoming_fixtures
 
 
-def get_player_summary(player_id):
+def get_player_summary(player_id, current_gameweek):
     db = SessionLocal()
 
 
     try:
         player_stats = (
             db.query(PlayerMatchStat)
-            .filter(PlayerMatchStat.player_id == player_id)
+            .join(
+                Fixture,
+                PlayerMatchStat.fixture_id == Fixture.id
+            )
+            .filter(
+                PlayerMatchStat.player_id == player_id,
+                Fixture.gameweek <= current_gameweek
+            )
             .all()
         )
 
@@ -73,21 +80,33 @@ def get_player_summary(player_id):
         db.close()
 
 
-def get_player_recent_form(player_id, num_matches=5):
+def get_player_recent_form(
+    player_id,
+    current_gameweek,
+    num_matches=5
+):
     db = SessionLocal()
 
     try:
         player_stats = (
             db.query(PlayerMatchStat, Fixture)
-            .join(Fixture, PlayerMatchStat.fixture_id == Fixture.id)
-            .filter(PlayerMatchStat.player_id == player_id)
+            .join(
+                Fixture,
+                PlayerMatchStat.fixture_id == Fixture.id
+            )
+            .filter(
+                PlayerMatchStat.player_id == player_id,
+                Fixture.gameweek <= current_gameweek
+            )
             .order_by(Fixture.fixture_date.desc())
             .limit(num_matches)
             .all()
         )
 
         if not player_stats:
-            return {"error": "No stats found for the player"}
+            return {
+                "error": "No stats found for the player"
+            }
 
         recent_form = [
             {
@@ -104,8 +123,12 @@ def get_player_recent_form(player_id, num_matches=5):
             "player_id": player_id,
             "recent_form": recent_form
         }
+
     except Exception as e:
-        return {"error": str(e)}
+        return {
+            "error": str(e)
+        }
+
     finally:
         db.close()
 
