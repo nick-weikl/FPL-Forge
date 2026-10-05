@@ -127,6 +127,134 @@ def build_transfer_result(
     }
 
 
+def build_strategy_reason(
+    recommended_strategy,
+    single_transfer,
+    double_transfer
+):
+    single_raw_gain = (
+        single_transfer["raw_score_gain"]
+        if single_transfer
+        else None
+    )
+
+    single_net_gain = (
+        single_transfer["net_score_gain"]
+        if single_transfer
+        else None
+    )
+
+    double_raw_gain = (
+        double_transfer["raw_score_gain"]
+        if double_transfer
+        else None
+    )
+
+    double_net_gain = (
+        double_transfer["net_score_gain"]
+        if double_transfer
+        else None
+    )
+
+    double_transfer_cost = (
+        double_transfer["transfer_cost"]
+        if double_transfer
+        else 0
+    )
+
+    recommended_moves = []
+
+    if recommended_strategy == "single_transfer":
+        transfer = single_transfer["transfer"]
+
+        recommended_moves.append({
+            "player_out":
+                transfer["player_out"]["name"],
+            "player_in":
+                transfer["player_in"]["name"]
+        })
+
+        if (
+            double_transfer
+            and double_transfer_cost > 0
+            and single_net_gain > double_net_gain
+        ):
+            summary = (
+                "The single transfer provides the highest "
+                "net score gain after transfer costs."
+            )
+        else:
+            summary = (
+                "The single transfer provides the best "
+                "available score improvement."
+            )
+
+        decision_detail = (
+            f"The single transfer gains "
+            f"{single_net_gain:.2f} points versus "
+            f"{double_net_gain:.2f} for the double transfer "
+            f"after accounting for transfer costs."
+        )
+
+    elif recommended_strategy == "double_transfer":
+        transfers = (
+            double_transfer[
+                "transfer_pair"
+            ]["transfers"]
+        )
+
+        for transfer in transfers:
+            recommended_moves.append({
+                "player_out":
+                    transfer["player_out"]["name"],
+                "player_in":
+                    transfer["player_in"]["name"]
+            })
+
+        summary = (
+            "The double transfer provides the highest "
+            "net score gain."
+        )
+
+        decision_detail = (
+            f"The double transfer gains "
+            f"{double_net_gain:.2f} net points versus "
+            f"{single_net_gain:.2f} from the single transfer."
+        )
+
+    else:
+        summary = (
+            "No available transfer produces a positive "
+            "net score gain."
+        )
+
+        decision_detail = (
+            "Neither available strategy produces a positive "
+            "net score gain."
+        )
+
+    return {
+        "summary": summary,
+        "decision_detail": decision_detail,
+        "recommended_moves": recommended_moves,
+
+        "single_raw_gain":
+            single_raw_gain,
+
+        "single_net_gain":
+            single_net_gain,
+
+        "double_raw_gain":
+            double_raw_gain,
+
+        "double_transfer_cost":
+            double_transfer_cost,
+
+        "double_net_gain":
+            double_net_gain
+    }
+
+
 def get_transfer_candidates(
     current_player_id,
     current_gameweek,
@@ -1083,6 +1211,15 @@ def get_transfer_strategy(
             "double_transfer"
         )
 
+    reason = build_strategy_reason(
+        recommended_strategy=
+            recommended_strategy,
+        single_transfer=
+            single_transfer,
+        double_transfer=
+            double_transfer
+    )
+
     return {
         "recommended_strategy":
             recommended_strategy,
@@ -1092,6 +1229,9 @@ def get_transfer_strategy(
 
         "free_transfers":
             free_transfers,
+
+        "reason":
+            reason,
 
         "single_transfer":
             single_transfer,
