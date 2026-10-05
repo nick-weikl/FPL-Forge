@@ -13,3 +13,12 @@ class SquadOptimizationRequest(BaseModel):
     bank_tenths: int = 0
     owned_player_ids: list[int]
     limit_per_player: int = 1
+
+
+class DoubleTransferRecommendationRequest(
+    BaseModel
+):
+    current_gameweek: int
+    bank_tenths: int = 0
+    owned_player_ids: list[int]
+    candidates_per_player: int = 3

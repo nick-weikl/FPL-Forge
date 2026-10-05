@@ -465,6 +465,482 @@ def get_best_squad_transfer(
         db.close()
 
 
+def build_double_transfer_candidates(
+    player,
+    ranked_players,
+    owned_player_ids,
+    limit=10
+):
+    current_player_score = None
+
+    for ranked_player in ranked_players:
+        if ranked_player["player_id"] == player.id:
+            current_player_score = ranked_player["overall_score"]
+            break
+
+    if current_player_score is None:
+        return {
+            "error": "Current player does not have a valid score"
+        }
+
+    owned_player_ids_set = set(owned_player_ids)
+
+    candidates = []
+
+    for candidate in ranked_players:
+
+        candidate_id = candidate["player_id"]
+
+        if candidate_id == player.id:
+            continue
+
+        if candidate_id in owned_player_ids_set:
+            continue
+
+        candidate_price = candidate.get("price_tenths")
+        candidate_team_id = candidate.get("team_id")
+
+        if (
+            candidate_price is None
+            or candidate_team_id is None
+        ):
+            continue
+
+        candidate_data = candidate.copy()
+
+        candidate_data["score_gain"] = round(
+            candidate["overall_score"]
+            - current_player_score,
+            2
+        )
+
+        candidates.append(candidate_data)
+
+    candidates.sort(
+        key=lambda candidate:
+            candidate["overall_score"],
+        reverse=True
+    )
+
+    return {
+        "current_player_score":
+            current_player_score,
+        "candidates":
+            candidates[:limit]
+    }
+
+
+def get_best_double_transfer(
+    current_gameweek,
+    owned_player_ids,
+    bank_tenths=0,
+    candidates_per_player=3
+):
+    squad_validation = validate_squad(
+        owned_player_ids
+    )
+
+    if not squad_validation["valid"]:
+        return {
+            "error": "Invalid squad",
+            "validation": squad_validation
+        }
+
+    db = SessionLocal()
+
+    try:
+        owned_players = (
+            db.query(Player)
+            .options(
+                joinedload(Player.team)
+            )
+            .filter(
+                Player.id.in_(owned_player_ids)
+            )
+            .all()
+        )
+
+        owned_players_by_id = {
+            player.id: player
+            for player in owned_players
+        }
+
+        team_counts = {}
+
+        for player in owned_players:
+            team_counts[player.team_id] = (
+                team_counts.get(
+                    player.team_id,
+                    0
+                ) + 1
+            )
+
+        rankings_by_position = {
+            "Goalkeeper":
+                get_ranked_players_by_position(
+                    "Goalkeeper",
+                    current_gameweek
+                ),
+
+            "Defender":
+                get_ranked_players_by_position(
+                    "Defender",
+                    current_gameweek
+                ),
+
+            "Midfielder":
+                get_ranked_players_by_position(
+                    "Midfielder",
+                    current_gameweek
+                ),
+
+            "Attacker":
+                get_ranked_players_by_position(
+                    "Attacker",
+                    current_gameweek
+                )
+        }
+
+        candidates_by_player = {}
+        current_scores = {}
+
+        for player_id in owned_player_ids:
+
+            player = owned_players_by_id.get(
+                player_id
+            )
+
+            if not player:
+                continue
+
+            ranked_players = (
+                rankings_by_position.get(
+                    player.position
+                )
+            )
+
+            if not ranked_players:
+                continue
+
+            result = build_double_transfer_candidates(
+                player=player,
+                ranked_players=ranked_players,
+                owned_player_ids=owned_player_ids,
+                limit=candidates_per_player
+            )
+
+            if "error" in result:
+                continue
+
+            current_scores[player_id] = (
+                result["current_player_score"]
+            )
+
+            candidates_by_player[player_id] = (
+                result["candidates"]
+            )
+
+        transfer_pairs = []
+
+        player_ids = list(
+            candidates_by_player.keys()
+        )
+
+        for i in range(len(player_ids)):
+            for j in range(
+                i + 1,
+                len(player_ids)
+            ):
+
+                player_out_1 = (
+                    owned_players_by_id[
+                        player_ids[i]
+                    ]
+                )
+
+                player_out_2 = (
+                    owned_players_by_id[
+                        player_ids[j]
+                    ]
+                )
+
+                candidates_1 = (
+                    candidates_by_player[
+                        player_out_1.id
+                    ]
+                )
+
+                candidates_2 = (
+                    candidates_by_player[
+                        player_out_2.id
+                    ]
+                )
+
+                for candidate_1 in candidates_1:
+                    for candidate_2 in candidates_2:
+
+                        # Incoming players must be different
+                        if (
+                            candidate_1["player_id"]
+                            ==
+                            candidate_2["player_id"]
+                        ):
+                            continue
+
+                        # Cannot bring in someone
+                        # already owned
+                        if (
+                            candidate_1["player_id"]
+                            in owned_player_ids
+                            or
+                            candidate_2["player_id"]
+                            in owned_player_ids
+                        ):
+                            continue
+
+                        # Total available money
+                        total_budget = (
+                            player_out_1.price_tenths
+                            +
+                            player_out_2.price_tenths
+                            +
+                            bank_tenths
+                        )
+
+                        total_cost = (
+                            candidate_1["price_tenths"]
+                            +
+                            candidate_2["price_tenths"]
+                        )
+
+                        if total_cost > total_budget:
+                            continue
+
+                        # Rebuild club counts after
+                        # selling both players
+                        updated_team_counts = (
+                            team_counts.copy()
+                        )
+
+                        updated_team_counts[
+                            player_out_1.team_id
+                        ] -= 1
+
+                        updated_team_counts[
+                            player_out_2.team_id
+                        ] -= 1
+
+                        # Add first incoming player
+                        candidate_1_team = (
+                            candidate_1["team_id"]
+                        )
+
+                        if (
+                            updated_team_counts.get(
+                                candidate_1_team,
+                                0
+                            ) >= 3
+                        ):
+                            continue
+
+                        updated_team_counts[
+                            candidate_1_team
+                        ] = (
+                            updated_team_counts.get(
+                                candidate_1_team,
+                                0
+                            ) + 1
+                        )
+
+                        # Add second incoming player
+                        candidate_2_team = (
+                            candidate_2["team_id"]
+                        )
+
+                        if (
+                            updated_team_counts.get(
+                                candidate_2_team,
+                                0
+                            ) >= 3
+                        ):
+                            continue
+
+                        current_combined_score = (
+                            current_scores[player_out_1.id]
+                            +
+                            current_scores[player_out_2.id]
+                        )
+
+                        new_combined_score = (
+                            candidate_1["overall_score"]
+                            +
+                            candidate_2["overall_score"]
+                        )
+
+                        combined_score_gain = round(
+                            new_combined_score
+                            - current_combined_score,
+                            2
+                        )
+
+                        if combined_score_gain <= 0:
+                            continue
+
+                        remaining_bank = (
+                            total_budget
+                            - total_cost
+                        )
+
+                        transfer_pairs.append({
+                            "transfers": [
+                                {
+                                    "player_out": {
+                                        "player_id":
+                                            player_out_1.id,
+                                        "name":
+                                            player_out_1.name,
+                                        "team_id":
+                                            player_out_1.team_id,
+                                        "team_name":
+                                            (
+                                                player_out_1.team.name
+                                                if player_out_1.team
+                                                else None
+                                            ),
+                                        "position":
+                                            player_out_1.position,
+                                        "score":
+                                            current_scores[
+                                                player_out_1.id
+                                            ],
+                                        "price_tenths":
+                                            player_out_1.price_tenths
+                                    },
+                                    "player_in": {
+                                        "player_id":
+                                            candidate_1["player_id"],
+                                        "name":
+                                            candidate_1.get("name"),
+                                        "team_id":
+                                            candidate_1.get("team_id"),
+                                        "team_name":
+                                            candidate_1.get("team_name"),
+                                        "position":
+                                            candidate_1.get("position"),
+                                        "score":
+                                            candidate_1["overall_score"],
+                                        "price_tenths":
+                                            candidate_1["price_tenths"]
+                                    },
+                                    "score_gain":
+                                        candidate_1["score_gain"]
+                                },
+
+                                {
+                                    "player_out": {
+                                        "player_id":
+                                            player_out_2.id,
+                                        "name":
+                                            player_out_2.name,
+                                        "team_id":
+                                            player_out_2.team_id,
+                                        "team_name":
+                                            (
+                                                player_out_2.team.name
+                                                if player_out_2.team
+                                                else None
+                                            ),
+                                        "position":
+                                            player_out_2.position,
+                                        "score":
+                                            current_scores[
+                                                player_out_2.id
+                                            ],
+                                        "price_tenths":
+                                            player_out_2.price_tenths
+                                    },
+                                    "player_in": {
+                                        "player_id":
+                                            candidate_2["player_id"],
+                                        "name":
+                                            candidate_2.get("name"),
+                                        "team_id":
+                                            candidate_2.get("team_id"),
+                                        "team_name":
+                                            candidate_2.get("team_name"),
+                                        "position":
+                                            candidate_2.get("position"),
+                                        "score":
+                                            candidate_2["overall_score"],
+                                        "price_tenths":
+                                            candidate_2["price_tenths"]
+                                    },
+                                    "score_gain":
+                                        candidate_2["score_gain"]
+                                }
+                            ],
+
+                            "combined_score_gain":
+                                combined_score_gain,
+
+                            "remaining_bank_tenths":
+                                remaining_bank
+                        })
+
+        transfer_pairs.sort(
+            key=lambda pair:
+                pair["combined_score_gain"],
+            reverse=True
+        )
+
+        unique_transfer_pairs = []
+        seen_pairs = set()
+
+        for pair in transfer_pairs:
+
+            outgoing_ids = tuple(sorted(
+                transfer["player_out"]["player_id"]
+                for transfer in pair["transfers"]
+            ))
+
+            incoming_ids = tuple(sorted(
+                transfer["player_in"]["player_id"]
+                for transfer in pair["transfers"]
+            ))
+
+            pair_key = (
+                outgoing_ids,
+                incoming_ids
+            )
+
+            if pair_key in seen_pairs:
+                continue
+
+            seen_pairs.add(pair_key)
+
+            unique_transfer_pairs.append(
+                pair
+            )
+
+        if not unique_transfer_pairs:
+            return {
+                "upgrade_found": False,
+                "best_transfer_pair": None,
+                "alternatives": []
+            }
+
+        return {
+            "upgrade_found": True,
+            "best_transfer_pair":
+                unique_transfer_pairs[0],
+            "alternatives":
+                unique_transfer_pairs[1:5]
+        }
+
+    finally:
+        db.close()
+
+
 def get_recommendation_strength(
     score_gain
 ):
