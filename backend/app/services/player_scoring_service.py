@@ -169,6 +169,7 @@ def get_player_metrics(
 
         return {
             "player_id": player_id,
+            "name": player.name,
             "position": player.position,
             "total_minutes":
                 summary.get(

@@ -4,6 +4,7 @@ from app.services.player_scoring_service import (
     get_ranked_players_by_position
 )
 from app.services.squad_service import validate_squad
+from sqlalchemy.orm import joinedload
 
 
 def build_transfer_result(
@@ -182,6 +183,9 @@ def get_transfer_candidates(
         # Query the whole squad once.
         owned_players = (
             db.query(Player)
+            .options(
+                joinedload(Player.team)
+            )
             .filter(
                 Player.id.in_(owned_player_ids)
             )
@@ -233,6 +237,9 @@ def get_best_squad_transfer(
         # Load all 15 players with one query.
         owned_players = (
             db.query(Player)
+            .options(
+                joinedload(Player.team)
+            )
             .filter(
                 Player.id.in_(owned_player_ids)
             )
@@ -358,20 +365,36 @@ def get_best_squad_transfer(
 
             transfer_options.append({
                 "player_out": {
-                    "player_id":
-                        result["current_player_id"],
-                    "position":
-                        result["position"],
-                    "score":
-                        result["current_player_score"],
+                    "player_id": player.id,
+                    "name": player.name,
+                    "team_id": player.team_id,
+                    "team_name": (
+                        player.team.name
+                        if player.team
+                        else None
+                    ),
+                    "position": result["position"],
+                    "score": result["current_player_score"],
                     "price_tenths":
-                        result[
-                            "current_player_price_tenths"
-                        ]
+                        result["current_player_price_tenths"]
                 },
 
-                "player_in":
-                    best_candidate,
+                "player_in": {
+                    "player_id":
+                        best_candidate["player_id"],
+                    "name":
+                        best_candidate.get("name"),
+                    "team_id":
+                        best_candidate.get("team_id"),
+                    "team_name":
+                        best_candidate.get("team_name"),
+                    "position":
+                        best_candidate.get("position"),
+                    "score":
+                        best_candidate["overall_score"],
+                    "price_tenths":
+                        best_candidate.get("price_tenths")
+                },
 
                 "score_gain":
                     best_candidate["score_gain"],
@@ -382,9 +405,13 @@ def get_best_squad_transfer(
                     ],
 
                 "available_budget_tenths":
-                    result[
-                        "available_budget_tenths"
-                    ]
+                    result["available_budget_tenths"],
+
+                "remaining_bank_tenths":
+                    (
+                        result["available_budget_tenths"]
+                        - best_candidate["price_tenths"]
+                    )
             })
 
         transfer_options.sort(
@@ -402,14 +429,36 @@ def get_best_squad_transfer(
                     skipped_players
             }
 
+        best_transfer = transfer_options[0]
+
+        alternatives = []
+
+        used_player_in_ids = {
+            best_transfer["player_in"]["player_id"]
+        }
+
+        for transfer in transfer_options[1:]:
+            incoming_player_id = (
+                transfer["player_in"]["player_id"]
+            )
+
+            if incoming_player_id in used_player_in_ids:
+                continue
+
+            alternatives.append(transfer)
+
+            used_player_in_ids.add(
+                incoming_player_id
+            )
+
+            if len(alternatives) >= 4:
+                break
+
         return {
             "upgrade_found": True,
-            "best_transfer":
-                transfer_options[0],
-            "alternatives":
-                transfer_options[1:5],
-            "skipped_players":
-                skipped_players
+            "best_transfer": best_transfer,
+            "alternatives": alternatives,
+            "skipped_players": skipped_players
         }
 
     finally:
