@@ -941,6 +941,166 @@ def get_best_double_transfer(
         db.close()
 
 
+def get_transfer_strategy(
+    current_gameweek,
+    owned_player_ids,
+    bank_tenths=0,
+    free_transfers=1,
+    candidates_per_player=10
+):
+    single_result = get_best_squad_transfer(
+        current_gameweek=current_gameweek,
+        owned_player_ids=owned_player_ids,
+        bank_tenths=bank_tenths
+    )
+
+    if (
+        isinstance(single_result, dict)
+        and "error" in single_result
+    ):
+        return single_result
+
+    double_result = get_best_double_transfer(
+        current_gameweek=current_gameweek,
+        owned_player_ids=owned_player_ids,
+        bank_tenths=bank_tenths,
+        candidates_per_player=candidates_per_player
+    )
+
+    if (
+        isinstance(double_result, dict)
+        and "error" in double_result
+    ):
+        return double_result
+
+    single_transfer = None
+    single_net_gain = 0
+
+    if (
+        single_result.get("upgrade_found")
+        and single_result.get("best_transfer")
+    ):
+        best_single = (
+            single_result["best_transfer"]
+        )
+
+        single_raw_gain = (
+            best_single["score_gain"]
+        )
+
+        single_extra_transfers = max(
+            1 - free_transfers,
+            0
+        )
+
+        single_transfer_cost = (
+            single_extra_transfers * 4
+        )
+
+        single_net_gain = round(
+            single_raw_gain
+            - single_transfer_cost,
+            2
+        )
+
+        single_transfer = {
+            "transfer":
+                best_single,
+
+            "raw_score_gain":
+                single_raw_gain,
+
+            "transfer_cost":
+                single_transfer_cost,
+
+            "net_score_gain":
+                single_net_gain
+        }
+
+    double_transfer = None
+    double_net_gain = 0
+
+    if (
+        double_result.get("upgrade_found")
+        and double_result.get(
+            "best_transfer_pair"
+        )
+    ):
+        best_double = (
+            double_result[
+                "best_transfer_pair"
+            ]
+        )
+
+        double_raw_gain = (
+            best_double[
+                "combined_score_gain"
+            ]
+        )
+
+        double_extra_transfers = max(
+            2 - free_transfers,
+            0
+        )
+
+        double_transfer_cost = (
+            double_extra_transfers * 4
+        )
+
+        double_net_gain = round(
+            double_raw_gain
+            - double_transfer_cost,
+            2
+        )
+
+        double_transfer = {
+            "transfer_pair":
+                best_double,
+
+            "raw_score_gain":
+                double_raw_gain,
+
+            "transfer_cost":
+                double_transfer_cost,
+
+            "net_score_gain":
+                double_net_gain
+        }
+
+    recommended_strategy = "no_transfer"
+
+    best_net_gain = 0
+
+    if single_net_gain > best_net_gain:
+        best_net_gain = single_net_gain
+        recommended_strategy = (
+            "single_transfer"
+        )
+
+    if double_net_gain > best_net_gain:
+        best_net_gain = double_net_gain
+        recommended_strategy = (
+            "double_transfer"
+        )
+
+    return {
+        "recommended_strategy":
+            recommended_strategy,
+
+        "best_net_score_gain":
+            round(best_net_gain, 2),
+
+        "free_transfers":
+            free_transfers,
+
+        "single_transfer":
+            single_transfer,
+
+        "double_transfer":
+            double_transfer
+    }
+
+
 def get_recommendation_strength(
     score_gain
 ):
