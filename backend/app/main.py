@@ -14,10 +14,20 @@ from app.routes.fixtures import router as fixtures_router
 from app.routes.sync import router as sync_router
 from app.routes.recommendations import router as recommendations_router
 from app.routes.squads import router as squads_router
+from fastapi.middleware.cors import CORSMiddleware
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
+)
 app.include_router(players_router)
 app.include_router(fixtures_router)
 app.include_router(teams_router)

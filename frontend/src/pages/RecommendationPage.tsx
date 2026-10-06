@@ -1,0 +1,202 @@
+import {getTransferStrategy} from "../services/api.ts"
+import { useState } from "react"
+import type { StrategyRequest, StrategyResponse } from "../types/recommendation.ts"
+import type { Player } from "../types/player.ts";
+import PlayerPicker from "../components/PlayerPicker.tsx";
+
+
+export default function RecommendationPage() {
+    const [recommendation, setRecommendation] = useState<StrategyResponse | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const [currentGameweek, setCurrentGameweek] = useState<string>("2");
+    const [freeTransfers, setFreeTransfers] = useState<string>("1");
+    const [bankMillions, setBankMillions] = useState<string>("1.0")
+    const strategyLabels: Record<string, string> = {
+        single_transfer: "Single transfer",
+        double_transfer: "Double transfer",
+        no_transfer: "Keep current squad",
+    };
+    const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([])
+
+
+    function handleAddPlayer(player: Player) {
+        setSelectedPlayers((previousPlayers) => {
+            const alreadySelected = previousPlayers.some(
+                (selectedPlayer) => selectedPlayer.id === player.id
+            );
+
+            if (alreadySelected || previousPlayers.length >= 15) {
+                return previousPlayers
+            }
+
+            return [...previousPlayers, player]
+        })
+    }
+
+
+    function handleRemovePlayer(playerId: number) {
+        setSelectedPlayers((previousPlayers) => {
+            const remainingPlayers = previousPlayers.filter(
+                (selectedPlayer) => selectedPlayer.id !== playerId
+            );
+
+            return remainingPlayers;
+        });
+    }
+
+
+    async function handleGetRecommendation() {
+        setRecommendation(null)
+        setError(null)
+
+        if (currentGameweek.trim() === "") {
+            setError("Please enter a gameweek")
+            return
+        }
+        const gameweek = Number(currentGameweek)
+        if (!Number.isInteger(gameweek) || gameweek < 1 || gameweek > 38) {
+            setError("Enter a valid gameweek.")
+            return
+        }
+
+        if (freeTransfers.trim() === "") {
+            setError("Enter a number of transfers")
+            return
+        }
+        const transferCount = Number(freeTransfers)
+        if (!Number.isInteger(transferCount) || transferCount < 0) {
+            setError("Enter a valid number of transfers")
+            return
+        }
+
+        if (bankMillions.trim() === "") {
+            setError("Enter a bank amount")
+            return
+        }
+        const bank = Number(bankMillions)
+        if (!Number.isFinite(bank) || bank < 0) {
+            setError("Enter a valid bank amount")
+            return
+        }
+        const bankTenths = Math.round(bank * 10)
+        if (( bankTenths / 10 ) !== bank) {
+            setError("Enter the bank amount in increments of £0.1m")
+            return
+        }
+           
+
+        setIsLoading(true)
+
+
+        try {
+            const request: StrategyRequest = {
+            current_gameweek: gameweek,
+            bank_tenths: bankTenths,
+            free_transfers: transferCount, 
+            candidates_per_player: 10, 
+            owned_player_ids: selectedPlayers.map((player) => player.id),   
+            }
+
+            const result = await getTransferStrategy(request)
+            setRecommendation(result)
+
+            console.log(result)
+        }
+        catch (error) {
+            console.error("Failed", error)
+            setError("Could not fetch a recommendation. Please try again")
+        }
+        finally {
+            setIsLoading(false)
+        }
+
+ 
+    }
+
+    return (
+        <>
+            <h1>FPL Forge</h1>
+            <label htmlFor="1">Current Gameweek</label>
+            <input 
+            type="number" 
+            value={currentGameweek} 
+            onChange={(event) => {setCurrentGameweek(event.target.value)}}
+            disabled={isLoading}
+            id="1"/>
+            <label htmlFor="2">Free Transfers</label>
+            <input 
+            type="number" 
+            value={freeTransfers} 
+            onChange={(event) => {setFreeTransfers(event.target.value)}}
+            disabled={isLoading}
+            id="2"/>
+            <label htmlFor="3">Enter the current value of your bank £m</label>
+            <input 
+            type="number" 
+            step={"0.1"}
+            value={bankMillions} 
+            onChange={(event) => {setBankMillions(event.target.value)}}
+            disabled={isLoading}
+            id="3"/>
+            {recommendation && (
+                <div>
+                <p>Strategy: {strategyLabels[recommendation.recommended_strategy] ?? recommendation.recommended_strategy}</p>
+                <p>Net Score Gain: {recommendation.best_net_score_gain}</p>
+                <p>Reason for strategy: {recommendation.reason.summary}</p>
+                <p>Details on Reason: {recommendation.reason.decision_detail}</p>
+                <h2>Recommended moves</h2>
+                {recommendation.reason.recommended_moves.length > 0 ? (
+                    <ul>
+                        {recommendation.reason.recommended_moves.map((move) => (
+                            <li key={`${move.player_out}-${move.player_in}`}>
+                                {move.player_out} → {move.player_in}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No player changes recommended.</p>
+                )}
+                </div>
+            )}
+            {error && (
+                <div>
+                    <p role="alert">{error}</p>
+                </div>
+            )}
+            <button 
+            onClick={handleGetRecommendation}
+            disabled={isLoading}>
+                {isLoading ? "Loading..." : "Recommend Transfer"}
+            </button>
+            <section>
+                <h2>Squad: {selectedPlayers.length} / 15</h2>
+
+                {selectedPlayers.length === 0 ? (
+                    <p>Add players using the picker below.</p>
+                ) : (
+                    <ul>
+                        {selectedPlayers.map((player) => (
+                            <li key={player.id}>
+                                {player.name} — {player.position}
+                                <button
+                                    type="button"
+                                    onClick={() => handleRemovePlayer(player.id)}
+                                    disabled={isLoading}
+                                >
+                                    Remove
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </section>
+            <PlayerPicker
+                selectedPlayers={selectedPlayers}
+                onAddPlayer={handleAddPlayer}
+                onRemovePlayer={handleRemovePlayer}
+                disabled={isLoading}
+            />
+        </>
+    )
+}
