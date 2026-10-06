@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import Optional
 
 from app.database import get_db
@@ -24,7 +24,10 @@ def get_players(
     db: Session = Depends(get_db),
     name: Optional[str] = None,
 ):
-    query = db.query(Player)
+    query = (
+        db.query(Player)
+        .options(joinedload(Player.team))
+    )
 
     if team_id is not None:
         query = query.filter(
@@ -41,7 +44,20 @@ def get_players(
             Player.name.ilike(f"%{name}%")
         )
 
-    return query.all()
+    players = query.all()
+
+    return [
+        {
+            "id": player.id,
+            "external_api_id": player.external_api_id,
+            "name": player.name,
+            "position": player.position,
+            "team_id": player.team_id,
+            "team_name": player.team.name if player.team else None,
+            "price_tenths": player.price_tenths,
+        }
+        for player in players
+    ]
 
 
 @router.get("/{player_id}")

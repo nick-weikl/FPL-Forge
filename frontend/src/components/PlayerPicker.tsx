@@ -43,7 +43,26 @@ export default function PlayerPicker(props: PlayerPickerProps) {
         const matchesPosition =
             positionFilter === "" || player.position === positionFilter;
 
-        return matchesName && matchesPosition;
+        const alreadySelected = props.selectedPlayers.some(
+            (selectedPlayer) => selectedPlayer.id === player.id
+        );
+
+        return matchesName && matchesPosition && !alreadySelected;
+    });
+
+    const positionOrder: Record<string, number> = {
+        Goalkeeper: 0,
+        Defender: 1,
+        Midfielder: 2,
+        Attacker: 3,
+    };
+
+    const sortedPlayers = [...filteredPlayers].sort((a, b) => {
+        const positionDifference =
+            (positionOrder[a.position] ?? 99) -
+            (positionOrder[b.position] ?? 99);
+
+        return positionDifference || a.name.localeCompare(b.name);
     });
 
     return (
@@ -75,14 +94,14 @@ export default function PlayerPicker(props: PlayerPickerProps) {
                 )}
 
                 <ul>
-                    {filteredPlayers.map((player) => {
+                    {sortedPlayers.map((player) => {
                         const isSelected = props.selectedPlayers.some(
                             (selectedPlayer) => selectedPlayer.id === player.id
                         );
 
                         return (
                             <li key={player.id}>
-                                {player.name} — {player.position} — £
+                                {player.name} — {player.team_name ?? "Unknown team"} — {player.position} — £
                                 {(player.price_tenths / 10).toFixed(1)}m
                                 {isSelected ? " — Selected" : " — Available"}
                                 <button

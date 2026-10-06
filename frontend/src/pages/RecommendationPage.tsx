@@ -18,9 +18,49 @@ export default function RecommendationPage() {
         no_transfer: "Keep current squad",
     };
     const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([])
+    const goalkeeperCount = selectedPlayers.filter(
+        (player) => player.position === "Goalkeeper"
+    ).length;
+    const defenderCount = selectedPlayers.filter(
+        (player) => player.position === "Defender"
+    ).length;
+    const midfielderCount = selectedPlayers.filter(
+        (player) => player.position === "Midfielder"
+    ).length;
+    const attackerCount = selectedPlayers.filter(
+        (player) => player.position === "Attacker"
+    ).length;
 
 
     function handleAddPlayer(player: Player) {
+        setRecommendation(null)
+        setError(null)
+
+        const playersFromTeam = selectedPlayers.filter(
+            (selectedPlayer) => selectedPlayer.team_id === player.team_id
+        ).length;
+
+        if (playersFromTeam >= 3) {
+            setError(`You already have 3 players from ${player.team_name}.`);
+            return;
+        }
+
+        const positionLimits: Record<string, number> = {
+            Goalkeeper: 2,
+            Defender: 5,
+            Midfielder: 5,
+            Attacker: 3,
+        };
+
+        const playersInPosition = selectedPlayers.filter(
+            (selectedPlayer) => selectedPlayer.position === player.position
+        ).length;
+
+        if (playersInPosition >= positionLimits[player.position]) {
+            setError(`You have reached the limit for ${player.position} players.`);
+            return;
+        }
+
         setSelectedPlayers((previousPlayers) => {
             const alreadySelected = previousPlayers.some(
                 (selectedPlayer) => selectedPlayer.id === player.id
@@ -36,6 +76,8 @@ export default function RecommendationPage() {
 
 
     function handleRemovePlayer(playerId: number) {
+        setRecommendation(null)
+        setError(null)
         setSelectedPlayers((previousPlayers) => {
             const remainingPlayers = previousPlayers.filter(
                 (selectedPlayer) => selectedPlayer.id !== playerId
@@ -83,6 +125,30 @@ export default function RecommendationPage() {
         if (( bankTenths / 10 ) !== bank) {
             setError("Enter the bank amount in increments of £0.1m")
             return
+        }
+
+
+        if (selectedPlayers.length !== 15) {
+            setError("Select exactly 15 players.")
+            return;
+        }
+
+
+        if (goalkeeperCount !== 2 || defenderCount !== 5 || midfielderCount !== 5 || attackerCount !== 3) {
+            setError("Select 2 Goalkeepers, 5 Defenders, 5 Midfielders, and 3 Attackers")
+            return
+        }
+
+        const teamCounts: Record<number, number> = {};
+
+        for (const player of selectedPlayers) {
+            const teamId = player.team_id;
+            const currentCount = teamCounts[teamId] ?? 0;
+            teamCounts[teamId] = currentCount + 1;
+            if (teamCounts[teamId] > 3) {
+                setError("Only 3 players allowed per team.")
+                return
+            }
         }
            
 
@@ -171,6 +237,12 @@ export default function RecommendationPage() {
             </button>
             <section>
                 <h2>Squad: {selectedPlayers.length} / 15</h2>
+                <div>
+                    <p>Goalkeepers: {goalkeeperCount} / 2</p>
+                    <p>Defenders: {defenderCount} / 5</p>
+                    <p>Midfielders: {midfielderCount} / 5</p>
+                    <p>Attackers: {attackerCount} / 3</p>
+                </div>
 
                 {selectedPlayers.length === 0 ? (
                     <p>Add players using the picker below.</p>
@@ -178,7 +250,8 @@ export default function RecommendationPage() {
                     <ul>
                         {selectedPlayers.map((player) => (
                             <li key={player.id}>
-                                {player.name} — {player.position}
+                                {player.name} — {player.team_name ?? "Unknown team"} — {player.position}
+                                {" — £"}{(player.price_tenths / 10).toFixed(1)}m
                                 <button
                                     type="button"
                                     onClick={() => handleRemovePlayer(player.id)}
