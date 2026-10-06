@@ -1,5 +1,5 @@
 import {getTransferStrategy} from "../services/api.ts"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type { StrategyRequest, StrategyResponse } from "../types/recommendation.ts"
 import type { Player } from "../types/player.ts";
 import PlayerPicker from "../components/PlayerPicker.tsx";
@@ -17,7 +17,33 @@ export default function RecommendationPage() {
         double_transfer: "Double transfer",
         no_transfer: "Keep current squad",
     };
-    const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([])
+    const [selectedPlayers, setSelectedPlayers] = useState<Player[]>(() => {
+        try {
+            const savedSquad = localStorage.getItem("fpl-forge-squad");
+
+            if (savedSquad === null) {
+                return [];
+            }
+
+            const parsedSquad: unknown = JSON.parse(savedSquad);
+
+            return Array.isArray(parsedSquad) ? parsedSquad : [];
+        } catch {
+            return [];
+        }
+    });
+
+    useEffect(() => {
+        try {
+            localStorage.setItem(
+                "fpl-forge-squad",
+                JSON.stringify(selectedPlayers)
+            );
+        } catch (error) {
+            console.error("Could not save squad", error);
+        }
+    }, [selectedPlayers]);
+
     const goalkeeperCount = selectedPlayers.filter(
         (player) => player.position === "Goalkeeper"
     ).length;
@@ -187,14 +213,22 @@ export default function RecommendationPage() {
             <input 
             type="number" 
             value={currentGameweek} 
-            onChange={(event) => {setCurrentGameweek(event.target.value)}}
+            onChange={(event) => {
+                setCurrentGameweek(event.target.value);
+                setRecommendation(null);
+                setError(null);
+            }}
             disabled={isLoading}
             id="1"/>
             <label htmlFor="2">Free Transfers</label>
             <input 
             type="number" 
             value={freeTransfers} 
-            onChange={(event) => {setFreeTransfers(event.target.value)}}
+            onChange={(event) => {
+                setFreeTransfers(event.target.value);
+                setRecommendation(null);
+                setError(null);
+            }}
             disabled={isLoading}
             id="2"/>
             <label htmlFor="3">Enter the current value of your bank £m</label>
@@ -202,7 +236,11 @@ export default function RecommendationPage() {
             type="number" 
             step={"0.1"}
             value={bankMillions} 
-            onChange={(event) => {setBankMillions(event.target.value)}}
+            onChange={(event) => {
+                setBankMillions(event.target.value);
+                setRecommendation(null);
+                setError(null);
+            }}
             disabled={isLoading}
             id="3"/>
             {recommendation && (
