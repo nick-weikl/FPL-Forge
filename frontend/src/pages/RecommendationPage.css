@@ -69,3 +69,251 @@
         grid-template-columns: 1fr;
     }
 }
+
+.transfer-card {
+    margin-top: 24px;
+    padding: 24px;
+    border-radius: 8px;
+    background: var(--color-surface);
+}
+
+.transfer-label {
+    color: var(--color-muted);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.transfer-moves {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 0;
+    margin: 16px 0 0;
+    list-style: none;
+}
+
+.transfer-move > .transfer-label {
+    margin-bottom: 16px;
+}
+
+.transfer-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.transfer-player {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border-radius: 8px;
+    min-width: 0;
+}
+
+.transfer-player--sell {
+    background: var(--color-canvas);
+}
+
+.transfer-player--buy {
+    background: var(--color-pitch);
+}
+
+.transfer-player h2 {
+    font-size: 24px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.transfer-description {
+    color: var(--color-muted);
+    font-size: 14px;
+}
+
+.transfer-score-detail {
+    margin-top: 12px;
+}
+
+.transfer-outcomes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+    margin-top: 24px;
+}
+
+.transfer-metric {
+    margin-top: 8px;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.transfer-footnote {
+    margin-top: 16px;
+    color: var(--color-muted);
+    font-size: 12px;
+}
+
+@media (max-width: 1000px) {
+    .transfer-outcomes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+    }
+}
+
+@media (max-width: 700px) {
+    .transfer-pair {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .transfer-card,
+    .transfer-player {
+        padding: 20px;
+    }
+
+    .transfer-metric {
+        font-size: 24px;
+    }
+}
+
+.recommendation-settings {
+    padding: 0;
+    margin-bottom: 16px;
+    gap: 16px;
+}
+
+.recommendation-settings label {
+    color: var(--color-muted);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.recommendation-settings input {
+    min-height: 44px;
+    padding: 12px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-ink);
+}
+
+.recommendation-settings input:disabled {
+    opacity: 0.65;
+}
+
+.forge-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--color-brand);
+    color: var(--color-surface);
+    font-weight: 500;
+}
+
+.forge-button:disabled {
+    opacity: 0.55;
+}
+
+.recommendation-submit {
+    margin-bottom: 24px;
+}
+
+.recommendation-result {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.recommendation-result > .transfer-card {
+    margin-top: 0;
+}
+
+.recommendation-panels {
+    display: grid;
+    grid-template-columns: minmax(0, 720fr) minmax(0, 376fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.recommendation-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    padding: 24px;
+    border-radius: 8px;
+    background: var(--color-surface);
+}
+
+.recommendation-panel h2 {
+    font-size: 18px;
+    line-height: 1.4;
+}
+
+.panel-description {
+    color: var(--color-muted);
+}
+
+.panel-method {
+    color: var(--color-ink);
+}
+
+.panel-note {
+    color: var(--color-muted);
+    font-size: 12px;
+}
+
+.strategy-table-wrapper {
+    overflow-x: auto;
+}
+
+.strategy-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    text-align: left;
+}
+
+.strategy-table th,
+.strategy-table td {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+}
+
+.strategy-table thead th {
+    color: var(--color-muted);
+    font-weight: 500;
+}
+
+.strategy-table tbody th {
+    font-weight: 500;
+}
+
+.strategy-table td {
+    white-space: nowrap;
+}
+
+.draft-placeholder {
+    align-self: flex-start;
+    min-width: 180px;
+}
+
+.draft-placeholder:disabled {
+    opacity: 1;
+}
+
+.recommendation-result > .transfer-footnote {
+    margin-top: 0;
+}
+
+@media (max-width: 1000px) {
+    .recommendation-panels {
+        grid-template-columns: 1fr;
+    }
+}

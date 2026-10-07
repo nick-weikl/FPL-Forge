@@ -170,37 +170,18 @@ export default function RecommendationPage({
 
     return (
         <>
-            <h1>FPL Forge</h1>
-            <section>
-                <h2>Selected squad</h2>
-                <p>{selectedPlayers.length} / 15 players selected</p>
+            <header className="page-heading">
+                <div className="context-bar">
+                    <p>WORKSPACE / TRANSFER LAB</p>
+                    <p>Demo GW {currentGameweek} / Nick</p>
+                </div>
 
-                <Link to="/squad" onClick={() => setError(null)}>
-                    Edit squad
-                </Link>
+                <h1>Make a move with a reason.</h1>
 
-                {selectedPlayers.length !== 15 && (
-                    <p>Select all 15 players before requesting a recommendation.</p>
-                )}
-
-                {selectedPlayers.length > 0 && (
-                    <details>
-                        <summary>View selected players</summary>
-
-                        <ul>
-                            {selectedPlayers.map((player) => (
-                                <li key={player.id}>
-                                    {player.name}
-                                    {" — "}
-                                    {player.team_name ?? "Unknown team"}
-                                    {" — "}
-                                    {player.position}
-                                </li>
-                            ))}
-                        </ul>
-                    </details>
-                )}
-            </section>
+                <p>
+                    Compare gains, costs and minutes risk before changing your squad.
+                </p>
+            </header>
             <div className="recommendation-settings">
                 <div>
                     <label htmlFor="1">Current Gameweek: </label>
@@ -244,130 +225,260 @@ export default function RecommendationPage({
                 </div>
             </div>
 
+            <button
+                className="forge-button recommendation-submit"
+                onClick={handleGetRecommendation}
+                disabled={isLoading || selectedPlayers.length !== 15}
+            >
+                {isLoading ? "Loading..." : "Recommend Transfer"}
+            </button>
+
+            {isLoading && (
+                <div
+                    className="forge-state forge-state--loading"
+                    role="status"
+                >
+                    <strong className="forge-state-title">
+                        Comparing transfer options…
+                    </strong>
+                    <p>Your recommendation will appear here when it is ready.</p>
+                </div>
+            )}
+
+            {!recommendation && !isLoading && !error && (
+                <div className="forge-state forge-state--empty">
+                    <strong className="forge-state-title">
+                        Your recommendation will appear here.
+                    </strong>
+                    <p>
+                        {selectedPlayers.length !== 15
+                            ? "Complete your 15-player squad on My Squad to get started."
+                            : "Check your settings, then select Recommend Transfer."}
+                    </p>
+                </div>
+            )}
+
             {recommendation && (
             <section className="recommendation-result">
-                <p>
-                    Strategy: {strategyLabels[recommendation.recommended_strategy]}
+                <section className="transfer-card">
+                    <p className="transfer-label">SUGGESTED MOVES</p>
+
+                    {recommendedTransfers.length > 0 ? (
+                        <ul className="transfer-moves">
+                            {recommendedTransfers.map((move, index) => (
+                                <li
+                                    className="transfer-move"
+                                    key={`${move.player_out.player_id}-${move.player_in.player_id}`}
+                                >
+                                    <p className="transfer-label">
+                                        MOVE / {String(index + 1).padStart(2, "0")}
+                                    </p>
+
+                                    <div className="transfer-pair">
+                                        <div className="transfer-player transfer-player--sell">
+                                            <p className="transfer-label">SELL</p>
+                                            <h2>{move.player_out.name}</h2>
+
+                                            <p className="transfer-description">
+                                                {move.player_out.position}
+                                                {" · "}
+                                                {move.player_out.team_name ?? "Unknown team"}
+                                                {" · Selling value £"}
+                                                {(move.player_out.price_tenths / 10).toFixed(1)}m
+                                            </p>
+                                        </div>
+
+                                        <div className="transfer-player transfer-player--buy">
+                                            <p className="transfer-label">BUY</p>
+                                            <h2>{move.player_in.name}</h2>
+
+                                            <p className="transfer-description">
+                                                {move.player_in.position}
+                                                {" · "}
+                                                {move.player_in.team_name ?? "Unknown team"}
+                                                {" · Purchase cost £"}
+                                                {(move.player_in.price_tenths / 10).toFixed(1)}m
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <p className="transfer-description transfer-score-detail">
+                                        Player scores: {move.player_out.score.toFixed(2)}
+                                        {" → "}
+                                        {move.player_in.score.toFixed(2)}
+                                        {" · Score gain: "}
+                                        {move.score_gain.toFixed(2)}
+                                    </p>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="forge-state forge-state--empty">
+                            {recommendation.recommended_strategy === "no_transfer"
+                                ? "Keep your current squad. No transfers recommended."
+                                : "Transfer details are unavailable."}
+                        </p>
+                    )}
+
+                    <div className="transfer-outcomes">
+                        <div>
+                            <p className="transfer-label">GROSS SCORE GAIN</p>
+                            <p className="transfer-metric">
+                                {recommendation.recommended_strategy === "no_transfer"
+                                    ? "0.00"
+                                    : (
+                                        recommendation.recommended_strategy === "single_transfer"
+                                            ? recommendation.single_transfer?.raw_score_gain
+                                            : recommendation.double_transfer?.raw_score_gain
+                                    )?.toFixed(2) ?? "—"}
+                            </p>
+                        </div>
+
+                        <div>
+                            <p className="transfer-label">TRANSFER COST</p>
+                            <p className="transfer-metric">
+                                {recommendation.recommended_strategy === "no_transfer"
+                                    ? 0
+                                    : (
+                                        recommendation.recommended_strategy === "single_transfer"
+                                            ? recommendation.single_transfer?.transfer_cost
+                                            : recommendation.double_transfer?.transfer_cost
+                                    ) ?? "—"}
+                            </p>
+                        </div>
+
+                        <div>
+                            <p className="transfer-label">NET SCORE GAIN</p>
+                            <p className="transfer-metric">
+                                {recommendation.best_net_score_gain.toFixed(2)}
+                            </p>
+                        </div>
+
+                        <div>
+                            <p className="transfer-label">BANK AFTER</p>
+                            <p className="transfer-metric">
+                                {remainingBankTenths !== null
+                                    ? `£${(remainingBankTenths / 10).toFixed(1)}m`
+                                    : "—"}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <div className="recommendation-panels">
+                    <section className="recommendation-panel">
+                        <h2>Why it ranks first</h2>
+
+                        <p className="panel-description">
+                            {recommendation.reason.summary}
+                        </p>
+
+                        <p className="panel-description">
+                            {recommendation.reason.decision_detail}
+                        </p>
+
+                        <div className="panel-method">
+                            <p>
+                                Strategy: {strategyLabels[recommendation.recommended_strategy]}
+                            </p>
+                            <p>
+                                Net score gain: {recommendation.best_net_score_gain.toFixed(2)}
+                            </p>
+                            <p>Method: transparent baseline v0.1</p>
+                            <p>Fantasy metadata: user-confirmed demo values</p>
+                        </div>
+
+                        <p className="transfer-label">
+                            AI EXPLANATIONS · LATER PHASE
+                        </p>
+
+                        <p className="panel-description">
+                            Evidence stays visible before a conversational layer is added.
+                        </p>
+                    </section>
+
+                    <section className="recommendation-panel">
+                        <h2>Other options</h2>
+
+                        <div className="strategy-table-wrapper">
+                            <table className="strategy-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Strategy</th>
+                                        <th scope="col">Gross gain</th>
+                                        <th scope="col">Cost</th>
+                                        <th scope="col">Net gain</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">No transfer</th>
+                                        <td>0.00</td>
+                                        <td>0</td>
+                                        <td>0.00</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">Single</th>
+                                        <td>
+                                            {recommendation.single_transfer?.raw_score_gain.toFixed(2) ?? "—"}
+                                        </td>
+                                        <td>
+                                            {recommendation.single_transfer?.transfer_cost ?? "—"}
+                                        </td>
+                                        <td>
+                                            {recommendation.single_transfer?.net_score_gain.toFixed(2) ?? "—"}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">Double</th>
+                                        <td>
+                                            {recommendation.double_transfer?.raw_score_gain.toFixed(2) ?? "—"}
+                                        </td>
+                                        <td>
+                                            {recommendation.double_transfer?.transfer_cost ?? "—"}
+                                        </td>
+                                        <td>
+                                            {recommendation.double_transfer?.net_score_gain.toFixed(2) ?? "—"}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p className="panel-note">
+                            — means no transfer option was found for that strategy.
+                        </p>
+
+                        <button
+                            type="button"
+                            className="forge-button draft-placeholder"
+                            disabled
+                        >
+                            Save as draft
+                        </button>
+
+                        <p className="panel-note">
+                            No changes are sent to FPL.
+                        </p>
+                    </section>
+                </div>
+
+                <p className="transfer-footnote">
+                    Prices and budget calculations currently use demo values.
                 </p>
-
-                <p>
-                    Net score gain: {recommendation.best_net_score_gain.toFixed(2)}
-                </p>
-
-                <p>{recommendation.reason.summary}</p>
-                <p>{recommendation.reason.decision_detail}</p>
-
-                <h3>Strategy comparison</h3>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th scope="col">Strategy</th>
-                                <th scope="col">Raw score gain</th>
-                                <th scope="col">Transfer cost</th>
-                                <th scope="col">Net score gain</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <th scope="row">No transfer</th>
-                                <td>0.00</td>
-                                <td>0</td>
-                                <td>0.00</td>
-                            </tr>
-
-                            <tr>
-                                <th scope="row">Single transfer</th>
-                                <td>
-                                    {recommendation.single_transfer?.raw_score_gain.toFixed(2) ?? "—"}
-                                </td>
-                                <td>
-                                    {recommendation.single_transfer?.transfer_cost ?? "—"}
-                                </td>
-                                <td>
-                                    {recommendation.single_transfer?.net_score_gain.toFixed(2) ?? "—"}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th scope="row">Double transfer</th>
-                                <td>
-                                    {recommendation.double_transfer?.raw_score_gain.toFixed(2) ?? "—"}
-                                </td>
-                                <td>
-                                    {recommendation.double_transfer?.transfer_cost ?? "—"}
-                                </td>
-                                <td>
-                                    {recommendation.double_transfer?.net_score_gain.toFixed(2) ?? "—"}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <p>— means no transfer option was found for that strategy.</p>
-
-                <h2>Recommended moves</h2>
-
-                {recommendedTransfers.length > 0 ? (
-                    <ul>
-                        {recommendedTransfers.map((move) => (
-                            <li
-                                key={`${move.player_out.player_id}-${move.player_in.player_id}`}
-                            >
-                                <p>
-                                    <strong>Sell:</strong> {move.player_out.name}
-                                    {" — "}{move.player_out.team_name ?? "Unknown team"}
-                                    {" — "}{move.player_out.position}
-                                    {" — £"}
-                                    {(move.player_out.price_tenths / 10).toFixed(1)}m
-                                </p>
-
-                                <p>
-                                    <strong>Buy:</strong> {move.player_in.name}
-                                    {" — "}{move.player_in.team_name ?? "Unknown team"}
-                                    {" — "}{move.player_in.position}
-                                    {" — £"}
-                                    {(move.player_in.price_tenths / 10).toFixed(1)}m
-                                </p>
-
-                                <p>
-                                    Player scores: {move.player_out.score.toFixed(2)}
-                                    {" → "}{move.player_in.score.toFixed(2)}
-                                </p>
-
-                                <p>Score gain: {move.score_gain.toFixed(2)}</p>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>
-                        {recommendation.recommended_strategy === "no_transfer"
-                            ? "Keep your current squad. No transfers recommended."
-                            : "Transfer details are unavailable."}
-                    </p>
-                )}
-
-                {remainingBankTenths !== null && (
-                    <p>
-                        Bank after transfers: £
-                        {(remainingBankTenths / 10).toFixed(1)}m
-                    </p>
-                )}
-
-                <p>Prices and budget calculations currently use demo values.</p>
             </section>
             )}            
             {error && (
-                <div>
-                    <p role="alert">{error}</p>
-                </div>
+                <p
+                    className="forge-state forge-state--error"
+                    role="alert"
+                >
+                    {error}
+                </p>
             )}
-            <button 
-            onClick={handleGetRecommendation}
-            disabled={isLoading || selectedPlayers.length !== 15}>
-                {isLoading ? "Loading..." : "Recommend Transfer"}
-            </button>
         </>
     )
 }

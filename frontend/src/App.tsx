@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import type { Player } from "./types/player";
-import { Link, Navigate, Route, Routes } from "react-router";
+import { Link, Navigate, Route, Routes, NavLink } from "react-router";
 import SquadPage from "./pages/SquadPage";
 import RecommendationPage from "./pages/RecommendationPage";
+import "./App.css"
 
 
 function readSavedInput(key: string, fallback: string): string {
@@ -109,56 +110,103 @@ export default function App() {
 
 
     return (
-        <>
-            <nav aria-label="Main navigation">
-                <Link to="/squad" onClick={() => setError(null)}>
-                    My Squad
-                </Link>
-                {" | "}
-                <Link to="/transfer-lab" onClick={() => setError(null)}>
-                    Transfer Lab
-                </Link>
-            </nav>
+        <div className="app-layout">
+            <aside className="app-sidebar">
+                <div className="sidebar-brand">
+                    FPL
+                    <br />
+                    FORGE
+                </div>
 
-            <Routes>
-                <Route
-                    path="/"
-                    element={<Navigate to="/squad" replace />}
-                />
+                <p className="sidebar-tagline">
+                    YOUR GAMEWEEK,
+                    <br />
+                    WITH A PLAN.
+                </p>
 
-                <Route
-                    path="/squad"
-                    element={
-                        <>
-                            {error && <p role="alert">{error}</p>}
+                <nav className="sidebar-nav" aria-label="Main navigation">
+                    <span className="sidebar-link">Overview</span>
+                    <span className="sidebar-link">Player explorer</span>
+                    <span className="sidebar-link">Fixture planner</span>
 
-                            <SquadPage
+                    <NavLink
+                        to="/squad"
+                        className="sidebar-link"
+                        onClick={() => setError(null)}
+                    >
+                        My squad
+                    </NavLink>
+
+                    <NavLink
+                        to="/transfer-lab"
+                        className="sidebar-link"
+                        onClick={() => setError(null)}
+                    >
+                        Transfer lab
+                    </NavLink>
+                </nav>
+
+                <p className="sidebar-meta">
+                    Premier League
+                    <br />
+                    Historical demo • 2024/25
+                </p>
+
+                <p className="sidebar-note">
+                    Data coverage: partial
+                    <br />
+                    Prices: illustrative
+                </p>
+            </aside>
+
+            <main className="app-main">
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<Navigate to="/squad" replace />}
+                    />
+
+                    <Route
+                        path="/squad"
+                        element={
+                            <>
+                                {error && (
+                                    <p
+                                        className="forge-state forge-state--error"
+                                        role="alert"
+                                    >
+                                        {error}
+                                    </p>
+                                )}
+
+                                <SquadPage
+                                    selectedPlayers={selectedPlayers}
+                                    onAddPlayer={handleAddPlayer}
+                                    onRemovePlayer={handleRemovePlayer}
+                                    disabled={false}
+                                />
+                            </>
+                        }
+                    />
+
+                    <Route
+                        path="/transfer-lab"
+                        element={
+                            <RecommendationPage
                                 selectedPlayers={selectedPlayers}
-                                onAddPlayer={handleAddPlayer}
-                                onRemovePlayer={handleRemovePlayer}
-                                disabled={false}
+                                error={error}
+                                setError={setError}
+                                currentGameweek={currentGameweek}
+                                setCurrentGameweek={setCurrentGameweek}
+                                freeTransfers={freeTransfers}
+                                setFreeTransfers={setFreeTransfers}
+                                bankMillions={bankMillions}
+                                setBankMillions={setBankMillions}
                             />
-                        </>
-                    }
-                />
-
-                <Route
-                    path="/transfer-lab"
-                    element={
-                        <RecommendationPage
-                          selectedPlayers={selectedPlayers}
-                          error={error}
-                          setError={setError}
-                          currentGameweek={currentGameweek}
-                          setCurrentGameweek={setCurrentGameweek}
-                          freeTransfers={freeTransfers}
-                          setFreeTransfers={setFreeTransfers}
-                          bankMillions={bankMillions}
-                          setBankMillions={setBankMillions}
-                      />
-                    }
-                />
-            </Routes>
-        </>
+                        }
+                    />
+                </Routes>
+            </main>
+        </div>
     );
 }

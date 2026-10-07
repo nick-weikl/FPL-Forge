@@ -69,28 +69,70 @@ export default function PlayerPicker(props: PlayerPickerProps) {
     <>
         <h2>Players</h2>
 
-        <input 
-        type="search"
-        value={searchTerm}
-        onChange={(event) => {setSearchTerm(event.target.value)}}
-        id="1"/>
-        <select value={positionFilter}
-        onChange={(event) => {setPositionFilter(event.target.value)}}>
-            <option value={""}>All Positions</option>
-            <option value={"Goalkeeper"}>Goalkeepers</option>
-            <option value={"Defender"}>Defenders</option>
-            <option value={"Midfielder"}>Midfielders</option>
-            <option value={"Attacker"}>Attackers</option>
-        </select>
+        <div className="picker-filters">
+            <div>
+                <label htmlFor="player-search">Search players</label>
 
-        {loading && <p>Loading players...</p>}
+                <input
+                    type="search"
+                    value={searchTerm}
+                    onChange={(event) => {
+                        setSearchTerm(event.target.value);
+                    }}
+                    id="player-search"
+                    placeholder="Search by name..."
+                />
+            </div>
 
-        {error && <p role="alert">{error}</p>}
+            <div>
+                <label htmlFor="player-position">Position</label>
+
+                <select
+                    id="player-position"
+                    value={positionFilter}
+                    onChange={(event) => {
+                        setPositionFilter(event.target.value);
+                    }}
+                >
+                    <option value="">All Positions</option>
+                    <option value="Goalkeeper">Goalkeepers</option>
+                    <option value="Defender">Defenders</option>
+                    <option value="Midfielder">Midfielders</option>
+                    <option value="Attacker">Attackers</option>
+                </select>
+            </div>
+        </div>
+
+        {loading && (
+            <div
+                className="forge-state forge-state--loading"
+                role="status"
+            >
+                <strong className="forge-state-title">
+                    Loading players…
+                </strong>
+                <p>Fetching the player list.</p>
+            </div>
+        )}
+
+        {error && (
+            <p
+                className="forge-state forge-state--error"
+                role="alert"
+            >
+                {error}
+            </p>
+        )}
 
         {!loading && !error && (
             <>
                 {filteredPlayers.length === 0 && (
-                    <p>No players match your filters.</p>
+                    <div className="forge-state forge-state--empty">
+                        <strong className="forge-state-title">
+                            No players match your filters.
+                        </strong>
+                        <p>Try another name or position. Selected players are hidden.</p>
+                    </div>
                 )}
 
                 <ul>
