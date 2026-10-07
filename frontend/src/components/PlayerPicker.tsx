@@ -101,9 +101,11 @@ export default function PlayerPicker(props: PlayerPickerProps) {
 
                         return (
                             <li key={player.id}>
-                                {player.name} — {player.team_name ?? "Unknown team"} — {player.position} — £
-                                {(player.price_tenths / 10).toFixed(1)}m
-                                {isSelected ? " — Selected" : " — Available"}
+                                <span>
+                                    {player.name} — {player.team_name ?? "Unknown team"} — {player.position} — £
+                                    {(player.price_tenths / 10).toFixed(1)}m
+                                    {isSelected ? " — Selected" : " — Available"}
+                                </span>
                                 <button
                                 onClick={() => {
                                     if (isSelected) {

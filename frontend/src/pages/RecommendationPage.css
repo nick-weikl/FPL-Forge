@@ -1,0 +1,71 @@
+.squad-builder {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .squad-builder {
+        grid-template-columns: 1fr;
+    }
+}
+
+.squad-builder > section {
+    padding: 1rem;
+    text-align: left;
+}
+
+.squad-builder ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.squad-builder li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #34343d;
+    line-height: 1.5;
+}
+
+.squad-builder button {
+    margin-left: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    cursor: pointer;
+    margin-left: 0;
+    white-space: nowrap;    
+}
+
+.squad-builder button:disabled {
+    cursor: default;
+}
+
+.recommendation-settings {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    text-align: left;
+}
+
+.recommendation-settings > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.recommendation-settings input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.6rem;
+}
+
+@media (max-width: 768px) {
+    .recommendation-settings {
+        grid-template-columns: 1fr;
+    }
+}
