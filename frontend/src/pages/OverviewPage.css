@@ -1,0 +1,165 @@
+.overview-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+}
+
+.overview-page .page-heading {
+    margin-bottom: 0;
+}
+
+.overview-page h2 {
+    font-size: 18px;
+    line-height: 1.4;
+}
+
+.overview-heading-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.overview-heading-row > div > p {
+    color: var(--color-muted);
+}
+
+.overview-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    align-self: flex-start;
+    flex-shrink: 0;
+    width: 180px;
+    max-width: 100%;
+    min-height: 44px;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.overview-page .overview-button:disabled {
+    opacity: 1;
+}
+
+.overview-button--secondary {
+    background: var(--color-surface);
+    color: var(--color-ink);
+}
+
+.overview-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.overview-summary > section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    padding: 24px;
+    border-radius: 8px;
+    background: var(--color-surface);
+}
+
+.overview-label,
+.overview-note {
+    color: var(--color-muted);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.overview-metric {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.overview-decision-area {
+    display: grid;
+    grid-template-columns: minmax(0, 720fr) minmax(0, 376fr);
+    align-items: start;
+    gap: 24px;
+}
+
+.overview-transfer-card,
+.overview-coverage-card,
+.overview-fixture-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    padding: 24px;
+    border-radius: 8px;
+}
+
+.overview-transfer-card,
+.overview-fixture-card {
+    background: var(--color-surface);
+}
+
+.overview-coverage-card {
+    background: var(--color-pitch);
+}
+
+.overview-move {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.overview-description {
+    color: var(--color-muted);
+}
+
+.overview-transfer-measures {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 32px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.overview-coverage-detail {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.overview-fixture-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+@media (max-width: 1000px) {
+    .overview-decision-area {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .overview-heading-row,
+    .overview-fixture-heading {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .overview-summary {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .overview-summary > section,
+    .overview-transfer-card,
+    .overview-coverage-card,
+    .overview-fixture-card {
+        padding: 16px;
+    }
+
+    .overview-metric {
+        font-size: 26px;
+    }
+}

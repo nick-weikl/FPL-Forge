@@ -175,3 +175,19 @@
         padding: 16px;
     }
 }
+
+.app-sidebar {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100svh;
+    overflow-y: auto;
+}
+
+@media (max-width: 640px) {
+    .app-sidebar {
+        position: static;
+        height: auto;
+        overflow-y: visible;
+    }
+}

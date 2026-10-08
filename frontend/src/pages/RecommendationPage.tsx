@@ -5,7 +5,7 @@ import type { Player } from "../types/player.ts";
 import "./RecommendationPage.css"
 import type { Dispatch, SetStateAction } from "react";
 // import SquadPage from "./SquadPage";
-import { Link } from "react-router";
+// import { Link } from "react-router";
 
 
 interface RecommendationPageProps {

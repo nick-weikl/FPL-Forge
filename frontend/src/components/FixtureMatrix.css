@@ -1,0 +1,59 @@
+.planner-matrix-scroll {
+    overflow-x: auto;
+}
+
+.planner-matrix {
+    width: 100%;
+    min-width: 960px;
+    border-collapse: separate;
+    border-spacing: 0 16px;
+    text-align: left;
+}
+
+.planner-matrix th,
+.planner-matrix td {
+    padding: 0 16px 0 0;
+    vertical-align: top;
+}
+
+.planner-matrix th:last-child,
+.planner-matrix td:last-child {
+    padding-right: 0;
+}
+
+.planner-matrix thead th {
+    color: var(--color-muted);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.planner-matrix th:first-child {
+    width: 20%;
+}
+
+.planner-matrix tbody th {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.planner-fixture {
+    display: block;
+    min-height: 41px;
+    padding: 12px;
+    color: var(--color-ink);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.planner-fixture--standard {
+    background: var(--color-pitch);
+}
+
+.planner-fixture--warning {
+    background: #f7e3c8;
+}
+
+.planner-fixture--blank {
+    background: var(--color-canvas);
+}

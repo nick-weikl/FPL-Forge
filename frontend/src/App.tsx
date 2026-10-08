@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import type { Player } from "./types/player";
-import { Link, Navigate, Route, Routes, NavLink } from "react-router";
+import { Navigate, Route, Routes, NavLink } from "react-router";
 import SquadPage from "./pages/SquadPage";
 import RecommendationPage from "./pages/RecommendationPage";
 import "./App.css"
+import PlayerExplorerPage from "./pages/PlayerExplorerPage";
+import FixturePlannerPage from "./pages/FixturePlannerPage";
+import OverviewPage from "./pages/OverviewPage";
 
 
 function readSavedInput(key: string, fallback: string): string {
@@ -125,9 +128,29 @@ export default function App() {
                 </p>
 
                 <nav className="sidebar-nav" aria-label="Main navigation">
-                    <span className="sidebar-link">Overview</span>
-                    <span className="sidebar-link">Player explorer</span>
-                    <span className="sidebar-link">Fixture planner</span>
+                    <NavLink
+                        to="/overview"
+                        className="sidebar-link"
+                        onClick={() => setError(null)}
+                    >
+                        Overview
+                    </NavLink>
+
+                    <NavLink
+                        to="/player-explorer"
+                        className="sidebar-link"
+                        onClick={() => setError(null)}
+                    >
+                        Player explorer
+                    </NavLink>
+
+                    <NavLink
+                        to="/fixture-planner"
+                        className="sidebar-link"
+                        onClick={() => setError(null)}
+                    >
+                        Fixture planner
+                    </NavLink>
 
                     <NavLink
                         to="/squad"
@@ -164,6 +187,21 @@ export default function App() {
                     <Route
                         path="/"
                         element={<Navigate to="/squad" replace />}
+                    />
+
+                    <Route
+                        path="/overview"
+                        element={<OverviewPage />}
+                    />
+
+                    <Route
+                        path="/fixture-planner"
+                        element={<FixturePlannerPage />}
+                    />
+
+                    <Route
+                        path="/player-explorer"
+                        element={<PlayerExplorerPage />}
                     />
 
                     <Route
