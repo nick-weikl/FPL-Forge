@@ -16,6 +16,31 @@ from app.services.football_api import (
     SEASON,
     get_premier_league_players
 )
+import html
+
+# Verified FPL spellings, keyed by API-Sports player ID.
+API_PLAYER_NAME_ALIASES = {
+    453101: ["Bradley Burrowes"],
+    331832: ["António João Pereira de Albuquerque Tavares da Silva"],
+    363333: ["Julio Soler Barreto"],
+    153066: ["Fábio Freitas Gouveia Carvalho"],
+    263538: ["Yehor Yarmoliuk"],
+    278370: ["Diego Gómez Amarilla"],
+    19599: ["Emiliano Martínez Romero"],
+    116117: ["Moisés Caicedo Corozo"],
+    366735: ["Josh Acheampong"],
+    419582: ["Geovany Quenda"],
+    475575: ["Caleb Yirenkyi"],
+    2490: ["Jefferson Lerma Solís"],
+    184226: ["Yéremy Pino Santos"],
+    195993: ["Carlos Alcaraz Durán"],
+    389315: ["Josh King"],
+    32966: ["Tanaka Ao"],
+    8500: ["Endo Wataru"],
+    886: ["Diogo Dalot Teixeira"],
+    6610: ["Marcos Senesi Barón"],
+    18883: ["Dominic Solanke-Mitchell"]
+}
 
 
 def sync_premier_league_players(data=None, db=None):
@@ -117,7 +142,10 @@ def sync_premier_league_players(data=None, db=None):
 
 
 def normalize_player_name(name):
-    name = unicodedata.normalize("NFKD", name or "")
+    name = unicodedata.normalize(
+        "NFKD",
+        html.unescape(name or "")
+    )
     name = "".join(
         character
         for character in name
@@ -193,6 +221,11 @@ def link_premier_league_players(apply=False):
                 normalize_player_name(player.get("name")),
                 normalize_player_name(full_name)
             } - {""}
+
+            names.update(
+                normalize_player_name(alias)
+                for alias in API_PLAYER_NAME_ALIASES.get(api_id, [])
+            )
 
             for stats in item.get("statistics", []):
                 league = stats.get("league") or {}
@@ -324,6 +357,32 @@ def link_premier_league_players(apply=False):
             }
             for api_id, matches in grouped.items()
             if len(matches) > 1
+        ]
+
+        claimed_ids = {
+            match["external_api_id"]
+            for match in report["matched"]
+        } | {
+            player.external_api_id
+            for player in players
+            if player.external_api_id is not None
+        }
+
+        clubs_by_api_id = {
+            player.team.external_api_id: player.team
+            for player in players
+        }
+
+        report["unmatched_api_players"] = [
+            {
+                "team_name": club.name,
+                "api_name": candidate["name"],
+                "external_api_id": candidate["external_api_id"],
+                "normalized_names": sorted(candidate["names"])
+            }
+            for api_team_id, club in clubs_by_api_id.items()
+            for candidate in api_players_by_team[api_team_id].values()
+            if candidate["external_api_id"] not in claimed_ids
         ]
 
         if apply:

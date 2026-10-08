@@ -1,0 +1,4987 @@
+{
+  "api_players_loaded": 502,
+  "pages_processed": 26,
+  "matched": [
+    {
+      "db_player_id": 1119,
+      "fpl_name": "David Raya Martín",
+      "team_name": "Arsenal",
+      "api_name": "David Raya",
+      "external_api_id": 19465,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1120,
+      "fpl_name": "Kepa Arrizabalaga Revuelta",
+      "team_name": "Arsenal",
+      "api_name": "Kepa",
+      "external_api_id": 2273,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1122,
+      "fpl_name": "Gabriel dos Santos Magalhães",
+      "team_name": "Arsenal",
+      "api_name": "Gabriel Magalhães",
+      "external_api_id": 22224,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1123,
+      "fpl_name": "Jurriën Timber",
+      "team_name": "Arsenal",
+      "api_name": "J. Timber",
+      "external_api_id": 38746,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1125,
+      "fpl_name": "Myles Lewis-Skelly",
+      "team_name": "Arsenal",
+      "api_name": "M. Lewis-Skelly",
+      "external_api_id": 313245,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1126,
+      "fpl_name": "Riccardo Calafiori",
+      "team_name": "Arsenal",
+      "api_name": "R. Calafiori",
+      "external_api_id": 157052,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1127,
+      "fpl_name": "Piero Hincapié",
+      "team_name": "Arsenal",
+      "api_name": "P. Hincapié",
+      "external_api_id": 127817,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1128,
+      "fpl_name": "Benjamin White",
+      "team_name": "Arsenal",
+      "api_name": "B. White",
+      "external_api_id": 19959,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1129,
+      "fpl_name": "Cristhian Mosquera",
+      "team_name": "Arsenal",
+      "api_name": "Cristhian Mosquera",
+      "external_api_id": 333682,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1130,
+      "fpl_name": "Bukayo Saka",
+      "team_name": "Arsenal",
+      "api_name": "B. Saka",
+      "external_api_id": 1460,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1131,
+      "fpl_name": "Declan Rice",
+      "team_name": "Arsenal",
+      "api_name": "D. Rice",
+      "external_api_id": 2937,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1132,
+      "fpl_name": "Eberechi Eze",
+      "team_name": "Arsenal",
+      "api_name": "E. Eze",
+      "external_api_id": 19586,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1133,
+      "fpl_name": "Martin Ødegaard",
+      "team_name": "Arsenal",
+      "api_name": "M. Ødegaard",
+      "external_api_id": 37127,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1134,
+      "fpl_name": "Noni Madueke",
+      "team_name": "Arsenal",
+      "api_name": "N. Madueke",
+      "external_api_id": 136723,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1135,
+      "fpl_name": "Mikel Merino Zazón",
+      "team_name": "Arsenal",
+      "api_name": "Mikel Merino",
+      "external_api_id": 47311,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1137,
+      "fpl_name": "Martín Zubimendi Ibáñez",
+      "team_name": "Arsenal",
+      "api_name": "Martín Zubimendi",
+      "external_api_id": 47315,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1138,
+      "fpl_name": "Max Dowman",
+      "team_name": "Arsenal",
+      "api_name": "M. Dowman",
+      "external_api_id": 442044,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1139,
+      "fpl_name": "Ethan Nwaneri",
+      "team_name": "Arsenal",
+      "api_name": "E. Nwaneri",
+      "external_api_id": 313236,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1142,
+      "fpl_name": "Viktor Gyökeres",
+      "team_name": "Arsenal",
+      "api_name": "V. Gyökeres",
+      "external_api_id": 18979,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1143,
+      "fpl_name": "Kai Havertz",
+      "team_name": "Arsenal",
+      "api_name": "K. Havertz",
+      "external_api_id": 978,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1145,
+      "fpl_name": "Ezri Konsa Ngoyo",
+      "team_name": "Arsenal",
+      "api_name": "E. Konsa",
+      "external_api_id": 19354,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1146,
+      "fpl_name": "Bruno Guimarães Rodriguez Moura",
+      "team_name": "Arsenal",
+      "api_name": "Bruno Guimarães",
+      "external_api_id": 10135,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1147,
+      "fpl_name": "Christos Tzolis",
+      "team_name": "Arsenal",
+      "api_name": "C. Tzolis",
+      "external_api_id": 161800,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1148,
+      "fpl_name": "Marco Bizot",
+      "team_name": "Aston Villa",
+      "api_name": "M. Bizot",
+      "external_api_id": 36878,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1150,
+      "fpl_name": "Matty Cash",
+      "team_name": "Aston Villa",
+      "api_name": "M. Cash",
+      "external_api_id": 19298,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1151,
+      "fpl_name": "Tyrone Mings",
+      "team_name": "Aston Villa",
+      "api_name": "T. Mings",
+      "external_api_id": 19179,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1152,
+      "fpl_name": "Pau Torres",
+      "team_name": "Aston Villa",
+      "api_name": "Pau Torres",
+      "external_api_id": 46815,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1153,
+      "fpl_name": "Lamare Bogarde",
+      "team_name": "Aston Villa",
+      "api_name": "L. Bogarde",
+      "external_api_id": 284457,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1154,
+      "fpl_name": "Ian Maatsen",
+      "team_name": "Aston Villa",
+      "api_name": "I. Maatsen",
+      "external_api_id": 138816,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1155,
+      "fpl_name": "Victor Lindelöf",
+      "team_name": "Aston Villa",
+      "api_name": "V. Lindelöf",
+      "external_api_id": 889,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1158,
+      "fpl_name": "Emiliano Buendía Stati",
+      "team_name": "Aston Villa",
+      "api_name": "E. Buendía",
+      "external_api_id": 19071,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1160,
+      "fpl_name": "John McGinn",
+      "team_name": "Aston Villa",
+      "api_name": "J.  McGinn",
+      "external_api_id": 19191,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1161,
+      "fpl_name": "Ross Barkley",
+      "team_name": "Aston Villa",
+      "api_name": "R. Barkley",
+      "external_api_id": 2287,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1162,
+      "fpl_name": "Boubacar Kamara",
+      "team_name": "Aston Villa",
+      "api_name": "B. Kamara",
+      "external_api_id": 1904,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1166,
+      "fpl_name": "George Hemmings",
+      "team_name": "Aston Villa",
+      "api_name": "George Hemmings",
+      "external_api_id": 364566,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1167,
+      "fpl_name": "Alysson Edward Franco da Rocha dos Santos",
+      "team_name": "Aston Villa",
+      "api_name": "Alysson Edward",
+      "external_api_id": 464004,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1168,
+      "fpl_name": "Johan Manzambi",
+      "team_name": "Aston Villa",
+      "api_name": "J. Manzambi",
+      "external_api_id": 406244,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1169,
+      "fpl_name": "Joao Gomes",
+      "team_name": "Aston Villa",
+      "api_name": "João Gomes",
+      "external_api_id": 195103,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1171,
+      "fpl_name": "Tammy Abraham",
+      "team_name": "Aston Villa",
+      "api_name": "T. Abraham",
+      "external_api_id": 19194,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1172,
+      "fpl_name": "Alejandro Garnacho Ferreyra",
+      "team_name": "Aston Villa",
+      "api_name": "A. Garnacho",
+      "external_api_id": 284324,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1173,
+      "fpl_name": "Nicolas Jackson",
+      "team_name": "Aston Villa",
+      "api_name": "N. Jackson",
+      "external_api_id": 283058,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1175,
+      "fpl_name": "Matteo Ruggeri",
+      "team_name": "Aston Villa",
+      "api_name": "M. Ruggeri",
+      "external_api_id": 162012,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1176,
+      "fpl_name": "Zion Suzuki",
+      "team_name": "Aston Villa",
+      "api_name": "Z. Suzuki",
+      "external_api_id": 199578,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1177,
+      "fpl_name": "Triston Rowe",
+      "team_name": "Aston Villa",
+      "api_name": "T. Rowe",
+      "external_api_id": 360269,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1178,
+      "fpl_name": "Luka Lynch",
+      "team_name": "Aston Villa",
+      "api_name": "L. Lynch",
+      "external_api_id": 357247,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1179,
+      "fpl_name": "Aaron Wan-Bissaka",
+      "team_name": "Aston Villa",
+      "api_name": "A. Wan-Bissaka",
+      "external_api_id": 18846,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1181,
+      "fpl_name": "Taylor Harwood-Bellis",
+      "team_name": "Aston Villa",
+      "api_name": "T. Harwood-Bellis",
+      "external_api_id": 144729,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1182,
+      "fpl_name": "Ibrahim Mbaye",
+      "team_name": "Aston Villa",
+      "api_name": "I. Mbaye",
+      "external_api_id": 446249,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1183,
+      "fpl_name": "James Wright",
+      "team_name": "Aston Villa",
+      "api_name": "J. Wright",
+      "external_api_id": 284390,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1184,
+      "fpl_name": "Đorđe Petrović",
+      "team_name": "Bournemouth",
+      "api_name": "Đ. Petrović",
+      "external_api_id": 118307,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1186,
+      "fpl_name": "Will Dennis",
+      "team_name": "Bournemouth",
+      "api_name": "W. Dennis",
+      "external_api_id": 151756,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1187,
+      "fpl_name": "James Hill",
+      "team_name": "Bournemouth",
+      "api_name": "J. Hill",
+      "external_api_id": 20093,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1188,
+      "fpl_name": "Adrien Truffert",
+      "team_name": "Bournemouth",
+      "api_name": "A. Truffert",
+      "external_api_id": 162267,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1189,
+      "fpl_name": "Bafodé Diakité",
+      "team_name": "Bournemouth",
+      "api_name": "B. Diakité",
+      "external_api_id": 22136,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1191,
+      "fpl_name": "Adam Smith",
+      "team_name": "Bournemouth",
+      "api_name": "A. Smith",
+      "external_api_id": 18869,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1194,
+      "fpl_name": "Rayan Vitor Simplício Rocha",
+      "team_name": "Bournemouth",
+      "api_name": "Rayan",
+      "external_api_id": 407806,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1195,
+      "fpl_name": "Marcus Tavernier",
+      "team_name": "Bournemouth",
+      "api_name": "M. Tavernier",
+      "external_api_id": 19245,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1196,
+      "fpl_name": "Alex Scott",
+      "team_name": "Bournemouth",
+      "api_name": "A. Scott",
+      "external_api_id": 304853,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1197,
+      "fpl_name": "Justin Kluivert",
+      "team_name": "Bournemouth",
+      "api_name": "J. Kluivert",
+      "external_api_id": 792,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1198,
+      "fpl_name": "Lewis Cook",
+      "team_name": "Bournemouth",
+      "api_name": "L. Cook",
+      "external_api_id": 18872,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1199,
+      "fpl_name": "Ben Gannon-Doak",
+      "team_name": "Bournemouth",
+      "api_name": "B. Doak",
+      "external_api_id": 343576,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1200,
+      "fpl_name": "Tyler Adams",
+      "team_name": "Bournemouth",
+      "api_name": "T. Adams",
+      "external_api_id": 1150,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1201,
+      "fpl_name": "David Brooks",
+      "team_name": "Bournemouth",
+      "api_name": "D. Brooks",
+      "external_api_id": 18870,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1202,
+      "fpl_name": "Ryan Christie",
+      "team_name": "Bournemouth",
+      "api_name": "R. Christie",
+      "external_api_id": 1125,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1203,
+      "fpl_name": "Alex Tóth",
+      "team_name": "Bournemouth",
+      "api_name": "A. Tóth",
+      "external_api_id": 361485,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1206,
+      "fpl_name": "Francisco Evanilson de Lima Barbosa",
+      "team_name": "Bournemouth",
+      "api_name": "Evanilson",
+      "external_api_id": 152856,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1208,
+      "fpl_name": "Álvaro Rodríguez",
+      "team_name": "Bournemouth",
+      "api_name": "Á. Rodríguez",
+      "external_api_id": 343202,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1210,
+      "fpl_name": "Juanlu Sánchez",
+      "team_name": "Bournemouth",
+      "api_name": "Juanlu Sánchez",
+      "external_api_id": 182772,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1211,
+      "fpl_name": "Daniel Jebbison",
+      "team_name": "Bournemouth",
+      "api_name": "D. Jebbison",
+      "external_api_id": 296458,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1212,
+      "fpl_name": "Michele Di Gregorio",
+      "team_name": "Bournemouth",
+      "api_name": "M. Di Gregorio",
+      "external_api_id": 30670,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1213,
+      "fpl_name": "Caoimhín Kelleher",
+      "team_name": "Brentford",
+      "api_name": "C. Kelleher",
+      "external_api_id": 281,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1214,
+      "fpl_name": "Hákon Rafn Valdimarsson",
+      "team_name": "Brentford",
+      "api_name": "H. Valdimarsson",
+      "external_api_id": 61742,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1215,
+      "fpl_name": "Nathan Collins",
+      "team_name": "Brentford",
+      "api_name": "N. Collins",
+      "external_api_id": 19495,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1217,
+      "fpl_name": "Keane Lewis-Potter",
+      "team_name": "Brentford",
+      "api_name": "K. Lewis-Potter",
+      "external_api_id": 106725,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1218,
+      "fpl_name": "Kristoffer Ajer",
+      "team_name": "Brentford",
+      "api_name": "K. Ajer",
+      "external_api_id": 1119,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1219,
+      "fpl_name": "Michael Kayode",
+      "team_name": "Brentford",
+      "api_name": "M. Kayode",
+      "external_api_id": 342022,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1220,
+      "fpl_name": "Rico Henry",
+      "team_name": "Brentford",
+      "api_name": "R. Henry",
+      "external_api_id": 19346,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1221,
+      "fpl_name": "Aaron Hickey",
+      "team_name": "Brentford",
+      "api_name": "A. Hickey",
+      "external_api_id": 44871,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1223,
+      "fpl_name": "Jannik Schuster",
+      "team_name": "Brentford",
+      "api_name": "Jannik Schuster",
+      "external_api_id": 441271,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1224,
+      "fpl_name": "Kevin Schade",
+      "team_name": "Brentford",
+      "api_name": "K. Schade",
+      "external_api_id": 178077,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1225,
+      "fpl_name": "Dango Ouattara",
+      "team_name": "Brentford",
+      "api_name": "D. Ouattara",
+      "external_api_id": 284797,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1226,
+      "fpl_name": "Mikkel Damsgaard",
+      "team_name": "Brentford",
+      "api_name": "M. Damsgaard",
+      "external_api_id": 15908,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1227,
+      "fpl_name": "Mathias Jensen",
+      "team_name": "Brentford",
+      "api_name": "M. Jensen",
+      "external_api_id": 47438,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1228,
+      "fpl_name": "Vitaly Janelt",
+      "team_name": "Brentford",
+      "api_name": "V. Janelt",
+      "external_api_id": 25073,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1233,
+      "fpl_name": "Jaidon Anthony",
+      "team_name": "Brentford",
+      "api_name": "J. Anthony",
+      "external_api_id": 196855,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1234,
+      "fpl_name": "Igor Thiago Nascimento Rodrigues",
+      "team_name": "Brentford",
+      "api_name": "Thiago",
+      "external_api_id": 196156,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1236,
+      "fpl_name": "Callum Wilson",
+      "team_name": "Brentford",
+      "api_name": "C. Wilson",
+      "external_api_id": 2939,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1237,
+      "fpl_name": "Mamadou Sangaré",
+      "team_name": "Brentford",
+      "api_name": "M. Sangaré",
+      "external_api_id": 277306,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1238,
+      "fpl_name": "El Hadji Malick Diouf",
+      "team_name": "Brentford",
+      "api_name": "E. Diouf",
+      "external_api_id": 409303,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1239,
+      "fpl_name": "Gustavo Nunes Fernandes Gomes",
+      "team_name": "Brentford",
+      "api_name": "Gustavo Gomes",
+      "external_api_id": 427736,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1240,
+      "fpl_name": "Benjamin Fredrick",
+      "team_name": "Brentford",
+      "api_name": "B. Fredrick",
+      "external_api_id": 408221,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1241,
+      "fpl_name": "Ellery Balcombe",
+      "team_name": "Brentford",
+      "api_name": "E. Balcombe",
+      "external_api_id": 19340,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1242,
+      "fpl_name": "Bart Verbruggen",
+      "team_name": "Brighton",
+      "api_name": "B. Verbruggen",
+      "external_api_id": 129058,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1243,
+      "fpl_name": "Jason Steele",
+      "team_name": "Brighton",
+      "api_name": "J. Steele",
+      "external_api_id": 18960,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1244,
+      "fpl_name": "Ferdi Kadıoğlu",
+      "team_name": "Brighton",
+      "api_name": "F. Kadıoğlu",
+      "external_api_id": 1361,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1245,
+      "fpl_name": "Olivier Boscagli",
+      "team_name": "Brighton",
+      "api_name": "O. Boscagli",
+      "external_api_id": 22160,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1246,
+      "fpl_name": "Maxim De Cuyper",
+      "team_name": "Brighton",
+      "api_name": "M. De Cuyper",
+      "external_api_id": 162007,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1247,
+      "fpl_name": "Lewis Dunk",
+      "team_name": "Brighton",
+      "api_name": "L. Dunk",
+      "external_api_id": 18963,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1250,
+      "fpl_name": "João Pedro Loureiro da Costa",
+      "team_name": "Brighton",
+      "api_name": "Costinha",
+      "external_api_id": 204037,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1251,
+      "fpl_name": "Michael Svoboda",
+      "team_name": "Brighton",
+      "api_name": "M. Svoboda",
+      "external_api_id": 7090,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1254,
+      "fpl_name": "Jack Hinshelwood",
+      "team_name": "Brighton",
+      "api_name": "J. Hinshelwood",
+      "external_api_id": 305730,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1255,
+      "fpl_name": "Pascal Groß",
+      "team_name": "Brighton",
+      "api_name": "P. Groß",
+      "external_api_id": 18970,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1256,
+      "fpl_name": "Georginio Rutter",
+      "team_name": "Brighton",
+      "api_name": "G. Rutter",
+      "external_api_id": 90590,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1260,
+      "fpl_name": "Yasin Ayari",
+      "team_name": "Brighton",
+      "api_name": "Y. Ayari",
+      "external_api_id": 265820,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1261,
+      "fpl_name": "Mats Wieffer",
+      "team_name": "Brighton",
+      "api_name": "M. Wieffer",
+      "external_api_id": 92993,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1264,
+      "fpl_name": "Nehemiah Oriola",
+      "team_name": "Brighton",
+      "api_name": "N. Oriola",
+      "external_api_id": 553958,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1265,
+      "fpl_name": "Zadok Yohanna",
+      "team_name": "Brighton",
+      "api_name": "Z. Yohanna",
+      "external_api_id": 524411,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1267,
+      "fpl_name": "Charalampos Kostoulas",
+      "team_name": "Brighton",
+      "api_name": "C. Kostoulas",
+      "external_api_id": 392482,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1269,
+      "fpl_name": "Pascal Struijk",
+      "team_name": "Brighton",
+      "api_name": "P. Struijk",
+      "external_api_id": 64003,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1270,
+      "fpl_name": "Luka Vušković",
+      "team_name": "Brighton",
+      "api_name": "L. Vušković",
+      "external_api_id": 387521,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1271,
+      "fpl_name": "Promise David",
+      "team_name": "Brighton",
+      "api_name": "P. David",
+      "external_api_id": 313353,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1272,
+      "fpl_name": "Ibrahim Osman",
+      "team_name": "Brighton",
+      "api_name": "I. Osman",
+      "external_api_id": 293643,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1273,
+      "fpl_name": "Malick Yalcouyé",
+      "team_name": "Brighton",
+      "api_name": "M. Yalcouyé",
+      "external_api_id": 410125,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1274,
+      "fpl_name": "Jaouen Hadjam",
+      "team_name": "Brighton",
+      "api_name": "J. Hadjam",
+      "external_api_id": 271539,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1275,
+      "fpl_name": "Amario Cozier-Duberry",
+      "team_name": "Brighton",
+      "api_name": "A. Cozier-Duberry",
+      "external_api_id": 309501,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1276,
+      "fpl_name": "José María Andrés Baixauli",
+      "team_name": "Brighton",
+      "api_name": "José María Andrés Baixauli",
+      "external_api_id": 388871,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1278,
+      "fpl_name": "Younes Ibrahim",
+      "team_name": "Brighton",
+      "api_name": "Y. Ibrahim",
+      "external_api_id": 579114,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1280,
+      "fpl_name": "Morgan Rogers",
+      "team_name": "Chelsea",
+      "api_name": "M. Rogers",
+      "external_api_id": 19170,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1281,
+      "fpl_name": "Jordan Henderson",
+      "team_name": "Chelsea",
+      "api_name": "J. Henderson",
+      "external_api_id": 292,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1282,
+      "fpl_name": "Danny Welbeck",
+      "team_name": "Chelsea",
+      "api_name": "D. Welbeck",
+      "external_api_id": 1469,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1283,
+      "fpl_name": "Robert Lynch Sánchez",
+      "team_name": "Chelsea",
+      "api_name": "Robert Sánchez",
+      "external_api_id": 18959,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1285,
+      "fpl_name": "Reece James",
+      "team_name": "Chelsea",
+      "api_name": "R. James",
+      "external_api_id": 19545,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1287,
+      "fpl_name": "Malo Gusto",
+      "team_name": "Chelsea",
+      "api_name": "M. Gusto",
+      "external_api_id": 161907,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1288,
+      "fpl_name": "Wesley Fofana",
+      "team_name": "Chelsea",
+      "api_name": "W. Fofana",
+      "external_api_id": 22094,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1290,
+      "fpl_name": "Jorrel Hato",
+      "team_name": "Chelsea",
+      "api_name": "J. Hato",
+      "external_api_id": 341642,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1291,
+      "fpl_name": "Levi Samuels Colwill",
+      "team_name": "Chelsea",
+      "api_name": "L. Colwill",
+      "external_api_id": 152953,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1295,
+      "fpl_name": "Cole Palmer",
+      "team_name": "Chelsea",
+      "api_name": "C. Palmer",
+      "external_api_id": 152982,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1296,
+      "fpl_name": "Pedro Lomba Neto",
+      "team_name": "Chelsea",
+      "api_name": "Pedro Neto",
+      "external_api_id": 1864,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1297,
+      "fpl_name": "Estêvão Almeida de Oliveira Gonçalves",
+      "team_name": "Chelsea",
+      "api_name": "Estêvão",
+      "external_api_id": 425733,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1298,
+      "fpl_name": "Jamie Bynoe-Gittens",
+      "team_name": "Chelsea",
+      "api_name": "J. Bynoe-Gittens",
+      "external_api_id": 286894,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1300,
+      "fpl_name": "Roméo Lavia",
+      "team_name": "Chelsea",
+      "api_name": "R. Lavia",
+      "external_api_id": 282125,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1303,
+      "fpl_name": "João Pedro Junqueira de Jesus",
+      "team_name": "Chelsea",
+      "api_name": "João Pedro",
+      "external_api_id": 10329,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1307,
+      "fpl_name": "Maxence Lacroix",
+      "team_name": "Chelsea",
+      "api_name": "M. Lacroix",
+      "external_api_id": 20995,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1308,
+      "fpl_name": "Mike Penders",
+      "team_name": "Chelsea",
+      "api_name": "M. Penders",
+      "external_api_id": 340151,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1310,
+      "fpl_name": "Valentín Barco",
+      "team_name": "Chelsea",
+      "api_name": "V. Barco",
+      "external_api_id": 319572,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1311,
+      "fpl_name": "Pep Chavarría",
+      "team_name": "Chelsea",
+      "api_name": "Pep Chavarría",
+      "external_api_id": 181734,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1312,
+      "fpl_name": "Mahdi Nicoll-Jazuli",
+      "team_name": "Chelsea",
+      "api_name": "M. Nicoll-Jazuli",
+      "external_api_id": 506618,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1313,
+      "fpl_name": "Ethan Pinnock",
+      "team_name": "Coventry City",
+      "api_name": "E. Pinnock",
+      "external_api_id": 19789,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1314,
+      "fpl_name": "Frank Onyeka",
+      "team_name": "Coventry City",
+      "api_name": "F. Onyeka",
+      "external_api_id": 15799,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1315,
+      "fpl_name": "Carl Rushworth",
+      "team_name": "Coventry City",
+      "api_name": "C. Rushworth",
+      "external_api_id": 278088,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1317,
+      "fpl_name": "Ben Wilson",
+      "team_name": "Coventry City",
+      "api_name": "B. Wilson",
+      "external_api_id": 20484,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1318,
+      "fpl_name": "Bobby Thomas",
+      "team_name": "Coventry City",
+      "api_name": "B. Thomas",
+      "external_api_id": 264437,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1319,
+      "fpl_name": "Liam Kitching",
+      "team_name": "Coventry City",
+      "api_name": "L. Kitching",
+      "external_api_id": 18202,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1320,
+      "fpl_name": "Milan van Ewijk",
+      "team_name": "Coventry City",
+      "api_name": "M. van Ewijk",
+      "external_api_id": 37961,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1321,
+      "fpl_name": "Jay Dasilva",
+      "team_name": "Coventry City",
+      "api_name": "J. Dasilva",
+      "external_api_id": 19260,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1324,
+      "fpl_name": "Joel Latibeaudiere",
+      "team_name": "Coventry City",
+      "api_name": "J. Latibeaudiere",
+      "external_api_id": 145538,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1327,
+      "fpl_name": "Aurèle Amenda",
+      "team_name": "Coventry City",
+      "api_name": "A. Amenda",
+      "external_api_id": 162414,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1328,
+      "fpl_name": "Jack Rudoni",
+      "team_name": "Coventry City",
+      "api_name": "J. Rudoni",
+      "external_api_id": 20372,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1329,
+      "fpl_name": "Matt Grimes",
+      "team_name": "Coventry City",
+      "api_name": "M. Grimes",
+      "external_api_id": 19328,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1330,
+      "fpl_name": "Tatsuhiro Sakamoto",
+      "team_name": "Coventry City",
+      "api_name": "T. Sakamoto",
+      "external_api_id": 33462,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1331,
+      "fpl_name": "Ephron Mason-Clark",
+      "team_name": "Coventry City",
+      "api_name": "E. Mason-Clark",
+      "external_api_id": 18404,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1332,
+      "fpl_name": "Josh Eccles",
+      "team_name": "Coventry City",
+      "api_name": "J. Eccles",
+      "external_api_id": 19984,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1333,
+      "fpl_name": "Victor Torp",
+      "team_name": "Coventry City",
+      "api_name": "V. Torp",
+      "external_api_id": 16046,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1335,
+      "fpl_name": "Loum Tchaouna",
+      "team_name": "Coventry City",
+      "api_name": "L. Tchaouna",
+      "external_api_id": 161621,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1339,
+      "fpl_name": "Brandon Thomas-Asante",
+      "team_name": "Coventry City",
+      "api_name": "B. Thomas-Asante",
+      "external_api_id": 82090,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1340,
+      "fpl_name": "Ellis Simms",
+      "team_name": "Coventry City",
+      "api_name": "E. Simms",
+      "external_api_id": 138786,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1343,
+      "fpl_name": "Taiwo Awoniyi",
+      "team_name": "Coventry City",
+      "api_name": "T. Awoniyi",
+      "external_api_id": 8598,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1345,
+      "fpl_name": "Gustavo Hamer",
+      "team_name": "Coventry City",
+      "api_name": "G. Hamer",
+      "external_api_id": 36929,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1346,
+      "fpl_name": "Sidiki Cherif",
+      "team_name": "Coventry City",
+      "api_name": "S. Cherif",
+      "external_api_id": 421875,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1347,
+      "fpl_name": "Dan Bentley",
+      "team_name": "Coventry City",
+      "api_name": "D. Bentley",
+      "external_api_id": 19341,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1348,
+      "fpl_name": "Yann Gboho",
+      "team_name": "Coventry City",
+      "api_name": "Y. Gboho",
+      "external_api_id": 84128,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1349,
+      "fpl_name": "Stephen Mfuni",
+      "team_name": "Coventry City",
+      "api_name": "S. Mfuni",
+      "external_api_id": 382358,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1350,
+      "fpl_name": "Evann Guessand",
+      "team_name": "Crystal Palace",
+      "api_name": "E. Guessand",
+      "external_api_id": 137303,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1351,
+      "fpl_name": "Axel Disasi",
+      "team_name": "Crystal Palace",
+      "api_name": "A. Disasi",
+      "external_api_id": 21998,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1352,
+      "fpl_name": "Dean Henderson",
+      "team_name": "Crystal Palace",
+      "api_name": "D. Henderson",
+      "external_api_id": 19088,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1353,
+      "fpl_name": "Walter Benítez",
+      "team_name": "Crystal Palace",
+      "api_name": "W. Benítez",
+      "external_api_id": 22157,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1354,
+      "fpl_name": "Chris Richards",
+      "team_name": "Crystal Palace",
+      "api_name": "C. Richards",
+      "external_api_id": 126949,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1355,
+      "fpl_name": "Jaydee Canvot",
+      "team_name": "Crystal Palace",
+      "api_name": "J. Canvot",
+      "external_api_id": 412759,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1356,
+      "fpl_name": "Tyrick Mitchell",
+      "team_name": "Crystal Palace",
+      "api_name": "T. Mitchell",
+      "external_api_id": 182201,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1357,
+      "fpl_name": "Borna Sosa",
+      "team_name": "Crystal Palace",
+      "api_name": "B. Sosa",
+      "external_api_id": 26303,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1358,
+      "fpl_name": "Chadi Riad Dnanou",
+      "team_name": "Crystal Palace",
+      "api_name": "C. Riad",
+      "external_api_id": 278898,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1359,
+      "fpl_name": "Oscar Mingueza",
+      "team_name": "Crystal Palace",
+      "api_name": "Óscar Mingueza",
+      "external_api_id": 162712,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1360,
+      "fpl_name": "Ismaïla Sarr",
+      "team_name": "Crystal Palace",
+      "api_name": "I. Sarr",
+      "external_api_id": 2218,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1361,
+      "fpl_name": "Adam Wharton",
+      "team_name": "Crystal Palace",
+      "api_name": "A. Wharton",
+      "external_api_id": 288102,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1363,
+      "fpl_name": "Will Hughes",
+      "team_name": "Crystal Palace",
+      "api_name": "W. Hughes",
+      "external_api_id": 18806,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1365,
+      "fpl_name": "Daichi Kamada",
+      "team_name": "Crystal Palace",
+      "api_name": "D. Kamada",
+      "external_api_id": 2601,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1369,
+      "fpl_name": "Cheick Doucouré",
+      "team_name": "Crystal Palace",
+      "api_name": "C. Doucouré",
+      "external_api_id": 3339,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1373,
+      "fpl_name": "Jørgen Strand Larsen",
+      "team_name": "Crystal Palace",
+      "api_name": "J. Strand Larsen",
+      "external_api_id": 2032,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1374,
+      "fpl_name": "Jean-Philippe Mateta",
+      "team_name": "Crystal Palace",
+      "api_name": "J. Mateta",
+      "external_api_id": 25927,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1375,
+      "fpl_name": "Eddie Nketiah",
+      "team_name": "Crystal Palace",
+      "api_name": "E. Nketiah",
+      "external_api_id": 1468,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1377,
+      "fpl_name": "Dwight McNeil",
+      "team_name": "Crystal Palace",
+      "api_name": "D. McNeil",
+      "external_api_id": 18929,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1378,
+      "fpl_name": "Remi Matthews",
+      "team_name": "Crystal Palace",
+      "api_name": "R. Matthews",
+      "external_api_id": 19684,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1379,
+      "fpl_name": "Takehiro Tomiyasu",
+      "team_name": "Crystal Palace",
+      "api_name": "T. Tomiyasu",
+      "external_api_id": 2597,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1380,
+      "fpl_name": "Anan Khalaili",
+      "team_name": "Crystal Palace",
+      "api_name": "A. Khalaili",
+      "external_api_id": 338735,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1381,
+      "fpl_name": "Zavier Gozo",
+      "team_name": "Crystal Palace",
+      "api_name": "Z. Gozo",
+      "external_api_id": 412227,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1382,
+      "fpl_name": "Honest Ahanor",
+      "team_name": "Crystal Palace",
+      "api_name": "H. Ahanor",
+      "external_api_id": 453906,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1383,
+      "fpl_name": "Ben Chilwell",
+      "team_name": "Crystal Palace",
+      "api_name": "B. Chilwell",
+      "external_api_id": 2933,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1384,
+      "fpl_name": "Quinten Timber",
+      "team_name": "Crystal Palace",
+      "api_name": "Q. Timber",
+      "external_api_id": 38747,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1385,
+      "fpl_name": "Darío Osorio",
+      "team_name": "Crystal Palace",
+      "api_name": "D. Osorio",
+      "external_api_id": 307117,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1387,
+      "fpl_name": "Brennan Johnson",
+      "team_name": "Everton",
+      "api_name": "B. Johnson",
+      "external_api_id": 129711,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1388,
+      "fpl_name": "Jordan Pickford",
+      "team_name": "Everton",
+      "api_name": "J. Pickford",
+      "external_api_id": 2932,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1389,
+      "fpl_name": "Mark Travers",
+      "team_name": "Everton",
+      "api_name": "M. Travers",
+      "external_api_id": 18860,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1390,
+      "fpl_name": "Tom King",
+      "team_name": "Everton",
+      "api_name": "T. King",
+      "external_api_id": 82855,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1391,
+      "fpl_name": "James Tarkowski",
+      "team_name": "Everton",
+      "api_name": "J. Tarkowski",
+      "external_api_id": 2936,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1392,
+      "fpl_name": "Jarrad Branthwaite",
+      "team_name": "Everton",
+      "api_name": "J. Branthwaite",
+      "external_api_id": 17661,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1393,
+      "fpl_name": "Michael Keane",
+      "team_name": "Everton",
+      "api_name": "M. Keane",
+      "external_api_id": 2934,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1394,
+      "fpl_name": "Jake O'Brien",
+      "team_name": "Everton",
+      "api_name": "J. O&apos;Brien",
+      "external_api_id": 270139,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1395,
+      "fpl_name": "Vitalii Mykolenko",
+      "team_name": "Everton",
+      "api_name": "V. Mykolenko",
+      "external_api_id": 2165,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1396,
+      "fpl_name": "Nathan Patterson",
+      "team_name": "Everton",
+      "api_name": "N. Patterson",
+      "external_api_id": 138417,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1398,
+      "fpl_name": "Kiernan Dewsbury-Hall",
+      "team_name": "Everton",
+      "api_name": "K. Dewsbury-Hall",
+      "external_api_id": 148099,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1399,
+      "fpl_name": "Jack Grealish",
+      "team_name": "Everton",
+      "api_name": "J. Grealish",
+      "external_api_id": 19187,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1400,
+      "fpl_name": "James Garner",
+      "team_name": "Everton",
+      "api_name": "J. Garner",
+      "external_api_id": 895,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1401,
+      "fpl_name": "Tyrique George",
+      "team_name": "Everton",
+      "api_name": "Tyrique George",
+      "external_api_id": 334037,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1403,
+      "fpl_name": "Harrison Armstrong",
+      "team_name": "Everton",
+      "api_name": "H. Armstrong",
+      "external_api_id": 405360,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1404,
+      "fpl_name": "Tyler Dibling",
+      "team_name": "Everton",
+      "api_name": "T. Dibling",
+      "external_api_id": 304317,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1405,
+      "fpl_name": "Merlin Röhl",
+      "team_name": "Everton",
+      "api_name": "M. Röhl",
+      "external_api_id": 202854,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1406,
+      "fpl_name": "Hayden Hackney",
+      "team_name": "Everton",
+      "api_name": "H. Hackney",
+      "external_api_id": 179685,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1407,
+      "fpl_name": "Norberto Bercique Gomes Betuncal",
+      "team_name": "Everton",
+      "api_name": "Beto",
+      "external_api_id": 125743,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1408,
+      "fpl_name": "Thierno Barry",
+      "team_name": "Everton",
+      "api_name": "T. Barry",
+      "external_api_id": 343684,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1409,
+      "fpl_name": "Ainsley Maitland-Niles",
+      "team_name": "Everton",
+      "api_name": "A. Maitland-Niles",
+      "external_api_id": 1456,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1410,
+      "fpl_name": "Braiden Graham",
+      "team_name": "Everton",
+      "api_name": "B. Graham",
+      "external_api_id": 413034,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1411,
+      "fpl_name": "Bernd Leno",
+      "team_name": "Fulham",
+      "api_name": "B. Leno",
+      "external_api_id": 1438,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1412,
+      "fpl_name": "Benjamin Lecomte",
+      "team_name": "Fulham",
+      "api_name": "B. Lecomte",
+      "external_api_id": 21566,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1414,
+      "fpl_name": "Joachim Andersen",
+      "team_name": "Fulham",
+      "api_name": "J. Andersen",
+      "external_api_id": 2729,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1415,
+      "fpl_name": "Antonee Robinson",
+      "team_name": "Fulham",
+      "api_name": "A. Robinson",
+      "external_api_id": 19549,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1416,
+      "fpl_name": "Jorge Cuenca Barreno",
+      "team_name": "Fulham",
+      "api_name": "Jorge Cuenca",
+      "external_api_id": 131,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1417,
+      "fpl_name": "Kenny Tete",
+      "team_name": "Fulham",
+      "api_name": "K. Tete",
+      "external_api_id": 657,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1418,
+      "fpl_name": "Calvin Bassey",
+      "team_name": "Fulham",
+      "api_name": "C. Bassey",
+      "external_api_id": 152967,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1419,
+      "fpl_name": "Timothy Castagne",
+      "team_name": "Fulham",
+      "api_name": "T. Castagne",
+      "external_api_id": 2920,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1420,
+      "fpl_name": "Alex Iwobi",
+      "team_name": "Fulham",
+      "api_name": "A. Iwobi",
+      "external_api_id": 1455,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1421,
+      "fpl_name": "Emile Smith Rowe",
+      "team_name": "Fulham",
+      "api_name": "E. Smith Rowe",
+      "external_api_id": 1161,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1422,
+      "fpl_name": "Kevin Santos Lopes de Macedo",
+      "team_name": "Fulham",
+      "api_name": "Kevin",
+      "external_api_id": 237819,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1423,
+      "fpl_name": "Oscar Bobb",
+      "team_name": "Fulham",
+      "api_name": "Oscar Bobb",
+      "external_api_id": 278133,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1424,
+      "fpl_name": "Sander Berge",
+      "team_name": "Fulham",
+      "api_name": "S. Berge",
+      "external_api_id": 1934,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1427,
+      "fpl_name": "Ryan Sessegnon",
+      "team_name": "Fulham",
+      "api_name": "R. Sessegnon",
+      "external_api_id": 19032,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1428,
+      "fpl_name": "Harrison Reed",
+      "team_name": "Fulham",
+      "api_name": "H. Reed",
+      "external_api_id": 19480,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1429,
+      "fpl_name": "Rodrigo Muniz Carvalho",
+      "team_name": "Fulham",
+      "api_name": "Rodrigo Muniz",
+      "external_api_id": 195106,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1431,
+      "fpl_name": "Gonzalo García",
+      "team_name": "Fulham",
+      "api_name": "Gonzalo García",
+      "external_api_id": 336711,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1432,
+      "fpl_name": "César Palacios",
+      "team_name": "Fulham",
+      "api_name": "César Palacios",
+      "external_api_id": 386306,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1433,
+      "fpl_name": "Shea Charles",
+      "team_name": "Fulham",
+      "api_name": "S. Charles",
+      "external_api_id": 284356,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1434,
+      "fpl_name": "Luc De Fougerolles",
+      "team_name": "Fulham",
+      "api_name": "L. De Fougerolles",
+      "external_api_id": 327738,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1435,
+      "fpl_name": "Macaulay Zepa",
+      "team_name": "Fulham",
+      "api_name": "M. Zepa",
+      "external_api_id": 557473,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1436,
+      "fpl_name": "Hugo Larsson",
+      "team_name": "Fulham",
+      "api_name": "H. Larsson",
+      "external_api_id": 335094,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1437,
+      "fpl_name": "Manuel Ángel Morán Ibáñez",
+      "team_name": "Fulham",
+      "api_name": "Manuel Ángel",
+      "external_api_id": 313167,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1438,
+      "fpl_name": "David Affengruber",
+      "team_name": "Fulham",
+      "api_name": "D. Affengruber",
+      "external_api_id": 126640,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1439,
+      "fpl_name": "Tim Iroegbunam",
+      "team_name": "Hull City",
+      "api_name": "T. Iroegbunam",
+      "external_api_id": 284500,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1440,
+      "fpl_name": "Dillon Phillips",
+      "team_name": "Hull City",
+      "api_name": "D. Phillips",
+      "external_api_id": 19811,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1444,
+      "fpl_name": "John Egan",
+      "team_name": "Hull City",
+      "api_name": "J. Egan",
+      "external_api_id": 19093,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1446,
+      "fpl_name": "Semi Ajayi",
+      "team_name": "Hull City",
+      "api_name": "S. Ajayi",
+      "external_api_id": 2769,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1447,
+      "fpl_name": "Lewie Coyle",
+      "team_name": "Hull City",
+      "api_name": "L. Coyle",
+      "external_api_id": 20073,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1448,
+      "fpl_name": "Cody Drameh",
+      "team_name": "Hull City",
+      "api_name": "C. Drameh",
+      "external_api_id": 153411,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1449,
+      "fpl_name": "Ryan Giles",
+      "team_name": "Hull City",
+      "api_name": "R. Giles",
+      "external_api_id": 18747,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1452,
+      "fpl_name": "Paddy McNair",
+      "team_name": "Hull City",
+      "api_name": "P. McNair",
+      "external_api_id": 19242,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1453,
+      "fpl_name": "Mohamed Belloumi",
+      "team_name": "Hull City",
+      "api_name": "M. Belloumi",
+      "external_api_id": 299923,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1454,
+      "fpl_name": "Liam Millar",
+      "team_name": "Hull City",
+      "api_name": "L. Millar",
+      "external_api_id": 44798,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1455,
+      "fpl_name": "Kieran Dowell",
+      "team_name": "Hull City",
+      "api_name": "K. Dowell",
+      "external_api_id": 19100,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1456,
+      "fpl_name": "Matt Crooks",
+      "team_name": "Hull City",
+      "api_name": "M. Crooks",
+      "external_api_id": 19666,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1457,
+      "fpl_name": "Regan Slater",
+      "team_name": "Hull City",
+      "api_name": "R. Slater",
+      "external_api_id": 17670,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1462,
+      "fpl_name": "Oli McBurnie",
+      "team_name": "Hull City",
+      "api_name": "O. McBurnie",
+      "external_api_id": 19337,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1467,
+      "fpl_name": "Joe Gelhardt",
+      "team_name": "Hull City",
+      "api_name": "J. Gelhardt",
+      "external_api_id": 19569,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1468,
+      "fpl_name": "Matt Targett",
+      "team_name": "Hull City",
+      "api_name": "M. Targett",
+      "external_api_id": 18941,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1469,
+      "fpl_name": "Hidemasa Morita",
+      "team_name": "Hull City",
+      "api_name": "H. Morita",
+      "external_api_id": 32960,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1470,
+      "fpl_name": "Konstantinos Tzolakis",
+      "team_name": "Hull City",
+      "api_name": "K. Tzolakis",
+      "external_api_id": 1591,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1471,
+      "fpl_name": "Jens Hjertø-Dahl",
+      "team_name": "Hull City",
+      "api_name": "J. Hjertø-Dahl",
+      "external_api_id": 396407,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1472,
+      "fpl_name": "Elliot Stroud",
+      "team_name": "Hull City",
+      "api_name": "E. Stroud",
+      "external_api_id": 226765,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1473,
+      "fpl_name": "Lucas Herrington",
+      "team_name": "Hull City",
+      "api_name": "L. Herrington",
+      "external_api_id": 426480,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1474,
+      "fpl_name": "Nobel Mendy",
+      "team_name": "Hull City",
+      "api_name": "N. Mendy",
+      "external_api_id": 358431,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1475,
+      "fpl_name": "Lucas Gourna-Douath",
+      "team_name": "Hull City",
+      "api_name": "L. Gourna-Douath",
+      "external_api_id": 179843,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1476,
+      "fpl_name": "Mohamed-Ali Cho",
+      "team_name": "Hull City",
+      "api_name": "M. Cho",
+      "external_api_id": 274312,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1478,
+      "fpl_name": "Robinio Vaz",
+      "team_name": "Hull City",
+      "api_name": "R. Vaz",
+      "external_api_id": 435482,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1479,
+      "fpl_name": "Brooke Norton-Cuffy",
+      "team_name": "Hull City",
+      "api_name": "B. Norton-Cuffy",
+      "external_api_id": 284570,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1480,
+      "fpl_name": "Sorba Thomas",
+      "team_name": "Hull City",
+      "api_name": "S. Thomas",
+      "external_api_id": 18599,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1481,
+      "fpl_name": "Christos Mouzakitis",
+      "team_name": "Hull City",
+      "api_name": "C. Mouzakitis",
+      "external_api_id": 392514,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1482,
+      "fpl_name": "Issa Diop",
+      "team_name": "Ipswich Town",
+      "api_name": "I. Diop",
+      "external_api_id": 18814,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1483,
+      "fpl_name": "Saša Lukić",
+      "team_name": "Ipswich Town",
+      "api_name": "S. Lukić",
+      "external_api_id": 2823,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1484,
+      "fpl_name": "Christian Walton",
+      "team_name": "Ipswich Town",
+      "api_name": "C. Walton",
+      "external_api_id": 19541,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1487,
+      "fpl_name": "Cédric Kipré",
+      "team_name": "Ipswich Town",
+      "api_name": "C. Kipré",
+      "external_api_id": 19546,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1489,
+      "fpl_name": "Leif Davis",
+      "team_name": "Ipswich Town",
+      "api_name": "L. Davis",
+      "external_api_id": 19119,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1490,
+      "fpl_name": "Jacob Greaves",
+      "team_name": "Ipswich Town",
+      "api_name": "J. Greaves",
+      "external_api_id": 127579,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1492,
+      "fpl_name": "Darnell Furlong",
+      "team_name": "Ipswich Town",
+      "api_name": "D. Furlong",
+      "external_api_id": 19577,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1493,
+      "fpl_name": "Marcelino Núñez",
+      "team_name": "Ipswich Town",
+      "api_name": "M. Núñez",
+      "external_api_id": 195121,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1497,
+      "fpl_name": "Jack Clarke",
+      "team_name": "Ipswich Town",
+      "api_name": "J. Clarke",
+      "external_api_id": 19136,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1499,
+      "fpl_name": "Abdul Fatawu",
+      "team_name": "Ipswich Town",
+      "api_name": "A. Fatawu",
+      "external_api_id": 303467,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1500,
+      "fpl_name": "Emersonn Correia da Silva",
+      "team_name": "Ipswich Town",
+      "api_name": "Emersonn",
+      "external_api_id": 321648,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1502,
+      "fpl_name": "Jaden Philogene",
+      "team_name": "Ipswich Town",
+      "api_name": "J. Philogene",
+      "external_api_id": 138931,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1504,
+      "fpl_name": "Chuba Akpom",
+      "team_name": "Ipswich Town",
+      "api_name": "C. Akpom",
+      "external_api_id": 2380,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1505,
+      "fpl_name": "Sindre Walle Egeli",
+      "team_name": "Ipswich Town",
+      "api_name": "S. Egeli",
+      "external_api_id": 342654,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1507,
+      "fpl_name": "Kasey McAteer",
+      "team_name": "Ipswich Town",
+      "api_name": "K. McAteer",
+      "external_api_id": 283290,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1510,
+      "fpl_name": "Daizen Maeda",
+      "team_name": "Ipswich Town",
+      "api_name": "D. Maeda",
+      "external_api_id": 33224,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1511,
+      "fpl_name": "Kjell Scherpen",
+      "team_name": "Ipswich Town",
+      "api_name": "K. Scherpen",
+      "external_api_id": 37276,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1512,
+      "fpl_name": "Florentino Ibrain Morris Luís",
+      "team_name": "Ipswich Town",
+      "api_name": "Florentino",
+      "external_api_id": 575,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1513,
+      "fpl_name": "Julio Enciso",
+      "team_name": "Ipswich Town",
+      "api_name": "J. Enciso",
+      "external_api_id": 70747,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1514,
+      "fpl_name": "Abdoul Ouattara",
+      "team_name": "Ipswich Town",
+      "api_name": "A. Ouattara",
+      "external_api_id": 358166,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1515,
+      "fpl_name": "Cameron Humphreys",
+      "team_name": "Ipswich Town",
+      "api_name": "C. Humphreys",
+      "external_api_id": 326763,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1516,
+      "fpl_name": "Exequiel Palacios",
+      "team_name": "Ipswich Town",
+      "api_name": "E. Palacios",
+      "external_api_id": 6002,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1517,
+      "fpl_name": "Zian Flemming",
+      "team_name": "Ipswich Town",
+      "api_name": "Z. Flemming",
+      "external_api_id": 36927,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1518,
+      "fpl_name": "Harry Wilson",
+      "team_name": "Leeds",
+      "api_name": "H. Wilson",
+      "external_api_id": 19221,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1519,
+      "fpl_name": "Lucas Estella Perri",
+      "team_name": "Leeds",
+      "api_name": "Lucas Perri",
+      "external_api_id": 80296,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1520,
+      "fpl_name": "Jaka Bijol",
+      "team_name": "Leeds",
+      "api_name": "J. Bijol",
+      "external_api_id": 833,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1521,
+      "fpl_name": "Joe Rodon",
+      "team_name": "Leeds",
+      "api_name": "J. Rodon",
+      "external_api_id": 19321,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1522,
+      "fpl_name": "Jayden Bogle",
+      "team_name": "Leeds",
+      "api_name": "J. Bogle",
+      "external_api_id": 19201,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1523,
+      "fpl_name": "Gabriel Gudmundsson",
+      "team_name": "Leeds",
+      "api_name": "G. Gudmundsson",
+      "external_api_id": 47969,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1524,
+      "fpl_name": "James Justin",
+      "team_name": "Leeds",
+      "api_name": "J. Justin",
+      "external_api_id": 19760,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1526,
+      "fpl_name": "Tarik Muharemović",
+      "team_name": "Leeds",
+      "api_name": "T. Muharemović",
+      "external_api_id": 271350,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1527,
+      "fpl_name": "Anton Stach",
+      "team_name": "Leeds",
+      "api_name": "A. Stach",
+      "external_api_id": 177665,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1528,
+      "fpl_name": "Noah Okafor",
+      "team_name": "Leeds",
+      "api_name": "N. Okafor",
+      "external_api_id": 48389,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1529,
+      "fpl_name": "Brenden Aaronson",
+      "team_name": "Leeds",
+      "api_name": "B. Aaronson",
+      "external_api_id": 50739,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1530,
+      "fpl_name": "Ethan Ampadu",
+      "team_name": "Leeds",
+      "api_name": "E. Ampadu",
+      "external_api_id": 2279,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1531,
+      "fpl_name": "Sean Longstaff",
+      "team_name": "Leeds",
+      "api_name": "S. Longstaff",
+      "external_api_id": 18901,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1532,
+      "fpl_name": "Wilfried Gnonto",
+      "team_name": "Leeds",
+      "api_name": "W. Gnonto",
+      "external_api_id": 162128,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1534,
+      "fpl_name": "Daniel James",
+      "team_name": "Leeds",
+      "api_name": "D. James",
+      "external_api_id": 19329,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1535,
+      "fpl_name": "Ilia Gruev",
+      "team_name": "Leeds",
+      "api_name": "I. Gruev",
+      "external_api_id": 129142,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1537,
+      "fpl_name": "Dominic Calvert-Lewin",
+      "team_name": "Leeds",
+      "api_name": "D. Calvert-Lewin",
+      "external_api_id": 18766,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1538,
+      "fpl_name": "Lukas Nmecha",
+      "team_name": "Leeds",
+      "api_name": "L. Nmecha",
+      "external_api_id": 19461,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1541,
+      "fpl_name": "James Trafford",
+      "team_name": "Leeds",
+      "api_name": "J. Trafford",
+      "external_api_id": 162489,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1542,
+      "fpl_name": "Nico Elvedi",
+      "team_name": "Leeds",
+      "api_name": "N. Elvedi",
+      "external_api_id": 2803,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1543,
+      "fpl_name": "Jayden Lienou",
+      "team_name": "Leeds",
+      "api_name": "J. Lienou",
+      "external_api_id": 545996,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1544,
+      "fpl_name": "Alfie Cresswell",
+      "team_name": "Leeds",
+      "api_name": "Alfie Cresswell",
+      "external_api_id": 389303,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1545,
+      "fpl_name": "Alex Cairns",
+      "team_name": "Leeds",
+      "api_name": "A. Cairns",
+      "external_api_id": 20068,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1546,
+      "fpl_name": "Michael Zetterer",
+      "team_name": "Leeds",
+      "api_name": "M. Zetterer",
+      "external_api_id": 7288,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1547,
+      "fpl_name": "Melvin Bard",
+      "team_name": "Leeds",
+      "api_name": "M. Bard",
+      "external_api_id": 162465,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1548,
+      "fpl_name": "Jean-Mattéo Bahoya",
+      "team_name": "Leeds",
+      "api_name": "J. Bahoya",
+      "external_api_id": 369674,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1549,
+      "fpl_name": "Alisson Becker",
+      "team_name": "Liverpool",
+      "api_name": "Alisson Becker",
+      "external_api_id": 280,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1550,
+      "fpl_name": "Giorgi Mamardashvili",
+      "team_name": "Liverpool",
+      "api_name": "G. Mamardashvili",
+      "external_api_id": 24760,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1555,
+      "fpl_name": "Virgil van Dijk",
+      "team_name": "Liverpool",
+      "api_name": "V. van Dijk",
+      "external_api_id": 290,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1556,
+      "fpl_name": "Jeremie Frimpong",
+      "team_name": "Liverpool",
+      "api_name": "J. Frimpong",
+      "external_api_id": 152654,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1557,
+      "fpl_name": "Milos Kerkez",
+      "team_name": "Liverpool",
+      "api_name": "M. Kerkez",
+      "external_api_id": 206254,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1558,
+      "fpl_name": "Joe Gomez",
+      "team_name": "Liverpool",
+      "api_name": "J. Gomez",
+      "external_api_id": 284,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1561,
+      "fpl_name": "Jeremy Jacquet",
+      "team_name": "Liverpool",
+      "api_name": "J. Jacquet",
+      "external_api_id": 367636,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1563,
+      "fpl_name": "Kostas Tsimikas",
+      "team_name": "Liverpool",
+      "api_name": "K. Tsimikas",
+      "external_api_id": 1600,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1565,
+      "fpl_name": "Florian Wirtz",
+      "team_name": "Liverpool",
+      "api_name": "F. Wirtz",
+      "external_api_id": 203224,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1566,
+      "fpl_name": "Cody Gakpo",
+      "team_name": "Liverpool",
+      "api_name": "C. Gakpo",
+      "external_api_id": 247,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1567,
+      "fpl_name": "Dominik Szoboszlai",
+      "team_name": "Liverpool",
+      "api_name": "D. Szoboszlai",
+      "external_api_id": 1096,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1568,
+      "fpl_name": "Rio Ngumoha",
+      "team_name": "Liverpool",
+      "api_name": "R. Ngumoha",
+      "external_api_id": 452685,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1570,
+      "fpl_name": "Ryan Gravenberch",
+      "team_name": "Liverpool",
+      "api_name": "R. Gravenberch",
+      "external_api_id": 542,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1571,
+      "fpl_name": "Alexis Mac Allister",
+      "team_name": "Liverpool",
+      "api_name": "A. Mac Allister",
+      "external_api_id": 6716,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1574,
+      "fpl_name": "Trey Nyoni",
+      "team_name": "Liverpool",
+      "api_name": "T. Nyoni",
+      "external_api_id": 397997,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1576,
+      "fpl_name": "Victor Munoz",
+      "team_name": "Liverpool",
+      "api_name": "Víctor Muñoz",
+      "external_api_id": 338751,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1577,
+      "fpl_name": "James McConnell",
+      "team_name": "Liverpool",
+      "api_name": "J. McConnell",
+      "external_api_id": 287109,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1578,
+      "fpl_name": "Alexander Isak",
+      "team_name": "Liverpool",
+      "api_name": "A. Isak",
+      "external_api_id": 2864,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1580,
+      "fpl_name": "Lewis Koumas",
+      "team_name": "Liverpool",
+      "api_name": "L. Koumas",
+      "external_api_id": 328107,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1583,
+      "fpl_name": "Ronald Araujo",
+      "team_name": "Liverpool",
+      "api_name": "R. Araújo",
+      "external_api_id": 101814,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1584,
+      "fpl_name": "Bradley Barcola",
+      "team_name": "Liverpool",
+      "api_name": "B. Barcola",
+      "external_api_id": 161904,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1585,
+      "fpl_name": "Enzo Fernández",
+      "team_name": "Man City",
+      "api_name": "E. Fernández",
+      "external_api_id": 5996,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1586,
+      "fpl_name": "Iliman Ndiaye",
+      "team_name": "Man City",
+      "api_name": "I. Ndiaye",
+      "external_api_id": 18592,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1587,
+      "fpl_name": "Gianluigi Donnarumma",
+      "team_name": "Man City",
+      "api_name": "G. Donnarumma",
+      "external_api_id": 1622,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1589,
+      "fpl_name": "Nico O'Reilly",
+      "team_name": "Man City",
+      "api_name": "N. O&apos;Reilly",
+      "external_api_id": 307123,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1590,
+      "fpl_name": "Marc Guéhi",
+      "team_name": "Man City",
+      "api_name": "M. Guéhi",
+      "external_api_id": 67971,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1591,
+      "fpl_name": "Matheus Nunes",
+      "team_name": "Man City",
+      "api_name": "Matheus Nunes",
+      "external_api_id": 41621,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1592,
+      "fpl_name": "Rúben dos Santos Gato Alves Dias",
+      "team_name": "Man City",
+      "api_name": "Rúben Dias",
+      "external_api_id": 567,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1593,
+      "fpl_name": "Joško Gvardiol",
+      "team_name": "Man City",
+      "api_name": "J. Gvardiol",
+      "external_api_id": 129033,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1594,
+      "fpl_name": "Rayan Aït-Nouri",
+      "team_name": "Man City",
+      "api_name": "R. Aït-Nouri",
+      "external_api_id": 21138,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1595,
+      "fpl_name": "Abdukodir Khusanov",
+      "team_name": "Man City",
+      "api_name": "A. Khusanov",
+      "external_api_id": 360114,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1597,
+      "fpl_name": "Rico Lewis",
+      "team_name": "Man City",
+      "api_name": "R. Lewis",
+      "external_api_id": 284230,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1598,
+      "fpl_name": "Vitor de Oliveira Nunes dos Reis",
+      "team_name": "Man City",
+      "api_name": "Vitor Nunes",
+      "external_api_id": 414359,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1599,
+      "fpl_name": "Antoine Semenyo",
+      "team_name": "Man City",
+      "api_name": "A. Semenyo",
+      "external_api_id": 19281,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1600,
+      "fpl_name": "Phil Foden",
+      "team_name": "Man City",
+      "api_name": "P. Foden",
+      "external_api_id": 631,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1601,
+      "fpl_name": "Rayan Cherki",
+      "team_name": "Man City",
+      "api_name": "R. Cherki",
+      "external_api_id": 156477,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1602,
+      "fpl_name": "Jérémy Doku",
+      "team_name": "Man City",
+      "api_name": "J. Doku",
+      "external_api_id": 1422,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1605,
+      "fpl_name": "Mateo Kovačić",
+      "team_name": "Man City",
+      "api_name": "M. Kovačić",
+      "external_api_id": 2291,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1606,
+      "fpl_name": "Claudio Echeverri",
+      "team_name": "Man City",
+      "api_name": "C. Echeverri",
+      "external_api_id": 414385,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1610,
+      "fpl_name": "Erling Haaland",
+      "team_name": "Man City",
+      "api_name": "E. Haaland",
+      "external_api_id": 1100,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1611,
+      "fpl_name": "Elliot Anderson",
+      "team_name": "Man City",
+      "api_name": "E. Anderson",
+      "external_api_id": 138908,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1612,
+      "fpl_name": "Gerónimo Rulli",
+      "team_name": "Man City",
+      "api_name": "G. Rulli",
+      "external_api_id": 47296,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1613,
+      "fpl_name": "Ayyoub Bouaddi",
+      "team_name": "Man City",
+      "api_name": "A. Bouaddi",
+      "external_api_id": 438688,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1614,
+      "fpl_name": "Ryan McAidoo",
+      "team_name": "Man City",
+      "api_name": "R. McAidoo",
+      "external_api_id": 442048,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1615,
+      "fpl_name": "Kaden Braithwaite",
+      "team_name": "Man City",
+      "api_name": "K. Braithwaite",
+      "external_api_id": 451583,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1616,
+      "fpl_name": "Allan Andrade Elias",
+      "team_name": "Man City",
+      "api_name": "Allan",
+      "external_api_id": 425714,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1617,
+      "fpl_name": "Floyd Samba",
+      "team_name": "Man City",
+      "api_name": "F. Samba",
+      "external_api_id": 568008,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1618,
+      "fpl_name": "Youri Tielemans",
+      "team_name": "Man Utd",
+      "api_name": "Y. Tielemans",
+      "external_api_id": 2926,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1619,
+      "fpl_name": "Carlos Baleba",
+      "team_name": "Man Utd",
+      "api_name": "C. Baleba",
+      "external_api_id": 356041,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1620,
+      "fpl_name": "Andrey Nascimento dos Santos",
+      "team_name": "Man Utd",
+      "api_name": "Andrey Santos",
+      "external_api_id": 305834,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1621,
+      "fpl_name": "Karl Darlow",
+      "team_name": "Man Utd",
+      "api_name": "K. Darlow",
+      "external_api_id": 18885,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1622,
+      "fpl_name": "Senne Lammens",
+      "team_name": "Man Utd",
+      "api_name": "S. Lammens",
+      "external_api_id": 162511,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1625,
+      "fpl_name": "Patrick Dorgu",
+      "team_name": "Man Utd",
+      "api_name": "P. Dorgu",
+      "external_api_id": 382452,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1628,
+      "fpl_name": "Harry Maguire",
+      "team_name": "Man Utd",
+      "api_name": "H. Maguire",
+      "external_api_id": 2935,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1629,
+      "fpl_name": "Lisandro Martínez",
+      "team_name": "Man Utd",
+      "api_name": "Lisandro Martínez",
+      "external_api_id": 2467,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1630,
+      "fpl_name": "Leny Yoro",
+      "team_name": "Man Utd",
+      "api_name": "L. Yoro",
+      "external_api_id": 342970,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1631,
+      "fpl_name": "Ayden Heaven",
+      "team_name": "Man Utd",
+      "api_name": "A. Heaven",
+      "external_api_id": 402329,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1632,
+      "fpl_name": "Noussair Mazraoui",
+      "team_name": "Man Utd",
+      "api_name": "N. Mazraoui",
+      "external_api_id": 545,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1633,
+      "fpl_name": "Luke Shaw",
+      "team_name": "Man Utd",
+      "api_name": "L. Shaw",
+      "external_api_id": 891,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1636,
+      "fpl_name": "Bruno Borges Fernandes",
+      "team_name": "Man Utd",
+      "api_name": "Bruno Fernandes",
+      "external_api_id": 1485,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1637,
+      "fpl_name": "Bryan Mbeumo",
+      "team_name": "Man Utd",
+      "api_name": "B. Mbeumo",
+      "external_api_id": 20589,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1638,
+      "fpl_name": "Matheus Santos Carneiro da Cunha",
+      "team_name": "Man Utd",
+      "api_name": "Matheus Cunha",
+      "external_api_id": 1165,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1639,
+      "fpl_name": "Marcus Rashford",
+      "team_name": "Man Utd",
+      "api_name": "M. Rashford",
+      "external_api_id": 909,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1640,
+      "fpl_name": "Mason Mount",
+      "team_name": "Man Utd",
+      "api_name": "M. Mount",
+      "external_api_id": 19220,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1642,
+      "fpl_name": "Kobbie Mainoo",
+      "team_name": "Man Utd",
+      "api_name": "K. Mainoo",
+      "external_api_id": 284322,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1645,
+      "fpl_name": "Shea Lacey",
+      "team_name": "Man Utd",
+      "api_name": "S. Lacey",
+      "external_api_id": 557462,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1649,
+      "fpl_name": "Benjamin Sesko",
+      "team_name": "Man Utd",
+      "api_name": "B. Šeško",
+      "external_api_id": 115589,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1650,
+      "fpl_name": "Joshua Zirkzee",
+      "team_name": "Man Utd",
+      "api_name": "J. Zirkzee",
+      "external_api_id": 70100,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1652,
+      "fpl_name": "Nico González Iglesias",
+      "team_name": "Newcastle",
+      "api_name": "Nico González",
+      "external_api_id": 161933,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1653,
+      "fpl_name": "Nick Pope",
+      "team_name": "Newcastle",
+      "api_name": "N. Pope",
+      "external_api_id": 18911,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1655,
+      "fpl_name": "Ewen Jaouen",
+      "team_name": "Newcastle",
+      "api_name": "E. Jaouen",
+      "external_api_id": 329640,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1656,
+      "fpl_name": "Malick Thiaw",
+      "team_name": "Newcastle",
+      "api_name": "M. Thiaw",
+      "external_api_id": 163189,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1657,
+      "fpl_name": "Fabian Schär",
+      "team_name": "Newcastle",
+      "api_name": "F. Schär",
+      "external_api_id": 2806,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1658,
+      "fpl_name": "Sven Botman",
+      "team_name": "Newcastle",
+      "api_name": "S. Botman",
+      "external_api_id": 38734,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1660,
+      "fpl_name": "Lewis Hall",
+      "team_name": "Newcastle",
+      "api_name": "L. Hall",
+      "external_api_id": 284492,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1661,
+      "fpl_name": "Tino Livramento",
+      "team_name": "Newcastle",
+      "api_name": "T. Livramento",
+      "external_api_id": 158694,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1663,
+      "fpl_name": "Harvey Barnes",
+      "team_name": "Newcastle",
+      "api_name": "H. Barnes",
+      "external_api_id": 18778,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1664,
+      "fpl_name": "Anthony Elanga",
+      "team_name": "Newcastle",
+      "api_name": "A. Elanga",
+      "external_api_id": 153430,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1665,
+      "fpl_name": "Jacob Ramsey",
+      "team_name": "Newcastle",
+      "api_name": "J. Ramsey",
+      "external_api_id": 19192,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1666,
+      "fpl_name": "Jacob Murphy",
+      "team_name": "Newcastle",
+      "api_name": "J. Murphy",
+      "external_api_id": 19163,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1668,
+      "fpl_name": "Lewis Miley",
+      "team_name": "Newcastle",
+      "api_name": "L. Miley",
+      "external_api_id": 328105,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1669,
+      "fpl_name": "Joe Willock",
+      "team_name": "Newcastle",
+      "api_name": "J. Willock",
+      "external_api_id": 1463,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1670,
+      "fpl_name": "Bazoumana Touré",
+      "team_name": "Newcastle",
+      "api_name": "B. Touré",
+      "external_api_id": 387643,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1671,
+      "fpl_name": "Sean Steur",
+      "team_name": "Newcastle",
+      "api_name": "Sean Steur",
+      "external_api_id": 469321,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1672,
+      "fpl_name": "Nick Woltemade",
+      "team_name": "Newcastle",
+      "api_name": "N. Woltemade",
+      "external_api_id": 158054,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1673,
+      "fpl_name": "Yoane Wissa",
+      "team_name": "Newcastle",
+      "api_name": "Y. Wissa",
+      "external_api_id": 20649,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1674,
+      "fpl_name": "William Osula",
+      "team_name": "Newcastle",
+      "api_name": "W. Osula",
+      "external_api_id": 315237,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1676,
+      "fpl_name": "Aladji Bamba",
+      "team_name": "Newcastle",
+      "api_name": "A. Bamba",
+      "external_api_id": 453792,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1677,
+      "fpl_name": "Lukás Hornícek",
+      "team_name": "Newcastle",
+      "api_name": "L. Horníček",
+      "external_api_id": 269349,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1678,
+      "fpl_name": "Amar Dedic",
+      "team_name": "Newcastle",
+      "api_name": "A. Dedić",
+      "external_api_id": 7318,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1679,
+      "fpl_name": "Leo Shahar",
+      "team_name": "Newcastle",
+      "api_name": "L. Shahar",
+      "external_api_id": 337934,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1680,
+      "fpl_name": "Matias Fernandez-Pardo",
+      "team_name": "Newcastle",
+      "api_name": "M. Fernandez-Pardo",
+      "external_api_id": 340077,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1681,
+      "fpl_name": "Mason Miley",
+      "team_name": "Newcastle",
+      "api_name": "M. Miley",
+      "external_api_id": 628328,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1682,
+      "fpl_name": "Miodrag Pivas",
+      "team_name": "Newcastle",
+      "api_name": "Miodrag Pivaš",
+      "external_api_id": 323009,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1683,
+      "fpl_name": "Vakhtang Salia",
+      "team_name": "Newcastle",
+      "api_name": "V. Salia",
+      "external_api_id": 395773,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1684,
+      "fpl_name": "Michael Mills",
+      "team_name": "Newcastle",
+      "api_name": "M. Mills",
+      "external_api_id": 639204,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1685,
+      "fpl_name": "Kyran Thompson",
+      "team_name": "Newcastle",
+      "api_name": "K. Thompson",
+      "external_api_id": 568107,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1686,
+      "fpl_name": "Liam Delap",
+      "team_name": "Nott'm Forest",
+      "api_name": "L. Delap",
+      "external_api_id": 161948,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1687,
+      "fpl_name": "Daniel Muñoz Mejía",
+      "team_name": "Nott'm Forest",
+      "api_name": "D. Muñoz",
+      "external_api_id": 13736,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1688,
+      "fpl_name": "Matz Sels",
+      "team_name": "Nott'm Forest",
+      "api_name": "M. Sels",
+      "external_api_id": 2919,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1689,
+      "fpl_name": "John Victor Maciel Furtado",
+      "team_name": "Nott'm Forest",
+      "api_name": "John",
+      "external_api_id": 70366,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1690,
+      "fpl_name": "Neco Williams",
+      "team_name": "Nott'm Forest",
+      "api_name": "N. Williams",
+      "external_api_id": 138780,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1692,
+      "fpl_name": "Nikola Milenković",
+      "team_name": "Nott'm Forest",
+      "api_name": "N. Milenković",
+      "external_api_id": 2817,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1693,
+      "fpl_name": "Murillo Costa dos Santos",
+      "team_name": "Nott'm Forest",
+      "api_name": "Murillo",
+      "external_api_id": 363695,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1694,
+      "fpl_name": "Ola Aina",
+      "team_name": "Nott'm Forest",
+      "api_name": "O. Aina",
+      "external_api_id": 2771,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1695,
+      "fpl_name": "Jair Paula da Cunha Filho",
+      "team_name": "Nott'm Forest",
+      "api_name": "Jair",
+      "external_api_id": 362711,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1698,
+      "fpl_name": "Zach Abbott",
+      "team_name": "Nott'm Forest",
+      "api_name": "Z. Abbott",
+      "external_api_id": 329357,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1699,
+      "fpl_name": "Luca Netz",
+      "team_name": "Nott'm Forest",
+      "api_name": "L. Netz",
+      "external_api_id": 163069,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1701,
+      "fpl_name": "Morgan Gibbs-White",
+      "team_name": "Nott'm Forest",
+      "api_name": "M. Gibbs-White",
+      "external_api_id": 18746,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1702,
+      "fpl_name": "Callum Hudson-Odoi",
+      "team_name": "Nott'm Forest",
+      "api_name": "C. Hudson-Odoi",
+      "external_api_id": 2298,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1703,
+      "fpl_name": "Dan Ndoye",
+      "team_name": "Nott'm Forest",
+      "api_name": "D. Ndoye",
+      "external_api_id": 48648,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1706,
+      "fpl_name": "James McAtee",
+      "team_name": "Nott'm Forest",
+      "api_name": "J. McAtee",
+      "external_api_id": 158697,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1707,
+      "fpl_name": "Nicolás Domínguez",
+      "team_name": "Nott'm Forest",
+      "api_name": "N. Domínguez",
+      "external_api_id": 6056,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1708,
+      "fpl_name": "Ibrahim Sangaré",
+      "team_name": "Nott'm Forest",
+      "api_name": "I. Sangaré",
+      "external_api_id": 22149,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1709,
+      "fpl_name": "Ryan Yates",
+      "team_name": "Nott'm Forest",
+      "api_name": "R. Yates",
+      "external_api_id": 19305,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1710,
+      "fpl_name": "Chris Wood",
+      "team_name": "Nott'm Forest",
+      "api_name": "C. Wood",
+      "external_api_id": 18931,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1711,
+      "fpl_name": "Igor Jesus Maciel da Cruz",
+      "team_name": "Nott'm Forest",
+      "api_name": "Igor Jesus",
+      "external_api_id": 9366,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1712,
+      "fpl_name": "Arnaud Kalimuendo",
+      "team_name": "Nott'm Forest",
+      "api_name": "A. Kalimuendo",
+      "external_api_id": 147831,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1713,
+      "fpl_name": "Xaver Schlager",
+      "team_name": "Nott'm Forest",
+      "api_name": "X. Schlager",
+      "external_api_id": 1095,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1714,
+      "fpl_name": "Ousmane Diomande",
+      "team_name": "Nott'm Forest",
+      "api_name": "O. Diomande",
+      "external_api_id": 354753,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1716,
+      "fpl_name": "Jan Paul van Hecke",
+      "team_name": "Spurs",
+      "api_name": "J. van Hecke",
+      "external_api_id": 38695,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1717,
+      "fpl_name": "Tosin Adarabioyo",
+      "team_name": "Spurs",
+      "api_name": "T. Adarabioyo",
+      "external_api_id": 19145,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1718,
+      "fpl_name": "Omar Marmoush",
+      "team_name": "Spurs",
+      "api_name": "Omar Marmoush",
+      "external_api_id": 81573,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1719,
+      "fpl_name": "Sávio Moreira de Oliveira",
+      "team_name": "Spurs",
+      "api_name": "Sávio",
+      "external_api_id": 266657,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1720,
+      "fpl_name": "Sandro Tonali",
+      "team_name": "Spurs",
+      "api_name": "S. Tonali",
+      "external_api_id": 31146,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1723,
+      "fpl_name": "Antonín Kinský",
+      "team_name": "Spurs",
+      "api_name": "A. Kinský",
+      "external_api_id": 265826,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1724,
+      "fpl_name": "Martin Dubravka",
+      "team_name": "Spurs",
+      "api_name": "M. Dúbravka",
+      "external_api_id": 18886,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1726,
+      "fpl_name": "Pedro Porro Sauceda",
+      "team_name": "Spurs",
+      "api_name": "Pedro Porro",
+      "external_api_id": 47519,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1728,
+      "fpl_name": "Andrew Robertson",
+      "team_name": "Spurs",
+      "api_name": "A. Robertson",
+      "external_api_id": 289,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1729,
+      "fpl_name": "Micky van de Ven",
+      "team_name": "Spurs",
+      "api_name": "M. van de Ven",
+      "external_api_id": 152849,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1731,
+      "fpl_name": "Destiny Udogie",
+      "team_name": "Spurs",
+      "api_name": "D. Udogie",
+      "external_api_id": 204039,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1733,
+      "fpl_name": "Ben Davies",
+      "team_name": "Spurs",
+      "api_name": "B. Davies",
+      "external_api_id": 164,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1737,
+      "fpl_name": "Mohammed Kudus",
+      "team_name": "Spurs",
+      "api_name": "M. Kudus",
+      "external_api_id": 15911,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1739,
+      "fpl_name": "Mathys Tel",
+      "team_name": "Spurs",
+      "api_name": "M. Tel",
+      "external_api_id": 270510,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1740,
+      "fpl_name": "James Maddison",
+      "team_name": "Spurs",
+      "api_name": "J. Maddison",
+      "external_api_id": 18784,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1741,
+      "fpl_name": "Rodrigo Bentancur",
+      "team_name": "Spurs",
+      "api_name": "R. Bentancur",
+      "external_api_id": 863,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1744,
+      "fpl_name": "Conor Gallagher",
+      "team_name": "Spurs",
+      "api_name": "C. Gallagher",
+      "external_api_id": 67972,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1745,
+      "fpl_name": "Lucas Bergvall",
+      "team_name": "Spurs",
+      "api_name": "L. Bergvall",
+      "external_api_id": 347316,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1747,
+      "fpl_name": "Archie Gray",
+      "team_name": "Spurs",
+      "api_name": "A. Gray",
+      "external_api_id": 328089,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1748,
+      "fpl_name": "Mikey Moore",
+      "team_name": "Spurs",
+      "api_name": "M. Moore",
+      "external_api_id": 380690,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1750,
+      "fpl_name": "Mateus Fernandes",
+      "team_name": "Spurs",
+      "api_name": "Mateus Fernandes",
+      "external_api_id": 336585,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1752,
+      "fpl_name": "Richarlison de Andrade",
+      "team_name": "Spurs",
+      "api_name": "Richarlison",
+      "external_api_id": 2413,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1754,
+      "fpl_name": "Mykhailo Mudryk",
+      "team_name": "Spurs",
+      "api_name": "M. Mudryk",
+      "external_api_id": 63577,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1755,
+      "fpl_name": "Luca Williams-Barnett",
+      "team_name": "Spurs",
+      "api_name": "L. Williams-Barnett",
+      "external_api_id": 465310,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1756,
+      "fpl_name": "Kevin Danso",
+      "team_name": "Sunderland",
+      "api_name": "K. Danso",
+      "external_api_id": 25287,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1757,
+      "fpl_name": "Robin Roefs",
+      "team_name": "Sunderland",
+      "api_name": "R. Roefs",
+      "external_api_id": 194536,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1759,
+      "fpl_name": "Melker Ellborg",
+      "team_name": "Sunderland",
+      "api_name": "M. Ellborg",
+      "external_api_id": 278454,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1760,
+      "fpl_name": "Daniel Ballard",
+      "team_name": "Sunderland",
+      "api_name": "D. Ballard",
+      "external_api_id": 55904,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1761,
+      "fpl_name": "Nordi Mukiele",
+      "team_name": "Sunderland",
+      "api_name": "N. Mukiele",
+      "external_api_id": 1146,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1762,
+      "fpl_name": "Trai Hume",
+      "team_name": "Sunderland",
+      "api_name": "T. Hume",
+      "external_api_id": 119121,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1763,
+      "fpl_name": "Omar Alderete",
+      "team_name": "Sunderland",
+      "api_name": "O. Alderete",
+      "external_api_id": 6168,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1764,
+      "fpl_name": "Reinildo Mandava",
+      "team_name": "Sunderland",
+      "api_name": "Reinildo",
+      "external_api_id": 22225,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1769,
+      "fpl_name": "Thomas Meunier",
+      "team_name": "Sunderland",
+      "api_name": "T. Meunier",
+      "external_api_id": 264,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1770,
+      "fpl_name": "Enzo Le Fée",
+      "team_name": "Sunderland",
+      "api_name": "E. Le Fée",
+      "external_api_id": 20638,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1771,
+      "fpl_name": "Habib Diarra",
+      "team_name": "Sunderland",
+      "api_name": "H. Diarra",
+      "external_api_id": 327631,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1772,
+      "fpl_name": "Granit Xhaka",
+      "team_name": "Sunderland",
+      "api_name": "G. Xhaka",
+      "external_api_id": 1464,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1773,
+      "fpl_name": "Noah Sadiki",
+      "team_name": "Sunderland",
+      "api_name": "N. Sadiki",
+      "external_api_id": 365331,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1775,
+      "fpl_name": "Romaine Mundle",
+      "team_name": "Sunderland",
+      "api_name": "R. Mundle",
+      "external_api_id": 284414,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1776,
+      "fpl_name": "Chris Rigg",
+      "team_name": "Sunderland",
+      "api_name": "C. Rigg",
+      "external_api_id": 339201,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1777,
+      "fpl_name": "Chemsdine Talbi",
+      "team_name": "Sunderland",
+      "api_name": "C. Talbi",
+      "external_api_id": 336659,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1778,
+      "fpl_name": "Djiamgone Jocelin Ta Bi",
+      "team_name": "Sunderland",
+      "api_name": "J. Bi",
+      "external_api_id": 492528,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1779,
+      "fpl_name": "Nilson Angulo",
+      "team_name": "Sunderland",
+      "api_name": "N. Angulo",
+      "external_api_id": 311543,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1780,
+      "fpl_name": "Brian Brobbey",
+      "team_name": "Sunderland",
+      "api_name": "B. Brobbey",
+      "external_api_id": 38750,
+      "match_method": "initial_and_surname"
+    },
+    {
+      "db_player_id": 1781,
+      "fpl_name": "Wilson Isidor",
+      "team_name": "Sunderland",
+      "api_name": "W. Isidor",
+      "external_api_id": 84087,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1782,
+      "fpl_name": "Dayann Méthalie",
+      "team_name": "Sunderland",
+      "api_name": "D. Methalie",
+      "external_api_id": 452697,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1783,
+      "fpl_name": "Jules Ahoka",
+      "team_name": "Sunderland",
+      "api_name": "Jules Ahoka",
+      "external_api_id": 662488,
+      "match_method": "name_or_alias"
+    },
+    {
+      "db_player_id": 1784,
+      "fpl_name": "Malick Fofana",
+      "team_name": "Sunderland",
+      "api_name": "M. Fofana",
+      "external_api_id": 361348,
+      "match_method": "initial_and_surname"
+    }
+  ],
+  "unmatched": [
+    {
+      "db_player_id": 1121,
+      "fpl_name": "Illan Meslier",
+      "team_name": "Arsenal"
+    },
+    {
+      "db_player_id": 1124,
+      "fpl_name": "William Saliba",
+      "team_name": "Arsenal"
+    },
+    {
+      "db_player_id": 1136,
+      "fpl_name": "Gabriel Martinelli Silva",
+      "team_name": "Arsenal"
+    },
+    {
+      "db_player_id": 1140,
+      "fpl_name": "Fábio Ferreira Vieira",
+      "team_name": "Arsenal"
+    },
+    {
+      "db_player_id": 1141,
+      "fpl_name": "Reiss Nelson",
+      "team_name": "Arsenal"
+    },
+    {
+      "db_player_id": 1144,
+      "fpl_name": "Gabriel Fernando de Jesus",
+      "team_name": "Arsenal"
+    },
+    {
+      "db_player_id": 1149,
+      "fpl_name": "Lucas Digne",
+      "team_name": "Aston Villa"
+    },
+    {
+      "db_player_id": 1156,
+      "fpl_name": "Andrés García",
+      "team_name": "Aston Villa"
+    },
+    {
+      "db_player_id": 1157,
+      "fpl_name": "Kosta Nedeljkovic",
+      "team_name": "Aston Villa"
+    },
+    {
+      "db_player_id": 1159,
+      "fpl_name": "Leon Bailey",
+      "team_name": "Aston Villa"
+    },
+    {
+      "db_player_id": 1163,
+      "fpl_name": "Amadou Onana",
+      "team_name": "Aston Villa"
+    },
+    {
+      "db_player_id": 1164,
+      "fpl_name": "Samuel Iling-Junior",
+      "team_name": "Aston Villa"
+    },
+    {
+      "db_player_id": 1165,
+      "fpl_name": "Bradley Burrowes",
+      "team_name": "Aston Villa"
+    },
+    {
+      "db_player_id": 1170,
+      "fpl_name": "Ollie Watkins",
+      "team_name": "Aston Villa"
+    },
+    {
+      "db_player_id": 1174,
+      "fpl_name": "Brian Madjo",
+      "team_name": "Aston Villa"
+    },
+    {
+      "db_player_id": 1180,
+      "fpl_name": "Leon Goretzka",
+      "team_name": "Aston Villa"
+    },
+    {
+      "db_player_id": 1185,
+      "fpl_name": "Fraser Forster",
+      "team_name": "Bournemouth"
+    },
+    {
+      "db_player_id": 1190,
+      "fpl_name": "Veljko Milosavljevic",
+      "team_name": "Bournemouth"
+    },
+    {
+      "db_player_id": 1192,
+      "fpl_name": "Julián Araujo Zúñiga",
+      "team_name": "Bournemouth"
+    },
+    {
+      "db_player_id": 1193,
+      "fpl_name": "Julio Soler Barreto",
+      "team_name": "Bournemouth"
+    },
+    {
+      "db_player_id": 1204,
+      "fpl_name": "Amine Adli",
+      "team_name": "Bournemouth"
+    },
+    {
+      "db_player_id": 1205,
+      "fpl_name": "Junior Kroupi",
+      "team_name": "Bournemouth"
+    },
+    {
+      "db_player_id": 1207,
+      "fpl_name": "Enes Ünal",
+      "team_name": "Bournemouth"
+    },
+    {
+      "db_player_id": 1209,
+      "fpl_name": "António João Pereira de Albuquerque Tavares da Silva",
+      "team_name": "Bournemouth"
+    },
+    {
+      "db_player_id": 1216,
+      "fpl_name": "Sepp van den Berg",
+      "team_name": "Brentford"
+    },
+    {
+      "db_player_id": 1222,
+      "fpl_name": "Kim Ji-soo",
+      "team_name": "Brentford"
+    },
+    {
+      "db_player_id": 1229,
+      "fpl_name": "Antoni Milambo",
+      "team_name": "Brentford"
+    },
+    {
+      "db_player_id": 1230,
+      "fpl_name": "Fábio Freitas Gouveia Carvalho",
+      "team_name": "Brentford"
+    },
+    {
+      "db_player_id": 1231,
+      "fpl_name": "Yehor Yarmoliuk",
+      "team_name": "Brentford"
+    },
+    {
+      "db_player_id": 1232,
+      "fpl_name": "Josh Dasilva",
+      "team_name": "Brentford"
+    },
+    {
+      "db_player_id": 1235,
+      "fpl_name": "Kaye Furo",
+      "team_name": "Brentford"
+    },
+    {
+      "db_player_id": 1248,
+      "fpl_name": "Diego Coppola",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1249,
+      "fpl_name": "Igor Julio dos Santos de Paulo",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1252,
+      "fpl_name": "Mitoma Kaoru",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1253,
+      "fpl_name": "Yankuba Minteh",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1257,
+      "fpl_name": "Matt O'Riley",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1258,
+      "fpl_name": "Diego Gómez Amarilla",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1259,
+      "fpl_name": "Facundo Buonanotte",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1262,
+      "fpl_name": "Harry Howell",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1263,
+      "fpl_name": "Tom Watson",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1266,
+      "fpl_name": "Stefanos Tzimas",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1268,
+      "fpl_name": "Evan Ferguson",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1277,
+      "fpl_name": "Femi Azeez",
+      "team_name": "Brighton"
+    },
+    {
+      "db_player_id": 1279,
+      "fpl_name": "Emiliano Martínez Romero",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1284,
+      "fpl_name": "Filip Jörgensen",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1286,
+      "fpl_name": "Trevoh Chalobah",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1289,
+      "fpl_name": "Benoît Badiashile Mukinayi",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1292,
+      "fpl_name": "Mamadou Sarr",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1293,
+      "fpl_name": "Josh Acheampong",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1294,
+      "fpl_name": "Marco Palestra",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1299,
+      "fpl_name": "Moisés Caicedo Corozo",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1301,
+      "fpl_name": "Dário Luís Essugo",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1302,
+      "fpl_name": "Geovany Quenda",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1304,
+      "fpl_name": "Marc Guiu Paz",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1305,
+      "fpl_name": "Shumaira Mheuka",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1306,
+      "fpl_name": "Emmanuel Emegha",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1309,
+      "fpl_name": "Aaron Anselmino",
+      "team_name": "Chelsea"
+    },
+    {
+      "db_player_id": 1316,
+      "fpl_name": "Oliver Dovin",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1322,
+      "fpl_name": "Kaine Kesler-Hayden",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1323,
+      "fpl_name": "Jake Bidwell",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1325,
+      "fpl_name": "Luke Woolfenden",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1326,
+      "fpl_name": "Miguel Brau",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1334,
+      "fpl_name": "George Shepherd",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1336,
+      "fpl_name": "Raphael Borges Rodrigues",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1337,
+      "fpl_name": "Kai Andrews",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1338,
+      "fpl_name": "Haji Wright",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1341,
+      "fpl_name": "Jahnoah Markelo",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1342,
+      "fpl_name": "Norman Bassette",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1344,
+      "fpl_name": "Caleb Yirenkyi",
+      "team_name": "Coventry City"
+    },
+    {
+      "db_player_id": 1362,
+      "fpl_name": "Yéremy Pino Santos",
+      "team_name": "Crystal Palace"
+    },
+    {
+      "db_player_id": 1364,
+      "fpl_name": "Jefferson Lerma Solís",
+      "team_name": "Crystal Palace"
+    },
+    {
+      "db_player_id": 1366,
+      "fpl_name": "Justin Devenny",
+      "team_name": "Crystal Palace"
+    },
+    {
+      "db_player_id": 1367,
+      "fpl_name": "Romain Esse",
+      "team_name": "Crystal Palace"
+    },
+    {
+      "db_player_id": 1368,
+      "fpl_name": "Matheus França de Oliveira",
+      "team_name": "Crystal Palace"
+    },
+    {
+      "db_player_id": 1370,
+      "fpl_name": "Jesurun Rak-Sakyi",
+      "team_name": "Crystal Palace"
+    },
+    {
+      "db_player_id": 1371,
+      "fpl_name": "Rio Cardines",
+      "team_name": "Crystal Palace"
+    },
+    {
+      "db_player_id": 1372,
+      "fpl_name": "Joél Drakes-Thomas",
+      "team_name": "Crystal Palace"
+    },
+    {
+      "db_player_id": 1376,
+      "fpl_name": "Christantus Uche",
+      "team_name": "Crystal Palace"
+    },
+    {
+      "db_player_id": 1386,
+      "fpl_name": "Christian Nørgaard",
+      "team_name": "Everton"
+    },
+    {
+      "db_player_id": 1397,
+      "fpl_name": "Adam Aznou",
+      "team_name": "Everton"
+    },
+    {
+      "db_player_id": 1402,
+      "fpl_name": "Carlos Alcaraz Durán",
+      "team_name": "Everton"
+    },
+    {
+      "db_player_id": 1413,
+      "fpl_name": "Alfie McNally",
+      "team_name": "Fulham"
+    },
+    {
+      "db_player_id": 1425,
+      "fpl_name": "Tom Cairney",
+      "team_name": "Fulham"
+    },
+    {
+      "db_player_id": 1426,
+      "fpl_name": "Josh King",
+      "team_name": "Fulham"
+    },
+    {
+      "db_player_id": 1430,
+      "fpl_name": "Jonah Kusi-Asare",
+      "team_name": "Fulham"
+    },
+    {
+      "db_player_id": 1441,
+      "fpl_name": "Jack Butland",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1442,
+      "fpl_name": "Harvey Cartwright",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1443,
+      "fpl_name": "Thimothée Lo-Tutala",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1445,
+      "fpl_name": "Charlie Hughes",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1450,
+      "fpl_name": "Matty Jacob",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1451,
+      "fpl_name": "Cathal McCarthy",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1458,
+      "fpl_name": "Eliot Matazo",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1459,
+      "fpl_name": "Abdülkadir Ömür",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1460,
+      "fpl_name": "Abu Kamara",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1461,
+      "fpl_name": "Óscar Zambrano",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1463,
+      "fpl_name": "David Akintola",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1464,
+      "fpl_name": "Darko Gyabi",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1465,
+      "fpl_name": "Enis Destan",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1466,
+      "fpl_name": "Mason Burstow",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1477,
+      "fpl_name": "Ilyas Ansah",
+      "team_name": "Hull City"
+    },
+    {
+      "db_player_id": 1485,
+      "fpl_name": "Alex Palmer",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1486,
+      "fpl_name": "David Button",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1488,
+      "fpl_name": "Dara O'Shea",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1491,
+      "fpl_name": "Ben Johnson",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1494,
+      "fpl_name": "Azor Matusiwa",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1495,
+      "fpl_name": "Wes Burns",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1496,
+      "fpl_name": "Jack Taylor",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1498,
+      "fpl_name": "Chiedozie Ogbene",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1501,
+      "fpl_name": "George Hirst",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1503,
+      "fpl_name": "Sam Szmodics",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1506,
+      "fpl_name": "Ali Al-Hamadi",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1508,
+      "fpl_name": "Anis Mehmeti",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1509,
+      "fpl_name": "Kayne van Oevelen",
+      "team_name": "Ipswich Town"
+    },
+    {
+      "db_player_id": 1525,
+      "fpl_name": "Sebastiaan Bornauw",
+      "team_name": "Leeds"
+    },
+    {
+      "db_player_id": 1533,
+      "fpl_name": "Jack Harrison",
+      "team_name": "Leeds"
+    },
+    {
+      "db_player_id": 1536,
+      "fpl_name": "Tanaka Ao",
+      "team_name": "Leeds"
+    },
+    {
+      "db_player_id": 1539,
+      "fpl_name": "Joël Piroe",
+      "team_name": "Leeds"
+    },
+    {
+      "db_player_id": 1540,
+      "fpl_name": "Mateo Joseph Fernández-Regatillo",
+      "team_name": "Leeds"
+    },
+    {
+      "db_player_id": 1551,
+      "fpl_name": "Freddie Woodman",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1552,
+      "fpl_name": "Armin Pecsi",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1553,
+      "fpl_name": "Vitezslav Jaros",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1554,
+      "fpl_name": "Harvey Davies",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1559,
+      "fpl_name": "Conor Bradley",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1560,
+      "fpl_name": "Wellity Lucky",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1562,
+      "fpl_name": "Giovanni Leoni",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1564,
+      "fpl_name": "Calvin Ramsay",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1569,
+      "fpl_name": "Federico Chiesa",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1572,
+      "fpl_name": "Curtis Jones",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1573,
+      "fpl_name": "Endo Wataru",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1575,
+      "fpl_name": "Stefan Bajčetić Maquieira",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1579,
+      "fpl_name": "Hugo Ekitiké",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1581,
+      "fpl_name": "Jayden Danns",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1582,
+      "fpl_name": "Harvey Elliott",
+      "team_name": "Liverpool"
+    },
+    {
+      "db_player_id": 1588,
+      "fpl_name": "Marcus Bettinelli",
+      "team_name": "Man City"
+    },
+    {
+      "db_player_id": 1596,
+      "fpl_name": "Max Alleyne",
+      "team_name": "Man City"
+    },
+    {
+      "db_player_id": 1603,
+      "fpl_name": "Rodrigo 'Rodri' Hernandez Cascante",
+      "team_name": "Man City"
+    },
+    {
+      "db_player_id": 1604,
+      "fpl_name": "Tijjani Reijnders",
+      "team_name": "Man City"
+    },
+    {
+      "db_player_id": 1607,
+      "fpl_name": "Kalvin Phillips",
+      "team_name": "Man City"
+    },
+    {
+      "db_player_id": 1608,
+      "fpl_name": "Divine Mukasa",
+      "team_name": "Man City"
+    },
+    {
+      "db_player_id": 1609,
+      "fpl_name": "Jeremy Monga",
+      "team_name": "Man City"
+    },
+    {
+      "db_player_id": 1623,
+      "fpl_name": "Altay Bayındır",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1624,
+      "fpl_name": "Tom Heaton",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1626,
+      "fpl_name": "Matthijs de Ligt",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1627,
+      "fpl_name": "Diogo Dalot Teixeira",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1634,
+      "fpl_name": "Harry Amass",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1635,
+      "fpl_name": "Tyler Fredricson",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1641,
+      "fpl_name": "Amad Diallo",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1643,
+      "fpl_name": "Manuel Ugarte Ribeiro",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1644,
+      "fpl_name": "Jack Fletcher",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1646,
+      "fpl_name": "Toby Collyer",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1647,
+      "fpl_name": "Bendito Mantato",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1648,
+      "fpl_name": "Tyler Fletcher",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1651,
+      "fpl_name": "Chido Obi",
+      "team_name": "Man Utd"
+    },
+    {
+      "db_player_id": 1654,
+      "fpl_name": "Mark Gillespie",
+      "team_name": "Newcastle"
+    },
+    {
+      "db_player_id": 1659,
+      "fpl_name": "Dan Burn",
+      "team_name": "Newcastle"
+    },
+    {
+      "db_player_id": 1662,
+      "fpl_name": "Alex Murphy",
+      "team_name": "Newcastle"
+    },
+    {
+      "db_player_id": 1667,
+      "fpl_name": "Joelinton Cássio Apolinário de Lira",
+      "team_name": "Newcastle"
+    },
+    {
+      "db_player_id": 1675,
+      "fpl_name": "Sean Neave",
+      "team_name": "Newcastle"
+    },
+    {
+      "db_player_id": 1691,
+      "fpl_name": "Felipe Rodrigues da Silva",
+      "team_name": "Nott'm Forest"
+    },
+    {
+      "db_player_id": 1696,
+      "fpl_name": "Nicolò Savona",
+      "team_name": "Nott'm Forest"
+    },
+    {
+      "db_player_id": 1697,
+      "fpl_name": "Omar Richards",
+      "team_name": "Nott'm Forest"
+    },
+    {
+      "db_player_id": 1700,
+      "fpl_name": "Tyler Bindon",
+      "team_name": "Nott'm Forest"
+    },
+    {
+      "db_player_id": 1704,
+      "fpl_name": "Omari Hutchinson",
+      "team_name": "Nott'm Forest"
+    },
+    {
+      "db_player_id": 1705,
+      "fpl_name": "Dilane Bakwa",
+      "team_name": "Nott'm Forest"
+    },
+    {
+      "db_player_id": 1715,
+      "fpl_name": "Steven Benda",
+      "team_name": "Nott'm Forest"
+    },
+    {
+      "db_player_id": 1721,
+      "fpl_name": "Guglielmo Vicario",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1722,
+      "fpl_name": "Brandon Austin",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1725,
+      "fpl_name": "Marcos Senesi Barón",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1727,
+      "fpl_name": "Cristian Romero",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1730,
+      "fpl_name": "Djed Spence",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1732,
+      "fpl_name": "Ashley Phillips",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1734,
+      "fpl_name": "Jun'ai Byfield",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1735,
+      "fpl_name": "James Rowswell",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1736,
+      "fpl_name": "João Victor de Souza Menezes",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1738,
+      "fpl_name": "Xavi Simons",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1742,
+      "fpl_name": "Wilson Odobert",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1743,
+      "fpl_name": "Pape Matar Sarr",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1746,
+      "fpl_name": "Dejan Kulusevski",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1749,
+      "fpl_name": "Callum Olusesi",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1751,
+      "fpl_name": "Dominic Solanke-Mitchell",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1753,
+      "fpl_name": "Dane Scarlett",
+      "team_name": "Spurs"
+    },
+    {
+      "db_player_id": 1758,
+      "fpl_name": "Anthony Patterson",
+      "team_name": "Sunderland"
+    },
+    {
+      "db_player_id": 1765,
+      "fpl_name": "Jenson Seelt",
+      "team_name": "Sunderland"
+    },
+    {
+      "db_player_id": 1766,
+      "fpl_name": "Leo Fuhr Hjelde",
+      "team_name": "Sunderland"
+    },
+    {
+      "db_player_id": 1767,
+      "fpl_name": "Luke O'Nien",
+      "team_name": "Sunderland"
+    },
+    {
+      "db_player_id": 1768,
+      "fpl_name": "Arthur Masuaku",
+      "team_name": "Sunderland"
+    },
+    {
+      "db_player_id": 1774,
+      "fpl_name": "Simon Adingra",
+      "team_name": "Sunderland"
+    },
+    {
+      "db_player_id": 1785,
+      "fpl_name": "Juan Angulo",
+      "team_name": "Sunderland"
+    }
+  ],
+  "ambiguous": [],
+  "duplicate_api_ids": [],
+  "unmatched_api_players": [
+    {
+      "team_name": "Aston Villa",
+      "api_name": "B. Burrows",
+      "external_api_id": 453101,
+      "normalized_names": [
+        "b burrows",
+        "bradley paul burrowes"
+      ]
+    },
+    {
+      "team_name": "Bournemouth",
+      "api_name": "António Silva",
+      "external_api_id": 331832,
+      "normalized_names": [
+        "antonio joao pereira de albuquerque tavares",
+        "antonio silva"
+      ]
+    },
+    {
+      "team_name": "Bournemouth",
+      "api_name": "J. Soler",
+      "external_api_id": 363333,
+      "normalized_names": [
+        "j soler",
+        "julio cesar soler barreto"
+      ]
+    },
+    {
+      "team_name": "Brentford",
+      "api_name": "Fábio Carvalho",
+      "external_api_id": 153066,
+      "normalized_names": [
+        "fabio carvalho",
+        "fabio leandro freitas gouveia de carvalho"
+      ]
+    },
+    {
+      "team_name": "Brentford",
+      "api_name": "Y. Yarmolyuk",
+      "external_api_id": 263538,
+      "normalized_names": [
+        "y yarmolyuk",
+        "yehor yarmolyuk"
+      ]
+    },
+    {
+      "team_name": "Brighton",
+      "api_name": "M. O&apos;Riley",
+      "external_api_id": 19030,
+      "normalized_names": [
+        "m o apos riley",
+        "matthew sean o riley"
+      ]
+    },
+    {
+      "team_name": "Brighton",
+      "api_name": "D. Gómez",
+      "external_api_id": 278370,
+      "normalized_names": [
+        "d gomez",
+        "diego alexander gomez amarilla"
+      ]
+    },
+    {
+      "team_name": "Chelsea",
+      "api_name": "E. Martínez",
+      "external_api_id": 19599,
+      "normalized_names": [
+        "damian emiliano martinez romero",
+        "e martinez"
+      ]
+    },
+    {
+      "team_name": "Chelsea",
+      "api_name": "M. Caicedo",
+      "external_api_id": 116117,
+      "normalized_names": [
+        "m caicedo",
+        "moises isaac caicedo corozo"
+      ]
+    },
+    {
+      "team_name": "Chelsea",
+      "api_name": "Joshua Kofi Acheampong",
+      "external_api_id": 366735,
+      "normalized_names": [
+        "joshua kofi acheampong"
+      ]
+    },
+    {
+      "team_name": "Chelsea",
+      "api_name": "Geovany Tcherno Quenda",
+      "external_api_id": 419582,
+      "normalized_names": [
+        "geovany tcherno quenda"
+      ]
+    },
+    {
+      "team_name": "Coventry City",
+      "api_name": "Caleb Marfo Yirenkyi",
+      "external_api_id": 475575,
+      "normalized_names": [
+        "caleb marfo yirenkyi"
+      ]
+    },
+    {
+      "team_name": "Crystal Palace",
+      "api_name": "J. Lerma",
+      "external_api_id": 2490,
+      "normalized_names": [
+        "j lerma",
+        "jefferson andres lerma solis"
+      ]
+    },
+    {
+      "team_name": "Crystal Palace",
+      "api_name": "Yeremy Pino",
+      "external_api_id": 184226,
+      "normalized_names": [
+        "yeremy jesus pino santos",
+        "yeremy pino"
+      ]
+    },
+    {
+      "team_name": "Everton",
+      "api_name": "C. Alcaraz",
+      "external_api_id": 195993,
+      "normalized_names": [
+        "c alcaraz",
+        "carlos jonas alcaraz duran"
+      ]
+    },
+    {
+      "team_name": "Fulham",
+      "api_name": "Joshua King",
+      "external_api_id": 389315,
+      "normalized_names": [
+        "joshua king"
+      ]
+    },
+    {
+      "team_name": "Ipswich Town",
+      "api_name": "D. O&apos;Shea",
+      "external_api_id": 17597,
+      "normalized_names": [
+        "d o apos shea",
+        "dara joseph o shea"
+      ]
+    },
+    {
+      "team_name": "Leeds",
+      "api_name": "A. Tanaka",
+      "external_api_id": 32966,
+      "normalized_names": [
+        "a tanaka",
+        "ao tanaka"
+      ]
+    },
+    {
+      "team_name": "Liverpool",
+      "api_name": "W. Endo",
+      "external_api_id": 8500,
+      "normalized_names": [
+        "w endo",
+        "wataru endo"
+      ]
+    },
+    {
+      "team_name": "Man Utd",
+      "api_name": "Diogo Dalot",
+      "external_api_id": 886,
+      "normalized_names": [
+        "diogo dalot",
+        "jose diogo dalot teixeira"
+      ]
+    },
+    {
+      "team_name": "Spurs",
+      "api_name": "M. Senesi",
+      "external_api_id": 6610,
+      "normalized_names": [
+        "m senesi",
+        "marcos nicolas senesi baron"
+      ]
+    },
+    {
+      "team_name": "Spurs",
+      "api_name": "D. Solanke",
+      "external_api_id": 18883,
+      "normalized_names": [
+        "d solanke",
+        "dominic ayodele solanke mitchell"
+      ]
+    },
+    {
+      "team_name": "Sunderland",
+      "api_name": "L. O&apos;Nien",
+      "external_api_id": 19911,
+      "normalized_names": [
+        "l o apos nien",
+        "luke terry o nien"
+      ]
+    }
+  ]
+}
