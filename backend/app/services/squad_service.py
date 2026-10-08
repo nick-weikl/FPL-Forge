@@ -1,5 +1,5 @@
 from collections import Counter
-
+from app.services.fpl_price_service import FPL_SEASON
 from app.database import SessionLocal
 from app.models.player import Player
 
@@ -28,7 +28,10 @@ def validate_squad(owned_player_ids):
 
         players = (
             db.query(Player)
-            .filter(Player.id.in_(owned_player_ids))
+            .filter(
+                Player.id.in_(owned_player_ids),
+                Player.fpl_season == FPL_SEASON
+            )
             .all()
         )
 

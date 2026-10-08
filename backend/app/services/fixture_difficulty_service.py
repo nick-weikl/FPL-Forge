@@ -1,6 +1,8 @@
 from app.database import SessionLocal
 from app.models.fixture import Fixture
 from app.models.team import Team
+from app.services.football_api import SEASON
+from app.services.fpl_price_service import FPL_SEASON
 
 
 def get_all_team_strengths(
@@ -15,6 +17,7 @@ def get_all_team_strengths(
     try:
         teams = (
             db.query(Team)
+            .filter(Team.fpl_season == FPL_SEASON)
             .order_by(Team.id.asc())
             .all()
         )

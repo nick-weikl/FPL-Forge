@@ -13,6 +13,12 @@ class Fixture(Base):
 
     gameweek = Column(Integer, nullable=True)
 
+    season = Column(
+        Integer,
+        nullable=False,
+        index=True
+    )
+
     fixture_date = Column(DateTime, nullable=False)
 
     status = Column(String, nullable=True)

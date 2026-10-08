@@ -10,6 +10,7 @@ from sqlalchemy.orm import joinedload
 from app.services.fixture_difficulty_service import (
     get_all_team_strengths
 )
+from app.services.fpl_price_service import FPL_SEASON
 
 
 def normalize_metric(players, metric_name):
@@ -69,7 +70,10 @@ def get_player_metrics(
                 .options(
                     joinedload(Player.team)
                 )
-                .filter(Player.id == player_id)
+                .filter(
+                    Player.id == player_id,
+                    Player.fpl_season == FPL_SEASON
+                )
                 .first()
             )
 
@@ -260,9 +264,8 @@ def get_all_player_metrics(
     try:
         query = (
             db.query(Player)
-            .options(
-                joinedload(Player.team)
-            )
+            .options(joinedload(Player.team))
+            .filter(Player.fpl_season == FPL_SEASON)
         )
 
         if position:

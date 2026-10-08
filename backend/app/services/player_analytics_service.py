@@ -4,6 +4,7 @@ from app.models import fixture
 from app.models.fixture import Fixture
 from app.services.fixture_analytics_service import get_upcoming_fixtures
 from sqlalchemy import func
+from app.services.football_api import SEASON
 
 
 def get_player_summary(
@@ -22,7 +23,8 @@ def get_player_summary(
             db.query(PlayerMatchStat)
             .join(
                 Fixture,
-                PlayerMatchStat.fixture_id == Fixture.id
+                PlayerMatchStat.fixture_id == Fixture.id,
+                Fixture.season == SEASON,
             )
             .filter(
                 PlayerMatchStat.player_id == player_id,
@@ -165,7 +167,8 @@ def get_all_player_summaries(
             )
             .filter(
                 Fixture.gameweek
-                <= current_gameweek
+                <= current_gameweek,
+                Fixture.season == SEASON,
             )
         )
 
@@ -315,7 +318,8 @@ def get_player_recent_form(
             )
             .filter(
                 PlayerMatchStat.player_id == player_id,
-                Fixture.gameweek <= current_gameweek
+                Fixture.gameweek <= current_gameweek,
+                Fixture.season == SEASON,
             )
             .order_by(Fixture.fixture_date.desc())
             .limit(num_matches)
@@ -349,7 +353,8 @@ def get_player_recent_form(
         }
 
     finally:
-        db.close()
+        if owns_db:
+            db.close()
 
 
 def get_player_analytics(
@@ -382,4 +387,3 @@ def get_player_analytics(
         "recent_form": recent_form,
         "upcoming_fixtures": upcoming_fixtures
     }
-

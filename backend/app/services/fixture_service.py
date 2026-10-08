@@ -1,102 +1,160 @@
+from datetime import datetime, timezone
+
 from app.database import SessionLocal
-from app.models import Team
-from app.models import Fixture
-from app.services.football_api import get_premier_league_fixtures
+from app.models.team import Team
+from app.models.fixture import Fixture
+from app.services.football_api import (
+    LEAGUE_ID,
+    SEASON,
+    get_premier_league_fixtures
+)
+from app.services.fpl_price_service import (
+    FPL_SEASON,
+    get_fpl_fixtures
+)
 
 
 def sync_premier_league_fixtures():
-    db = SessionLocal()
+    fpl_fixtures = get_fpl_fixtures()
+    data = get_premier_league_fixtures()
 
+    if data.get("errors"):
+        raise ValueError(
+            f"API-Sports returned errors: {data['errors']}"
+        )
+
+    rows = data.get("response")
+
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("API-Sports returned no fixtures")
+
+    fpl_by_pair = {
+        (item["team_h"], item["team_a"]): item
+        for item in fpl_fixtures
+    }
+
+    if len(fpl_by_pair) != len(fpl_fixtures):
+        raise ValueError("Duplicate FPL home/away fixture pairs")
+
+    db = SessionLocal()
     added = 0
     updated = 0
-    skipped = 0
+    unassigned_gameweeks = 0
+    seen_api_ids = set()
+    seen_pairs = set()
 
     try:
-        data = get_premier_league_fixtures()
+        teams = (
+            db.query(Team)
+            .filter(Team.fpl_season == FPL_SEASON)
+            .all()
+        )
 
-        for item in data["response"]:
-            fixture_data = item["fixture"]
-            teams_data = item["teams"]
-            league_data = item["league"]
-            goals_data = item["goals"]
+        if (
+            len(teams) != 20
+            or any(team.external_api_id is None for team in teams)
+        ):
+            raise ValueError("Link all 20 clubs before importing fixtures")
 
-            fixture_id = fixture_data["id"]
+        teams_by_api_id = {
+            team.external_api_id: team
+            for team in teams
+        }
 
-            # External API team IDs
-            home_team_api_id = teams_data["home"]["id"]
-            away_team_api_id = teams_data["away"]["id"]
+        existing_fixtures = (
+            db.query(Fixture)
+            .filter(Fixture.season == SEASON)
+            .all()
+        )
 
-            # Find our internal Team records
-            home_team = (
-                db.query(Team)
-                .filter(Team.external_api_id == home_team_api_id)
-                .first()
+        fixtures_by_api_id = {
+            fixture.external_api_id: fixture
+            for fixture in existing_fixtures
+        }
+
+        for item in rows:
+            league = item["league"]
+
+            if (
+                league["id"] != LEAGUE_ID
+                or league["season"] != SEASON
+            ):
+                raise ValueError("API-Sports returned another league or season")
+
+            source = item["fixture"]
+            api_id = source["id"]
+
+            if api_id in seen_api_ids:
+                raise ValueError(f"Duplicate API fixture ID: {api_id}")
+
+            seen_api_ids.add(api_id)
+
+            home = teams_by_api_id.get(item["teams"]["home"]["id"])
+            away = teams_by_api_id.get(item["teams"]["away"]["id"])
+
+            if home is None or away is None:
+                raise ValueError(f"Unlinked club in fixture {api_id}")
+
+            pair = (home.fpl_team_id, away.fpl_team_id)
+            fpl_fixture = fpl_by_pair.get(pair)
+
+            if fpl_fixture is None:
+                raise ValueError(f"No FPL counterpart for fixture {api_id}")
+
+            seen_pairs.add(pair)
+            gameweek = fpl_fixture["event"]
+
+            if gameweek is None:
+                unassigned_gameweeks += 1
+            elif not isinstance(gameweek, int) or not 1 <= gameweek <= 38:
+                raise ValueError(f"Invalid FPL gameweek for fixture {api_id}")
+
+            date_text = (
+                fpl_fixture.get("kickoff_time")
+                or source["date"]
             )
 
-            away_team = (
-                db.query(Team)
-                .filter(Team.external_api_id == away_team_api_id)
-                .first()
+            # Existing DateTime column stores timestamps without timezone.
+            fixture_date = (
+                datetime.fromisoformat(
+                    date_text.replace("Z", "+00:00")
+                )
+                .astimezone(timezone.utc)
+                .replace(tzinfo=None)
             )
 
-            # If either team is missing from our DB, skip the fixture
-            if not home_team or not away_team:
-                skipped += 1
-                continue
+            fixture = fixtures_by_api_id.get(api_id)
 
-            # Example: "Regular Season - 5"
-            round_name = league_data["round"]
-
-            gameweek = None
-
-            if round_name:
-                parts = round_name.split(" - ")
-
-                if len(parts) == 2:
-                    gameweek = int(parts[1])
-
-            # Check whether fixture already exists
-            existing_fixture = (
-                db.query(Fixture)
-                .filter(Fixture.external_api_id == fixture_id)
-                .first()
-            )
-
-            if existing_fixture:
-                existing_fixture.fixture_date = fixture_data["date"]
-                existing_fixture.status = fixture_data["status"]["short"]
-                existing_fixture.gameweek = gameweek
-
-                existing_fixture.home_team_id = home_team.id
-                existing_fixture.away_team_id = away_team.id
-
-                existing_fixture.home_score = goals_data["home"]
-                existing_fixture.away_score = goals_data["away"]
-
+            if fixture is None:
+                fixture = Fixture(
+                    external_api_id=api_id,
+                    season=SEASON
+                )
+                db.add(fixture)
+                fixtures_by_api_id[api_id] = fixture
+                added += 1
+            else:
                 updated += 1
 
-            else:
-                new_fixture = Fixture(
-                    external_api_id=fixture_id,
-                    fixture_date=fixture_data["date"],
-                    status=fixture_data["status"]["short"],
-                    gameweek=gameweek,
-                    home_team_id=home_team.id,
-                    away_team_id=away_team.id,
-                    home_score=goals_data["home"],
-                    away_score=goals_data["away"],
-                )
-
-                db.add(new_fixture)
-
-                added += 1
+            fixture.gameweek = gameweek
+            fixture.fixture_date = fixture_date
+            fixture.status = source["status"]["short"]
+            fixture.home_team_id = home.id
+            fixture.away_team_id = away.id
+            fixture.home_score = item["goals"]["home"]
+            fixture.away_score = item["goals"]["away"]
 
         db.commit()
 
         return {
+            "season": SEASON,
             "added": added,
             "updated": updated,
-            "skipped": skipped,
+            "skipped": 0,
+            "unassigned_gameweeks": unassigned_gameweeks,
+            "fpl_fixtures_without_api_match": len(
+                set(fpl_by_pair) - seen_pairs
+            )
         }
 
     except Exception:

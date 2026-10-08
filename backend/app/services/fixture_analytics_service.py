@@ -4,6 +4,7 @@ from app.models.fixture import Fixture
 from app.services.fixture_difficulty_service import (
     get_fixture_difficulty
 )
+from app.services.football_api import SEASON
 
 
 def get_upcoming_fixtures(
@@ -34,6 +35,7 @@ def get_upcoming_fixtures(
         upcoming_fixtures = (
             db.query(Fixture)
             .filter(
+                Fixture.season == SEASON,
                 Fixture.gameweek > current_gameweek,
                 (
                     (Fixture.home_team_id == player.team_id)

@@ -9,6 +9,7 @@ from app.services.player_analytics_service import get_player_summary
 from app.services.fixture_analytics_service import get_upcoming_fixtures
 from app.services.fixture_analytics_service import get_player_fixture_outlook
 from app.services.player_scoring_service import get_all_player_metrics, get_forward_scores, get_midfielder_scores, get_defender_scores, get_goalkeeper_scores, get_ranked_players_by_position
+from app.services.fpl_price_service import FPL_SEASON
 
 
 router = APIRouter(
@@ -27,6 +28,7 @@ def get_players(
     query = (
         db.query(Player)
         .options(joinedload(Player.team))
+        .filter(Player.fpl_season == FPL_SEASON)
     )
 
     if team_id is not None:
@@ -83,6 +85,7 @@ def get_player(
 @router.get("/{player_id}/summary")
 def get_player_summary_route(
     player_id: int,
+    current_gameweek: int,
     db: Session = Depends(get_db)
 ):
     player = (
@@ -119,7 +122,11 @@ def get_player_recent_form_route(
             detail="Player not found"
         )
 
-    return get_player_recent_form(player_id, current_gameweek, num_matches)
+    return get_player_summary(
+        player_id=player_id,
+        current_gameweek=current_gameweek,
+        db=db
+    )
 
 
 @router.get("/{player_id}/upcoming-fixtures")
@@ -168,17 +175,24 @@ def get_player_analytics_route(
             detail="Player not found"
         )
 
-    summary = get_player_summary(player_id)
+    summary = get_player_summary(
+        player_id=player_id,
+        current_gameweek=current_gameweek,
+        db=db
+    )
 
     recent_form = get_player_recent_form(
-        player_id,
-        recent_matches
+        player_id=player_id,
+        current_gameweek=current_gameweek,
+        num_matches=recent_matches,
+        db=db
     )
 
     upcoming_fixtures = get_upcoming_fixtures(
-        player_id,
-        current_gameweek,
-        fixture_limit
+        player_id=player_id,
+        current_gameweek=current_gameweek,
+        limit=fixture_limit,
+        db=db
     )
 
     return {

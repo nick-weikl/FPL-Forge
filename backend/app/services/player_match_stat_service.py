@@ -6,6 +6,9 @@ from app.services.football_api import get_player_match_stats
 import time
 import requests
 
+from app.services.football_api import SEASON
+from app.services.fpl_price_service import FPL_SEASON
+
 
 def sync_player_match_stats(fixture_id):
     db = SessionLocal()
@@ -26,9 +29,25 @@ def sync_player_match_stats(fixture_id):
                 "error": "Fixture not found"
             }
 
+        if fixture.season != SEASON:
+            return {"error": "Fixture belongs to another season"}
+
+        if fixture.status != "FT":
+            return {"error": "Fixture has not finished"}
+
         external_id = fixture.external_api_id
 
         data = get_player_match_stats(external_id)
+
+        if data.get("errors"):
+            raise ValueError(
+                f"API-Sports returned errors: {data['errors']}"
+            )
+
+        if not isinstance(data.get("response"), list) or not data["response"]:
+            return {
+                "error": f"No match statistics returned for fixture {fixture_id}"
+            }
 
         for team_item in data["response"]:
             for player_item in team_item["players"]:
@@ -39,7 +58,8 @@ def sync_player_match_stats(fixture_id):
                 player = (
                     db.query(Player)
                     .filter(
-                        Player.external_api_id == api_player_id
+                        Player.external_api_id == api_player_id,
+                        Player.fpl_season == FPL_SEASON
                     )
                     .first()
                 )
@@ -167,66 +187,69 @@ import requests
 def sync_completed_fixture_stats(current_gameweek):
     db = SessionLocal()
 
-    total_added = 0
-    total_updated = 0
-    total_skipped = 0
-
     try:
-        completed_fixtures = (
+        fixtures = (
             db.query(Fixture)
             .filter(
+                Fixture.season == SEASON,
                 Fixture.status == "FT",
                 Fixture.gameweek <= current_gameweek
             )
-            .order_by(
-                Fixture.gameweek,
-                Fixture.fixture_date
-            )
+            .order_by(Fixture.fixture_date, Fixture.id)
             .all()
         )
 
-        fixture_ids = [
-            fixture.id
-            for fixture in completed_fixtures
-        ]
+        fixture_ids = [fixture.id for fixture in fixtures]
 
     finally:
         db.close()
 
-    for fixture_id in fixture_ids:
-        while True:
+    totals = {
+        "season": SEASON,
+        "through_gameweek": current_gameweek,
+        "fixtures_selected": len(fixture_ids),
+        "fixtures_processed": 0,
+        "added": 0,
+        "updated": 0,
+        "skipped": 0,
+        "failed_fixtures": []
+    }
+
+    for index, fixture_id in enumerate(fixture_ids, start=1):
+        print(
+            f"Importing fixture {index}/{len(fixture_ids)} "
+            f"(database ID {fixture_id})"
+        )
+
+        for attempt in range(3):
             try:
-                result = sync_player_match_stats(
-                    fixture_id
-                )
-
-                if "error" in result:
-                    break
-
-                total_added += result.get("added", 0)
-                total_updated += result.get("updated", 0)
-                total_skipped += result.get("skipped", 0)
-
-                # Conservative delay for lower-tier API limits
-                time.sleep(0.5)
-
+                result = sync_player_match_stats(fixture_id)
                 break
 
-            except requests.exceptions.HTTPError as e:
-                if e.response is not None and e.response.status_code == 429:
-                    print(
-                        f"Rate limit reached on fixture {fixture_id}. "
-                        "Waiting 60 seconds before retrying..."
-                    )
+            except requests.exceptions.HTTPError as error:
+                rate_limited = (
+                    error.response is not None
+                    and error.response.status_code == 429
+                )
 
-                    time.sleep(0.5)
-                    continue
+                if not rate_limited or attempt == 2:
+                    raise
 
-                raise
+                print("Rate limited. Retrying in 30 seconds...")
+                time.sleep(30)
 
-    return {
-        "fixtures_processed": len(fixture_ids),
-        "added": total_added,
-        "updated": total_updated,
-        "skipped": total_skipped
-    }
+        if "error" in result:
+            totals["failed_fixtures"].append({
+                "fixture_id": fixture_id,
+                "error": result["error"]
+            })
+            continue
+
+        totals["fixtures_processed"] += 1
+
+        for key in ("added", "updated", "skipped"):
+            totals[key] += result.get(key, 0)
+
+        time.sleep(0.5)
+
+    return totals
