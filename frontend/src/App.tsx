@@ -114,73 +114,17 @@ export default function App() {
 
     return (
         <div className="app-layout">
-            <aside className="app-sidebar">
-                <div className="sidebar-brand">
-                    FPL
-                    <br />
-                    FORGE
-                </div>
-
-                <p className="sidebar-tagline">
-                    YOUR GAMEWEEK,
-                    <br />
-                    WITH A PLAN.
-                </p>
-
-                <nav className="sidebar-nav" aria-label="Main navigation">
-                    <NavLink
-                        to="/overview"
-                        className="sidebar-link"
-                        onClick={() => setError(null)}
-                    >
-                        Overview
-                    </NavLink>
-
-                    <NavLink
-                        to="/player-explorer"
-                        className="sidebar-link"
-                        onClick={() => setError(null)}
-                    >
-                        Player explorer
-                    </NavLink>
-
-                    <NavLink
-                        to="/fixture-planner"
-                        className="sidebar-link"
-                        onClick={() => setError(null)}
-                    >
-                        Fixture planner
-                    </NavLink>
-
-                    <NavLink
-                        to="/squad"
-                        className="sidebar-link"
-                        onClick={() => setError(null)}
-                    >
-                        My squad
-                    </NavLink>
-
-                    <NavLink
-                        to="/transfer-lab"
-                        className="sidebar-link"
-                        onClick={() => setError(null)}
-                    >
-                        Transfer lab
-                    </NavLink>
+            <header className="app-header">
+                <div className="header-brand"><img src="/figma/forge-mark.svg" alt="" />FPL FORGE</div>
+                <nav className="header-nav" aria-label="Main navigation">
+                    <NavLink to="/overview" onClick={() => setError(null)}>Overview</NavLink>
+                    <NavLink to="/player-explorer" onClick={() => setError(null)}><span className="desktop-label">Player explorer</span><span className="mobile-label">Players</span></NavLink>
+                    <NavLink to="/fixture-planner" onClick={() => setError(null)}><span className="desktop-label">Fixture planner</span><span className="mobile-label">Fixtures</span></NavLink>
+                    <NavLink to="/squad" onClick={() => setError(null)}><span className="desktop-label">My squad</span><span className="mobile-label">Squad</span></NavLink>
+                    <NavLink to="/transfer-lab" onClick={() => setError(null)}><span className="desktop-label">Transfer lab</span><span className="mobile-label">Transfers</span></NavLink>
                 </nav>
-
-                <p className="sidebar-meta">
-                    Premier League
-                    <br />
-                    Historical demo • 2024/25
-                </p>
-
-                <p className="sidebar-note">
-                    Data coverage: partial
-                    <br />
-                    Prices: illustrative
-                </p>
-            </aside>
+                <div className="header-account"><span className="eyebrow">GW {currentGameweek.padStart(2, "0")} / DEMO</span><span className="account-avatar">N</span></div>
+            </header>
 
             <main className="app-main">
                 <Routes>
@@ -221,6 +165,7 @@ export default function App() {
                                     selectedPlayers={selectedPlayers}
                                     onAddPlayer={handleAddPlayer}
                                     onRemovePlayer={handleRemovePlayer}
+                                    bankMillions={bankMillions}
                                     disabled={false}
                                 />
                             </>
@@ -244,6 +189,7 @@ export default function App() {
                         }
                     />
                 </Routes>
+                <footer className="page-footer"><span>FPL FORGE / FIELDWORK</span><span>ILLUSTRATIVE CONTENT · DESIGN CONCEPT</span></footer>
             </main>
         </div>
     );

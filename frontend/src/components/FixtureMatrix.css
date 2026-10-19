@@ -1,59 +1,18 @@
-.planner-matrix-scroll {
-    overflow-x: auto;
-}
-
-.planner-matrix {
-    width: 100%;
-    min-width: 960px;
-    border-collapse: separate;
-    border-spacing: 0 16px;
-    text-align: left;
-}
-
-.planner-matrix th,
-.planner-matrix td {
-    padding: 0 16px 0 0;
-    vertical-align: top;
-}
-
-.planner-matrix th:last-child,
-.planner-matrix td:last-child {
-    padding-right: 0;
-}
-
-.planner-matrix thead th {
-    color: var(--color-muted);
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.planner-matrix th:first-child {
-    width: 20%;
-}
-
-.planner-matrix tbody th {
-    font-size: 14px;
-    font-weight: 400;
-}
-
-.planner-fixture {
-    display: block;
-    min-height: 41px;
-    padding: 12px;
-    color: var(--color-ink);
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.planner-fixture--standard {
-    background: var(--color-pitch);
-}
-
-.planner-fixture--warning {
-    background: #f7e3c8;
-}
-
-.planner-fixture--blank {
-    background: var(--color-canvas);
-}
+.planner-matrix-scroll { min-width: 0; overflow-x: auto; }
+.planner-matrix { width: 100%; min-width: 800px; table-layout: fixed; border-collapse: collapse; text-align: left; font-size: 13px; line-height: 20px; }
+.planner-matrix th { font-weight: 500; }
+.planner-matrix th:first-child { width: 18%; }
+.planner-matrix thead th { height: 56px; font: 500 11px/16px var(--font-mono); color: var(--color-muted); }
+.planner-matrix tbody tr { border-top: 1px solid var(--color-border); height: 44px; }
+.planner-matrix td { padding: 4px; }
+.planner-matrix td:last-child { padding-right: 0; }
+.planner-fixture { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 36px; padding: 8px 12px; border-radius: 16px; white-space: nowrap; }
+.planner-fixture > span:last-child { font: 500 11px/16px var(--font-mono); color: var(--color-green); }
+.planner-fixture--easy { background: var(--color-fixture-easy); }
+.planner-fixture--medium { background: var(--color-fixture-medium); }
+.planner-fixture--hard { background: var(--color-fixture-hard); }
+.planner-fixture--blank { background: var(--color-rail); }
+.planner-matrix--compact { min-width: 730px; }
+.planner-matrix--compact th:first-child { width: 25%; }
+.planner-matrix--compact thead th { height: 24px; }
+.planner-matrix--compact tbody tr { border: 0; height: 52px; }

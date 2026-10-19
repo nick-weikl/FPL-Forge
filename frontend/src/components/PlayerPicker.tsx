@@ -67,11 +67,11 @@ export default function PlayerPicker(props: PlayerPickerProps) {
 
     return (
     <>
-        <h2>Players</h2>
+        <h2>Add to your squad</h2>
 
         <div className="picker-filters">
-            <div>
-                <label htmlFor="player-search">Search players</label>
+            <div className="field">
+                <label className="eyebrow" htmlFor="player-search">SEARCH PLAYERS</label>
 
                 <input
                     type="search"
@@ -80,15 +80,15 @@ export default function PlayerPicker(props: PlayerPickerProps) {
                         setSearchTerm(event.target.value);
                     }}
                     id="player-search"
-                    placeholder="Search by name..."
+                    placeholder="Search name…"
                 />
             </div>
 
-            <div>
-                <label htmlFor="player-position">Position</label>
+            <div className="picker-filter-row">
 
                 <select
                     id="player-position"
+                    aria-label="Position"
                     value={positionFilter}
                     onChange={(event) => {
                         setPositionFilter(event.target.value);
@@ -100,6 +100,7 @@ export default function PlayerPicker(props: PlayerPickerProps) {
                     <option value="Midfielder">Midfielders</option>
                     <option value="Attacker">Attackers</option>
                 </select>
+                <select aria-label="Club" disabled><option>All clubs</option></select>
             </div>
         </div>
 
@@ -143,12 +144,13 @@ export default function PlayerPicker(props: PlayerPickerProps) {
 
                         return (
                             <li key={player.id}>
-                                <span>
-                                    {player.name} — {player.team_name ?? "Unknown team"} — {player.position} — £
-                                    {(player.price_tenths / 10).toFixed(1)}m
-                                    {isSelected ? " — Selected" : " — Available"}
+                                <span className="picker-player-name">
+                                    {player.name}
+                                    <span className="small-note">{player.team_name ?? "Unknown team"} · {player.position}</span>
                                 </span>
+                                <span className="picker-price">£{(player.price_tenths / 10).toFixed(1)}m</span>
                                 <button
+                                aria-label={`${isSelected ? "Remove" : "Add"} ${player.name}`}
                                 onClick={() => {
                                     if (isSelected) {
                                         props.onRemovePlayer(player.id)
@@ -157,7 +159,7 @@ export default function PlayerPicker(props: PlayerPickerProps) {
                                     }
                                 }}
                                 disabled={props.disabled}
-                                >{isSelected ? "Remove" : "Add"}</button>
+                                >{isSelected ? "−" : "+"}</button>
                             </li>
                         );
                     })}

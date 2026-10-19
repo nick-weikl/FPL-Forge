@@ -3,138 +3,39 @@ import "./OverviewPage.css";
 
 export default function OverviewPage() {
     return (
-        <div className="overview-page">
-            <header className="page-heading">
-                <div className="context-bar">
-                    <p>WORKSPACE / OVERVIEW</p>
-                    <p>Demo GW 12 / Nick</p>
-                </div>
-
-                <div className="overview-heading-row">
-                    <div>
-                        <h1>Build your next move.</h1>
-                        <p>
-                            Start with the fixtures. Then find the
-                            player who fits your plan.
-                        </p>
+        <div className="overview-page page-stack">
+            <div className="overview-hero">
+                <header className="overview-intro">
+                    <p className="overview-badge eyebrow">THE GAMEWEEK BRIEF</p>
+                    <h1>Your edge,<br />next gameweek.</h1>
+                    <p>Know your squad. Read the fixtures.<br />Make the move that earns its place.</p>
+                    <div className="overview-actions">
+                        <button className="forge-button" disabled>Open my squad</button>
+                        <button className="forge-button forge-button--secondary" disabled>Explore players</button>
                     </div>
-
-                    <button
-                        type="button"
-                        className="forge-button overview-button"
-                        disabled
-                    >
-                        Open my squad
-                    </button>
-                </div>
-            </header>
-
-            <div className="overview-summary">
-                <section>
-                    <p className="overview-label">
-                        SQUAD PROJECTION
-                    </p>
-                    <p className="overview-metric">58.4</p>
-                    <p className="overview-note">
-                        Demo estimate · GW 12
-                    </p>
-                </section>
-
-                <section>
-                    <p className="overview-label">BANK</p>
-                    <p className="overview-metric">£1.2m</p>
-                    <p className="overview-note">
-                        Hardcoded demo value
-                    </p>
-                </section>
-
-                <section>
-                    <p className="overview-label">
-                        FREE TRANSFERS
-                    </p>
-                    <p className="overview-metric">2</p>
-                    <p className="overview-note">
-                        Season rule pending verification
-                    </p>
+                </header>
+                <section className="overview-context panel" aria-label="Sample gameweek">
+                    <div className="overview-gameweek"><strong>06</strong><div><p className="eyebrow accent">NEXT UP</p><h2>Your plan<br />starts here.</h2><p className="small-note">Sample gameweek</p></div></div>
+                    <hr className="rule" />
+                    <div className="metrics"><div><p className="eyebrow">FREE TRANSFERS</p><p className="metric-value">1</p></div><div><p className="eyebrow">IN THE BANK</p><p className="metric-value">£1.0m</p></div></div>
                 </section>
             </div>
-
-            <div className="overview-decision-area">
-                <section className="overview-transfer-card">
-                    <h2>One move worth exploring</h2>
-
-                    <p className="overview-move">
-                        Morgan → Ellis
-                    </p>
-
-                    <p className="overview-description">
-                        A stronger five-week outlook, with a slightly
-                        higher minutes risk.
-                    </p>
-
-                    <div className="overview-transfer-measures">
-                        <p>+4.8 demo score gain</p>
-                        <p>£0.3m cost</p>
-                        <p>5 gameweeks</p>
-                    </div>
-
-                    <button
-                        type="button"
-                        className="forge-button overview-button"
-                        disabled
-                    >
-                        Review transfer
-                    </button>
-                </section>
-
-                <section className="overview-coverage-card">
-                    <h2>Know what is available</h2>
-
-                    <p className="overview-description">
-                        This overview uses hardcoded sample data.
-                        Fantasy prices, squad values and transfer
-                        suggestions are illustrative.
-                    </p>
-
-                    <div className="overview-coverage-detail">
-                        <p>Hardcoded design preview</p>
-                        <p>Full league coverage not confirmed</p>
-                    </div>
-
-                    <button
-                        type="button"
-                        className={
-                            "overview-button overview-button--secondary"
-                        }
-                        disabled
-                    >
-                        Explore players
-                    </button>
-                </section>
-            </div>
-
-            <section className="overview-fixture-card">
-                <div className="overview-fixture-heading">
-                    <h2>Fixture outlook</h2>
-
-                    <button
-                        type="button"
-                        className={
-                            "overview-button overview-button--secondary"
-                        }
-                        disabled
-                    >
-                        View fixtures
-                    </button>
-                </div>
-
-                <FixtureMatrix />
+            <section className="overview-next-move">
+                <div><p className="eyebrow">YOUR NEXT MOVE / SINGLE TRANSFER</p><h2>J. Timber → A. Robinson</h2></div>
+                <div><p className="overview-gain">+4.61</p><p className="eyebrow">NET FORGE SCORE GAIN</p></div>
+                <button className="forge-button forge-button--secondary" disabled>Open Transfer Lab</button>
             </section>
-
-            <p className="overview-note">
-                ILLUSTRATIVE DESIGN DATA · Forge estimates are not
-                official FPL points.
-            </p>
+            <div className="overview-planning">
+                <section className="panel overview-runway"><div className="panel-heading"><h2>The fixture runway</h2><p className="eyebrow">GW 06 — 10</p></div><FixtureMatrix compact /></section>
+                <section className="panel overview-squad">
+                    <div className="overview-squad-count"><strong>15</strong><p className="eyebrow">PLAYERS<br />SELECTED</p></div>
+                    <hr className="rule" />
+                    <div><span>Goalkeepers</span><span className="eyebrow accent">2 / 2</span></div>
+                    <div><span>Defenders</span><span className="eyebrow accent">5 / 5</span></div>
+                    <div><span>Midfielders</span><span className="eyebrow accent">5 / 5</span></div>
+                    <div><span>Forwards</span><span className="eyebrow accent">3 / 3</span></div>
+                </section>
+            </div>
         </div>
     );
 }

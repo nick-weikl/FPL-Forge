@@ -1,75 +1,49 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap');
 
 :root {
-  --color-brand: #173f32;
-  --color-lime: #ddf3a0;
-  --color-canvas: #f4f5f0;
-  --color-surface: #ffffff;
-  --color-pitch: #e7eee5;
-  --color-ink: #152b24;
-  --color-muted: #617168;
-  --color-border: #dce3da;
-
-  font-family: "Inter", sans-serif;
+  --color-canvas: #0b101b;
+  --color-rail: #080d15;
+  --color-surface: #131c2c;
+  --color-raised: #1b293d;
+  --color-ink: #f1f5fa;
+  --color-muted: #a3b0c5;
+  --color-quiet: #77879e;
+  --color-border: #2a374c;
+  --color-lime: #c7f36a;
+  --color-brand: #c7f36a;
+  --color-accent-soft: #24382b;
+  --color-pitch: #102428;
+  --color-fixture-easy: #19372d;
+  --color-fixture-medium: #423927;
+  --color-fixture-hard: #402735;
+  --color-green: #a9e6be;
+  --color-blue: #8bb6ff;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 22px;
   font-weight: 400;
-
   color: var(--color-ink);
   background: var(--color-canvas);
-  color-scheme: light;
-
+  color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-}
-
-#root {
-  min-height: 100svh;
-}
-
-h1,
-h2,
-h3,
-p {
-  margin: 0;
-}
-
-h1,
-h2,
-h3 {
-  font-weight: 600;
-}
-
-a {
-  color: var(--color-brand);
-}
-
-button,
-input,
-select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:disabled {
-  cursor: default;
-}
-
-:where(a, button, input, select, summary):focus-visible {
-  outline: 2px solid var(--color-brand);
-  outline-offset: 4px;
-}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+#root { min-height: 100svh; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--font-heading); }
+h1 { font-size: 32px; line-height: 40px; font-weight: 700; }
+h2, h3 { font-size: 20px; line-height: 28px; font-weight: 500; }
+a { color: inherit; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+input, select { min-width: 0; color: var(--color-ink); }
+input::placeholder { color: var(--color-muted); opacity: 1; }
+:where(a, button, input, select, summary):focus-visible { outline: 2px solid var(--color-lime); outline-offset: 4px; }
+::selection { background: var(--color-lime); color: var(--color-canvas); }

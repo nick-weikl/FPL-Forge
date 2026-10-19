@@ -1,90 +1,20 @@
 import "./FixturePlannerPage.css";
 import FixtureMatrix from "../components/FixtureMatrix";
 
-
 export default function FixturePlannerPage() {
     return (
-        <div className="planner-page">
-            <header className="page-heading">
-                <div className="context-bar">
-                    <p>WORKSPACE / FIXTURE PLANNER</p>
-                    <p>Demo GW 12 / Nick</p>
-                </div>
-
-                <h1>See the run ahead.</h1>
-                <p>
-                    Look beyond one gameweek. Compare a five-week
-                    fixture horizon.
-                </p>
-            </header>
-
+        <div className="planner-page page-stack">
+            <header className="page-heading"><p className="eyebrow">FIXTURE PLANNER</p><h1>Read the run. Find the window.</h1><p>A league-wide view of the next five gameweeks.</p></header>
             <div className="planner-controls">
-                <button type="button" disabled>
-                    GW 12–16
-                </button>
-                <button type="button" disabled>
-                    Five-week view
-                </button>
-                <button type="button" disabled>
-                    All clubs
-                </button>
+                <label className="field"><span className="eyebrow">STARTING GAMEWEEK</span><input value="6" disabled /></label>
+                <label className="field"><span className="eyebrow">HORIZON</span><select disabled><option>5 gameweeks</option></select></label>
+                <label className="field"><span className="eyebrow">CLUB</span><select disabled><option>All clubs</option></select></label>
+                <div className="planner-legend"><span className="eyebrow">DIFFICULTY</span>{[1, 2, 3, 4, 5].map(rating => <span key={rating} className={`legend-rating legend-rating--${rating}`}>{rating}</span>)}</div>
             </div>
-
-            <section className="planner-matrix-panel">
-                <h2>Fixture difficulty · Forge method v0.1</h2>
-
-                <div className="planner-matrix-scroll">
-                    <FixtureMatrix />
-                </div>
-
-                <p className="planner-note">
-                    H = home · A = away · 1 easy → 5 hard · Text
-                    labels accompany every rating.
-                </p>
+            <section className="panel planner-matrix-panel" aria-label="Illustrative five-gameweek fixtures">
+                <FixtureMatrix />
+                <div className="planner-note"><p className="eyebrow">H = HOME / A = AWAY</p><p className="small-note">Blank and double gameweeks stay visible. Fixture examples are illustrative.</p></div>
             </section>
-
-            <div className="planner-details">
-                <section className="planner-fixture-detail">
-                    <h2>Merseyside has two fixtures in GW 15</h2>
-
-                    <div className="planner-match-row">
-                        <p>Merseyside vs West London</p>
-                        <p>HOME</p>
-                        <p>Scheduled</p>
-                    </div>
-
-                    <div className="planner-match-row">
-                        <p>North London vs Merseyside</p>
-                        <p>AWAY</p>
-                        <p>Scheduled</p>
-                    </div>
-
-                    <p className="planner-description">
-                        Gameweek mapping is reviewed separately from
-                        provider round labels.
-                    </p>
-                </section>
-
-                <section className="planner-schedule-note">
-                    <h2>Dates can move</h2>
-
-                    <p className="planner-description">
-                        Postponed matches remain visible. Unknown
-                        kickoffs and unmapped weeks are labelled, and
-                        affected projections are marked incomplete.
-                    </p>
-
-                    <div className="planner-blank-note">
-                        <p>Blank GW 14 · West London</p>
-                        <p>No fixture in the demo mapping</p>
-                    </div>
-                </section>
-            </div>
-
-            <p className="planner-note">
-                ILLUSTRATIVE DESIGN DATA · Hardcoded fixtures and
-                ratings · Forge estimates are not official FPL points.
-            </p>
         </div>
     );
 }
