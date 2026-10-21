@@ -1,0 +1,41 @@
+# This is a deployment template, not a database provisioning or ingestion job.
+services:
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      DATABASE_URL: ${DATABASE_URL:?Set a populated PostgreSQL URL with a read-only application role}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,backend}
+      CORS_ORIGINS: ""
+      ENABLE_ADMIN_SYNC: "false"
+      REQUESTS_PER_MINUTE: "10000"
+      FPL_SEASON_START: ${FPL_SEASON_START:-2026}
+    expose:
+      - "8000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=5)",
+        ]
+      interval: 30s
+      timeout: 6s
+      retries: 3
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    security_opt:
+      - no-new-privileges:true

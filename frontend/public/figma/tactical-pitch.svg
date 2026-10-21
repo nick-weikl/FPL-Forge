@@ -1,7 +1,0 @@
-<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="652" height="520" viewBox="0 0 652 520" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Tactical pitch markings">
-<path id="Vector" d="M22 10H630C636.627 10 642 15.3726 642 22V498C642 504.627 636.627 510 630 510H22C15.3726 510 10 504.627 10 498V22C10 15.3726 15.3726 10 22 10Z" stroke="#355658"/>
-<path id="Vector_2" d="M10 260H642M230 10V84H422V10M230 510V436H422V510" stroke="#355658"/>
-<path id="Vector_3" d="M381 260C381 290.376 356.376 315 326 315C295.624 315 271 290.376 271 260C271 229.624 295.624 205 326 205C356.376 205 381 229.624 381 260Z" stroke="#355658"/>
-</g>
-</svg>

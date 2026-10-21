@@ -1,13 +1,10 @@
-from app.database import SessionLocal
-from app.models.team import Team
-from app.services.fpl_price_service import (
-    FPL_SEASON,
-    get_fpl_bootstrap
-)
 import re
 from collections import defaultdict
 
+from app.database import SessionLocal
+from app.models.team import Team
 from app.services.football_api import get_premier_league_teams
+from app.services.fpl_price_service import FPL_SEASON, get_fpl_bootstrap
 
 
 def sync_premier_league_teams(data=None, db=None):
@@ -23,25 +20,15 @@ def sync_premier_league_teams(data=None, db=None):
     updated = 0
 
     try:
-        existing_teams = (
-            db.query(Team)
-            .filter(Team.fpl_season == FPL_SEASON)
-            .all()
-        )
+        existing_teams = db.query(Team).filter(Team.fpl_season == FPL_SEASON).all()
 
-        teams_by_fpl_id = {
-            team.fpl_team_id: team
-            for team in existing_teams
-        }
+        teams_by_fpl_id = {team.fpl_team_id: team for team in existing_teams}
 
         for item in data["teams"]:
             team = teams_by_fpl_id.get(item["id"])
 
             if team is None:
-                team = Team(
-                    fpl_team_id=item["id"],
-                    fpl_season=FPL_SEASON
-                )
+                team = Team(fpl_team_id=item["id"], fpl_season=FPL_SEASON)
                 db.add(team)
                 teams_by_fpl_id[item["id"]] = team
                 added += 1
@@ -56,11 +43,7 @@ def sync_premier_league_teams(data=None, db=None):
         if owns_db:
             db.commit()
 
-        return {
-            "season": FPL_SEASON,
-            "added": added,
-            "updated": updated
-        }
+        return {"season": FPL_SEASON, "added": added, "updated": updated}
 
     except Exception:
         if owns_db:
@@ -73,11 +56,7 @@ def sync_premier_league_teams(data=None, db=None):
 
 
 def normalize_club(name):
-    key = re.sub(
-        r"[^a-z0-9]+",
-        " ",
-        name.casefold()
-    ).strip()
+    key = re.sub(r"[^a-z0-9]+", " ", name.casefold()).strip()
 
     aliases = {
         "man city": "manchester city",
@@ -107,9 +86,7 @@ def link_premier_league_teams(apply=False):
     data = get_premier_league_teams()
 
     if data.get("errors"):
-        raise ValueError(
-            f"API-Sports returned errors: {data['errors']}"
-        )
+        raise ValueError(f"API-Sports returned errors: {data['errors']}")
 
     api_teams = data.get("response")
 
@@ -122,68 +99,44 @@ def link_premier_league_teams(apply=False):
         team = item["team"]
         lookup[normalize_club(team["name"])].append(team)
 
-    report = {
-        "matched": [],
-        "unmatched": [],
-        "ambiguous": []
-    }
+    report = {"matched": [], "unmatched": [], "ambiguous": []}
 
     db = SessionLocal()
 
     try:
-        teams = (
-            db.query(Team)
-            .filter(Team.fpl_season == FPL_SEASON)
-            .order_by(Team.id)
-            .all()
-        )
+        teams = db.query(Team).filter(Team.fpl_season == FPL_SEASON).order_by(Team.id).all()
 
-        teams_by_id = {
-            team.id: team
-            for team in teams
-        }
+        teams_by_id = {team.id: team for team in teams}
 
         for team in teams:
-            candidates = lookup.get(
-                normalize_club(team.name),
-                []
-            )
+            candidates = lookup.get(normalize_club(team.name), [])
 
             if not candidates:
                 report["unmatched"].append(team.name)
                 continue
 
             if len(candidates) != 1:
-                report["ambiguous"].append({
-                    "fpl_name": team.name,
-                    "candidates": candidates
-                })
+                report["ambiguous"].append({"fpl_name": team.name, "candidates": candidates})
                 continue
 
             candidate = candidates[0]
 
-            if team.external_api_id not in (
-                None,
-                candidate["id"]
-            ):
-                raise ValueError(
-                    f"Conflicting API-Sports link for {team.name}"
-                )
+            if team.external_api_id not in (None, candidate["id"]):
+                raise ValueError(f"Conflicting API-Sports link for {team.name}")
 
-            report["matched"].append({
-                "db_team_id": team.id,
-                "fpl_name": team.name,
-                "api_name": candidate["name"],
-                "external_api_id": candidate["id"]
-            })
+            report["matched"].append(
+                {
+                    "db_team_id": team.id,
+                    "fpl_name": team.name,
+                    "api_name": candidate["name"],
+                    "external_api_id": candidate["id"],
+                }
+            )
 
         if not apply:
             return report
 
-        external_ids = {
-            match["external_api_id"]
-            for match in report["matched"]
-        }
+        external_ids = {match["external_api_id"] for match in report["matched"]}
 
         if (
             len(teams) != 20
@@ -192,9 +145,7 @@ def link_premier_league_teams(apply=False):
             or report["unmatched"]
             or report["ambiguous"]
         ):
-            raise ValueError(
-                "Resolve club matches before saving API-Sports links"
-            )
+            raise ValueError("Resolve club matches before saving API-Sports links")
 
         for match in report["matched"]:
             team = teams_by_id[match["db_team_id"]]
@@ -202,10 +153,7 @@ def link_premier_league_teams(apply=False):
 
         db.commit()
 
-        return {
-            "season": FPL_SEASON,
-            "linked_teams": len(report["matched"])
-        }
+        return {"season": FPL_SEASON, "linked_teams": len(report["matched"])}
 
     except Exception:
         db.rollback()

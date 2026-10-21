@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Index
-from sqlalchemy.orm import relationship
-
 from app.database import Base
+from sqlalchemy import Column, DateTime, ForeignKey, Index, Integer, String
+from sqlalchemy.orm import relationship
 
 
 class Fixture(Base):
@@ -20,44 +19,21 @@ class Fixture(Base):
 
     gameweek = Column(Integer, nullable=True)
 
-    season = Column(
-        Integer,
-        nullable=False,
-        index=True
-    )
+    season = Column(Integer, nullable=False, index=True)
 
     fixture_date = Column(DateTime, nullable=False)
 
     status = Column(String, nullable=True)
 
-    home_team_id = Column(
-        Integer,
-        ForeignKey("teams.id"),
-        nullable=False
-    )
+    home_team_id = Column(Integer, ForeignKey("teams.id"), nullable=False)
 
-    away_team_id = Column(
-        Integer,
-        ForeignKey("teams.id"),
-        nullable=False
-    )
+    away_team_id = Column(Integer, ForeignKey("teams.id"), nullable=False)
 
     home_score = Column(Integer, nullable=True)
     away_score = Column(Integer, nullable=True)
 
-    home_team = relationship(
-        "Team",
-        foreign_keys=[home_team_id],
-        back_populates="home_fixtures"
-    )
+    home_team = relationship("Team", foreign_keys=[home_team_id], back_populates="home_fixtures")
 
-    away_team = relationship(
-        "Team",
-        foreign_keys=[away_team_id],
-        back_populates="away_fixtures"
-    )
+    away_team = relationship("Team", foreign_keys=[away_team_id], back_populates="away_fixtures")
 
-    player_stats = relationship(
-        "PlayerMatchStat",
-        back_populates="fixture"
-    )
+    player_stats = relationship("PlayerMatchStat", back_populates="fixture")

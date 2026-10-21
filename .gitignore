@@ -27,6 +27,7 @@ dist/
 frontend/.env
 frontend/.env.*
 !frontend/.env.example
+!backend/.env.example
 
 # --------------------
 # macOS
@@ -52,3 +53,29 @@ yarn-error.log*
 # Reproducible source archives and local database backups
 backend/data/fpl/
 backend/backups/
+
+# Local browser QA artifacts
+.playwright-cli/
+output/playwright/
+
+# Coverage, build metadata, and local test results
+.coverage
+.coverage.*
+htmlcov/
+coverage/
+*.tsbuildinfo
+playwright-report/
+test-results/
+# Local databases, backups, and generated linking diagnostics
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.sql.gz
+backend/player_link_report.json
+# Private keys and editor scratch files
+*.pem
+*.key
+*.swp
+*.swo
+*~

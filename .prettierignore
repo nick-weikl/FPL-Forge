@@ -1,0 +1,8 @@
+node_modules/
+dist/
+backend/**
+!backend/README.md
+frontend/package-lock.json
+coverage/
+output/
+.playwright-cli/

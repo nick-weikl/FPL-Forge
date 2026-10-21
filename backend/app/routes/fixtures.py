@@ -1,17 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
 from typing import Optional
 
 from app.database import get_db
 from app.models.fixture import Fixture
+from app.security import require_admin
 from app.services.football_api import SEASON
 from app.services.player_match_stat_service import sync_player_match_stats
+from fastapi import APIRouter, Depends, Path, Query
+from sqlalchemy.orm import Session
 
-
-router = APIRouter(
-    prefix="/api/fixtures",
-    tags=["Fixtures"]
-)
+router = APIRouter(prefix="/api/fixtures", tags=["Fixtures"])
 
 
 @router.get("")
@@ -20,7 +17,7 @@ def get_fixtures(
     home_team_id: Optional[int] = None,
     away_team_id: Optional[int] = None,
     team_id: Optional[int] = None,
-    gameweek: Optional[int] = None
+    gameweek: Optional[int] = Query(default=None, ge=1, le=38),
 ):
     query = db.query(Fixture).filter(Fixture.season == SEASON)
 
@@ -34,37 +31,27 @@ def get_fixtures(
         query = query.filter(Fixture.season == SEASON, Fixture.gameweek == gameweek)
 
     if team_id is not None:
-        query = query.filter(
-            (Fixture.home_team_id == team_id) | (Fixture.away_team_id == team_id)
-        )
+        query = query.filter((Fixture.home_team_id == team_id) | (Fixture.away_team_id == team_id))
 
     return query.all()
 
 
 @router.get("/gameweek/{gameweek}")
-def get_fixtures_by_gameweek(
-    gameweek: int,
-    db: Session = Depends(get_db)
-):
+def get_fixtures_by_gameweek(gameweek: int = Path(..., ge=1, le=38), db: Session = Depends(get_db)):
     fixtures = (
-        db.query(Fixture)
-        .filter(Fixture.season == SEASON, Fixture.gameweek == gameweek)
-        .all()
+        db.query(Fixture).filter(Fixture.season == SEASON, Fixture.gameweek == gameweek).all()
     )
 
     return fixtures
 
 
 @router.get("/by-team/{team_id}")
-def get_fixtures_by_team(
-    team_id: int,
-    db: Session = Depends(get_db)
-):
+def get_fixtures_by_team(team_id: int, db: Session = Depends(get_db)):
     fixtures = (
         db.query(Fixture)
         .filter(
             Fixture.season == SEASON,
-            (Fixture.home_team_id == team_id) | (Fixture.away_team_id == team_id)
+            (Fixture.home_team_id == team_id) | (Fixture.away_team_id == team_id),
         )
         .all()
     )
@@ -74,16 +61,14 @@ def get_fixtures_by_team(
 
 @router.get("/by-team/{team_id}/gameweek/{gameweek}")
 def get_fixtures_by_team_and_gameweek(
-    team_id: int,
-    gameweek: int,
-    db: Session = Depends(get_db)
+    team_id: int, gameweek: int = Path(..., ge=1, le=38), db: Session = Depends(get_db)
 ):
     fixtures = (
         db.query(Fixture)
         .filter(
             Fixture.season == SEASON,
-            ((Fixture.home_team_id == team_id) | (Fixture.away_team_id == team_id)) &
-            (Fixture.gameweek == gameweek)
+            ((Fixture.home_team_id == team_id) | (Fixture.away_team_id == team_id))
+            & (Fixture.gameweek == gameweek),
         )
         .all()
     )
@@ -91,6 +76,6 @@ def get_fixtures_by_team_and_gameweek(
     return fixtures
 
 
-@router.post("/{fixture_id}/sync-player-stats")
+@router.post("/{fixture_id}/sync-player-stats", dependencies=[Depends(require_admin)])
 def test_player_stats(fixture_id: int):
     return sync_player_match_stats(fixture_id)

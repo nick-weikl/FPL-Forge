@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, Float, ForeignKey, UniqueConstraint
-from sqlalchemy.orm import relationship
-
 from app.database import Base
+from sqlalchemy import Column, Float, ForeignKey, Integer, UniqueConstraint
+from sqlalchemy.orm import relationship
 
 
 class PlayerMatchStat(Base):
@@ -9,17 +8,9 @@ class PlayerMatchStat(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    player_id = Column(
-        Integer,
-        ForeignKey("players.id"),
-        nullable=False
-    )
+    player_id = Column(Integer, ForeignKey("players.id"), nullable=False)
 
-    fixture_id = Column(
-        Integer,
-        ForeignKey("fixtures.id"),
-        nullable=False
-    )
+    fixture_id = Column(Integer, ForeignKey("fixtures.id"), nullable=False)
 
     # Club represented in this fixture; never infer it from the current roster.
     team_id = Column(Integer, ForeignKey("teams.id"), nullable=True)
@@ -42,20 +33,8 @@ class PlayerMatchStat(Base):
 
     rating = Column(Float, nullable=True)
 
-    player = relationship(
-        "Player",
-        back_populates="match_stats"
-    )
+    player = relationship("Player", back_populates="match_stats")
 
-    fixture = relationship(
-        "Fixture",
-        back_populates="player_stats"
-    )
+    fixture = relationship("Fixture", back_populates="player_stats")
 
-    __table_args__ = (
-        UniqueConstraint(
-            "player_id",
-            "fixture_id",
-            name="uq_player_fixture"
-        ),
-    )
+    __table_args__ = (UniqueConstraint("player_id", "fixture_id", name="uq_player_fixture"),)

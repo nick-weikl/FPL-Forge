@@ -1,34 +1,205 @@
-.overview-hero { display: grid; grid-template-columns: minmax(0, 856fr) minmax(0, 472fr); gap: 32px; align-items: center; }
-.overview-intro { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
-.overview-badge { display: grid; place-items: center; width: 192px; min-height: 32px; border-radius: 16px; color: var(--color-lime); background: var(--color-accent-soft); }
-.overview-intro h1 { font-size: 56px; line-height: 62px; }
-.overview-intro > p:not(.overview-badge) { font-size: 18px; line-height: 28px; color: var(--color-muted); }
-.overview-actions { display: flex; gap: 16px; }
-.overview-actions button { width: 212px; }
-.overview-context { display: flex; flex-direction: column; gap: 20px; }
-.overview-gameweek { display: flex; align-items: center; gap: 24px; }
-.overview-gameweek > strong { font: 700 148px/148px var(--font-heading); }
-.overview-gameweek > div { display: flex; flex-direction: column; gap: 12px; }
-.overview-next-move { display: grid; grid-template-columns: minmax(0, 1fr) 240px 220px; align-items: center; gap: 24px; padding: 24px; border-radius: 16px; background: var(--color-lime); color: var(--color-canvas); }
-.overview-next-move .eyebrow { color: inherit; }
-.overview-next-move h2 { margin-top: 8px; font-size: 32px; line-height: 40px; font-weight: 700; }
-.overview-gain { font: 700 44px/50px var(--font-heading); }
-.overview-planning { display: grid; grid-template-columns: minmax(0, 896fr) minmax(0, 440fr); gap: 24px; align-items: start; }
-.overview-runway { display: flex; flex-direction: column; gap: 16px; }
-.overview-squad { display: flex; flex-direction: column; gap: 20px; }
-.overview-squad > div { display: flex; justify-content: space-between; align-items: center; color: var(--color-muted); }
-.overview-squad .overview-squad-count { justify-content: flex-start; gap: 72px; }
-.overview-squad-count strong { font: 700 80px/86px var(--font-heading); color: var(--color-ink); }
-@media (max-width: 1100px) { .overview-next-move { grid-template-columns: 1fr auto; } .overview-next-move button { grid-column: 1 / -1; } .overview-gameweek > strong { font-size: 100px; line-height: 110px; } .overview-planning { grid-template-columns: 1fr; } }
-@media (max-width: 800px) { .overview-hero { grid-template-columns: 1fr; } .overview-context { max-width: 472px; width: 100%; } }
-@media (max-width: 600px) { .overview-intro h1 { font-size: 40px; line-height: 46px; } .overview-actions { width: 100%; } .overview-actions button { width: auto; flex: 1; } .overview-next-move { grid-template-columns: 1fr; padding: 20px; } .overview-next-move h2 { font-size: 26px; line-height: 34px; } }
-.overview-actions .forge-button { min-width: 180px; display: inline-flex; justify-content: center; align-items: center; text-decoration: none; }
-.overview-next-move > .forge-button { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.overview-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 856fr) minmax(0, 472fr);
+  gap: 32px;
+  align-items: center;
+}
+.overview-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+.overview-badge {
+  display: grid;
+  place-items: center;
+  width: 192px;
+  min-height: 32px;
+  border-radius: 16px;
+  color: var(--color-lime);
+  background: var(--color-accent-soft);
+}
+.overview-intro h1 {
+  font-size: 56px;
+  line-height: 62px;
+}
+.overview-intro > p:not(.overview-badge) {
+  font-size: 18px;
+  line-height: 28px;
+  color: var(--color-muted);
+}
+.overview-actions {
+  display: flex;
+  gap: 16px;
+}
+.overview-actions button {
+  width: 212px;
+}
+.overview-context {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.overview-gameweek {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.overview-gameweek > strong {
+  font: 700 148px/148px var(--font-heading);
+}
+.overview-gameweek > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.overview-next-move {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px 220px;
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--color-lime);
+  color: var(--color-canvas);
+}
+.overview-next-move .eyebrow {
+  color: inherit;
+}
+.overview-next-move h2 {
+  margin-top: 8px;
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+}
+.overview-gain {
+  font: 700 44px/50px var(--font-heading);
+}
+.overview-planning {
+  display: grid;
+  grid-template-columns: minmax(0, 896fr) minmax(0, 440fr);
+  gap: 24px;
+  align-items: start;
+}
+.overview-runway {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.overview-squad {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.overview-squad > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color-muted);
+}
+.overview-squad .overview-squad-count {
+  justify-content: flex-start;
+  gap: 72px;
+}
+.overview-squad-count strong {
+  font: 700 80px/86px var(--font-heading);
+  color: var(--color-ink);
+}
+@media (max-width: 1100px) {
+  .overview-next-move {
+    grid-template-columns: 1fr auto;
+  }
+  .overview-next-move button {
+    grid-column: 1 / -1;
+  }
+  .overview-gameweek > strong {
+    font-size: 100px;
+    line-height: 110px;
+  }
+  .overview-planning {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 800px) {
+  .overview-hero {
+    grid-template-columns: 1fr;
+  }
+  .overview-context {
+    max-width: 472px;
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .overview-intro h1 {
+    font-size: 40px;
+    line-height: 46px;
+  }
+  .overview-actions {
+    width: 100%;
+  }
+  .overview-actions button {
+    width: auto;
+    flex: 1;
+  }
+  .overview-next-move {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  .overview-next-move h2 {
+    font-size: 26px;
+    line-height: 34px;
+  }
+}
+.overview-actions .forge-button {
+  min-width: 180px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+.overview-next-move > .forge-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
 
-@media (max-width: 1100px) { .overview-next-move > .forge-button { grid-column: 1 / -1; } }
-@media (max-width: 600px) { .overview-actions .forge-button { min-width: 0; flex: 1; } }
+@media (max-width: 1100px) {
+  .overview-next-move > .forge-button {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 600px) {
+  .overview-actions .forge-button {
+    min-width: 0;
+    flex: 1;
+  }
+}
 
-.overview-actions { flex-wrap: wrap; }
-.overview-intro h1 { overflow-wrap: anywhere; }
-@media (min-width: 801px) and (max-width: 1100px) { .overview-gameweek { gap: 12px; } .overview-gameweek > strong { font-size: 80px; line-height: 90px; } }
-@media (max-width: 380px) { .overview-gameweek { gap: 12px; } .overview-gameweek > strong { font-size: 80px; line-height: 90px; } .overview-squad .overview-squad-count { gap: 32px; } }
+.overview-actions {
+  flex-wrap: wrap;
+}
+.overview-intro h1 {
+  overflow-wrap: anywhere;
+}
+@media (min-width: 801px) and (max-width: 1100px) {
+  .overview-gameweek {
+    gap: 12px;
+  }
+  .overview-gameweek > strong {
+    font-size: 80px;
+    line-height: 90px;
+  }
+}
+@media (max-width: 380px) {
+  .overview-gameweek {
+    gap: 12px;
+  }
+  .overview-gameweek > strong {
+    font-size: 80px;
+    line-height: 90px;
+  }
+  .overview-squad .overview-squad-count {
+    gap: 32px;
+  }
+}
