@@ -49,3 +49,16 @@ class DoubleTransferRecommendationRequest(TransferRecommendationRequest):
 
 class TransferStrategyRequest(DoubleTransferRecommendationRequest):
     free_transfers: int = Field(default=1, ge=0, le=5, strict=True)
+    starting_player_ids: list[PositiveID] = Field(min_length=11, max_length=11)
+    bench_player_ids: list[PositiveID] = Field(min_length=4, max_length=4)
+    captain_id: PositiveID
+    vice_captain_id: PositiveID
+
+    @model_validator(mode='after')
+    def validate_lineup_ids(self):
+        ids = self.starting_player_ids + self.bench_player_ids
+        if len(set(ids)) != 15 or set(ids) != set(self.owned_player_ids):
+            raise ValueError('Starting XI and bench must contain every owned player exactly once')
+        if self.captain_id == self.vice_captain_id or not {self.captain_id, self.vice_captain_id}.issubset(self.starting_player_ids):
+            raise ValueError('Choose different captain and vice-captain from the starting XI')
+        return self

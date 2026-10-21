@@ -27,3 +27,8 @@
 
 @media (max-width: 1100px) { .overview-next-move > .forge-button { grid-column: 1 / -1; } }
 @media (max-width: 600px) { .overview-actions .forge-button { min-width: 0; flex: 1; } }
+
+.overview-actions { flex-wrap: wrap; }
+.overview-intro h1 { overflow-wrap: anywhere; }
+@media (min-width: 801px) and (max-width: 1100px) { .overview-gameweek { gap: 12px; } .overview-gameweek > strong { font-size: 80px; line-height: 90px; } }
+@media (max-width: 380px) { .overview-gameweek { gap: 12px; } .overview-gameweek > strong { font-size: 80px; line-height: 90px; } .overview-squad .overview-squad-count { gap: 32px; } }

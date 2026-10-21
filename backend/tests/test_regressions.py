@@ -82,9 +82,26 @@ class QueryRegressionTests(unittest.TestCase):
         self.assertEqual(result['score_units'], 'expected_fpl_points')
 
 
+    def test_forecast_splits_double_and_blank_gameweeks(self):
+        self.db.add(FPLImport(season=2026, gameweek=1, source_sha256='0'*64, observed_at=datetime.now(timezone.utc), player_count=1, fixture_count=1))
+        self.db.add(FPLMatchStat(player_id=1, fixture_id=1, minutes=90, total_points=5, stats={}, observed_at=datetime.now(timezone.utc)))
+        self.db.add_all([Team(id=i,name=f'Club {i}',fpl_season='2026/27') for i in [3,4,5]])
+        self.db.flush()
+        for fid, gw in [(3,2),(4,2),(5,4)]:
+            self.db.add(Fixture(id=fid, external_api_id=100+fid, season=2026, gameweek=gw, fixture_date=datetime(2026,8,9), status='NS', home_team_id=fid, away_team_id=1))
+        self.db.commit()
+        result = build_forecasts(self.db,1)
+        self.assertEqual(result['by_id'][1]['gameweek_points'],{2:10,3:0,4:5,5:0,6:0})
+        self.assertEqual(result['by_id'][1]['overall_score'],15)
+        self.db.get(Player,1).availability_status='i'
+        self.db.commit()
+        result = build_forecasts(self.db,1)
+        self.assertEqual(sum(result['by_id'][1]['gameweek_points'].values()),0)
+
+
 class RequestTests(unittest.TestCase):
     def test_bounds_duplicates_and_selling_ids(self):
-        base = {'current_gameweek': 6, 'owned_player_ids': list(range(1,16))}
+        base = {'current_gameweek': 6, 'owned_player_ids': list(range(1,16)), 'starting_player_ids': list(range(1,12)), 'bench_player_ids': list(range(12,16)), 'captain_id':1, 'vice_captain_id':2}
         for changes in [dict(current_gameweek=-1), dict(current_gameweek=39), dict(bank_tenths=-1),
                         dict(free_transfers=-1), dict(free_transfers=6), dict(candidates_per_player=0),
                         dict(owned_player_ids=[1]*15), dict(selling_prices_tenths={20:50}),
@@ -94,7 +111,7 @@ class RequestTests(unittest.TestCase):
 
     def test_json_selling_price_keys(self):
         import json
-        value = TransferStrategyRequest.model_validate_json(json.dumps(dict(current_gameweek=6, owned_player_ids=list(range(1,16)), selling_prices_tenths={'1':45})))
+        value = TransferStrategyRequest.model_validate_json(json.dumps(dict(current_gameweek=6, owned_player_ids=list(range(1,16)), selling_prices_tenths={'1':45}, starting_player_ids=list(range(1,12)), bench_player_ids=list(range(12,16)), captain_id=1, vice_captain_id=2)))
         self.assertEqual(value.selling_prices_tenths, {1:45})
 
 
@@ -128,10 +145,12 @@ class OptimizerTests(unittest.TestCase):
         c = {'model':'test','score_units':'expected_fpl_points','horizon_gameweeks':5,'lookback_gameweeks':[1,5],
              'warnings':[],'data_quality':{},'selling_price_assumptions':[]}
         single = {'score_gain':5}
-        double = {'combined_score_gain':8}
+        double = {'combined_score_gain':8, 'transfers': []}
         with patch('app.services.recommendation_service.prepare_context',return_value=c), \
              patch('app.services.recommendation_service.single_options',return_value=[single]), \
              patch('app.services.recommendation_service.double_options',return_value=[double]), \
+             patch('app.services.recommendation_service.configure_lineup',return_value=None), \
+             patch('app.services.recommendation_service.lineup_breakdown',return_value={}), \
              patch('app.services.recommendation_service.build_strategy_reason',return_value={}):
             self.assertEqual(get_transfer_strategy(5,[],free_transfers=1)['recommended_strategy'],'single_transfer')
             self.assertEqual(get_transfer_strategy(5,[],free_transfers=2)['recommended_strategy'],'double_transfer')

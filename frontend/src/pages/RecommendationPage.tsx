@@ -1,12 +1,16 @@
 import {getTransferStrategy} from "../services/api.ts"
 import { useState } from "react"
 import type { StrategyRequest, StrategyResponse } from "../types/recommendation.ts"
+import type { Lineup } from "../utils/lineup";
+import { validStarters } from "../utils/lineup";
+import { Link } from "react-router";
 import type { Player } from "../types/player.ts";
 import "./RecommendationPage.css"
 import type { Dispatch, SetStateAction } from "react";
 
 
 interface RecommendationPageProps {
+    lineup: Lineup;
     selectedPlayers: Player[];
     error: string | null;
     setError: Dispatch<SetStateAction<string | null>>;
@@ -20,6 +24,7 @@ interface RecommendationPageProps {
 
 
 export default function RecommendationPage({
+    lineup,
     selectedPlayers,
     error,
     setError,
@@ -135,6 +140,10 @@ export default function RecommendationPage({
         }
            
 
+        if (!validStarters(lineup.starters, selectedPlayers) || lineup.bench.length !== 4 || !lineup.captainId || !lineup.viceCaptainId) {
+            setError("Set your starting XI, captain and vice-captain on My Squad first.");
+            return;
+        }
         const sellingPricesTenths: Record<number, number> = {};
         for (const player of selectedPlayers) {
             const text = sellingPrices[player.id]?.trim();
@@ -153,6 +162,10 @@ export default function RecommendationPage({
         try {
             const request: StrategyRequest = {
             current_gameweek: gameweek,
+            starting_player_ids: lineup.starters,
+            bench_player_ids: lineup.bench,
+            captain_id: lineup.captainId!,
+            vice_captain_id: lineup.viceCaptainId!,
             bank_tenths: bankTenths,
             free_transfers: transferCount, 
             candidates_per_player: 10,
@@ -163,8 +176,7 @@ export default function RecommendationPage({
             const result = await getTransferStrategy(request)
             setRecommendation(result)
 
-            // console.log(result)
-            console.log(JSON.stringify(result, null, 2));
+
         }
         catch (error) {
             console.error("Failed", error)
@@ -202,7 +214,8 @@ export default function RecommendationPage({
                 </div>
                 <button className="forge-button recommendation-submit" onClick={handleGetRecommendation} disabled={isLoading || selectedPlayers.length !== 15}>{isLoading ? "Analysing…" : "Run analysis"}</button>
             </div>
-            <details className="panel">
+            <section className="panel analysis-lineup"><div><h2>Your matchday forecast</h2><p className="small-note">{lineup.starters.length} starters · Captain: {selectedPlayers.find(player => player.id === lineup.captainId)?.name ?? "Choose on My Squad"} · Vice: {selectedPlayers.find(player => player.id === lineup.viceCaptainId)?.name ?? "Choose on My Squad"}</p><p className="small-note">Fixed XI for the forecast horizon. Captain counts twice. Bench points, automatic substitutions and vice-captain fallback are excluded.</p></div><Link className="forge-button forge-button--secondary" to="/squad">Edit lineup</Link></section>
+            <details className="panel selling-values">
                 <summary>Player selling values</summary>
                 <p>Enter the selling values shown in your FPL squad, in £m. Blank values use current market prices and may overestimate your budget.</p>
                 <div className="recommendation-fields">
@@ -225,23 +238,31 @@ export default function RecommendationPage({
                 </div>
                 <section className="strategy-board" aria-label="Transfer strategy comparison">
                     {([
-                        { key: "no_transfer", label: "00 / NO TRANSFER", raw: 0, net: 0, cost: 0, moves: [], available: true },
-                        { key: "single_transfer", label: "01 / SINGLE TRANSFER", raw: recommendation.single_transfer?.raw_score_gain, net: recommendation.single_transfer?.net_score_gain, cost: recommendation.single_transfer?.transfer_cost, moves: recommendation.single_transfer ? [recommendation.single_transfer.transfer] : [], available: !!recommendation.single_transfer },
-                        { key: "double_transfer", label: "02 / DOUBLE TRANSFER", raw: recommendation.double_transfer?.raw_score_gain, net: recommendation.double_transfer?.net_score_gain, cost: recommendation.double_transfer?.transfer_cost, moves: recommendation.double_transfer?.transfer_pair.transfers ?? [], available: !!recommendation.double_transfer },
+                        { key: "no_transfer", label: "00 / NO TRANSFER", raw: 0, net: 0, cost: 0, moves: [], projection: recommendation.baseline, available: true },
+                        { key: "single_transfer", label: "01 / SINGLE TRANSFER", raw: recommendation.single_transfer?.raw_score_gain, net: recommendation.single_transfer?.net_score_gain, cost: recommendation.single_transfer?.transfer_cost, projection: recommendation.single_transfer?.projection, moves: recommendation.single_transfer ? [recommendation.single_transfer.transfer] : [], available: !!recommendation.single_transfer },
+                        { key: "double_transfer", label: "02 / DOUBLE TRANSFER", raw: recommendation.double_transfer?.raw_score_gain, net: recommendation.double_transfer?.net_score_gain, cost: recommendation.double_transfer?.transfer_cost, projection: recommendation.double_transfer?.projection, moves: recommendation.double_transfer?.transfer_pair.transfers ?? [], available: !!recommendation.double_transfer },
                     ]).map(strategy => <article key={strategy.key} className={`strategy-card panel${recommendation.recommended_strategy === strategy.key ? " strategy-card--best" : ""}${strategy.key === "no_transfer" ? " strategy-card--hold" : ""}`}>
                         <p className="eyebrow strategy-label">{strategy.label}{recommendation.recommended_strategy === strategy.key && " · BEST"}</p>
                         <p className="strategy-gain">{strategy.net == null ? "—" : `${strategy.net > 0 ? "+" : ""}${strategy.net.toFixed(2)}`}</p>
                         <p className="eyebrow strategy-gain-label">EXPECTED NET FPL POINT GAIN</p>
                         <hr className="rule" />
                         <div className="strategy-moves">
-                            {strategy.key === "no_transfer" ? <><h2>Keep your current squad.</h2><p className="muted">Carry the same 15 into the next gameweek.</p></> : strategy.available ? <>{strategy.moves.map((move, index) => <p className={index === 0 ? "strategy-move-title" : "muted"} key={`${move.player_out.player_id}-${move.player_in.player_id}`}><span>{move.player_out.name}</span><span className="move-arrow" aria-label="to"> → </span><span>{move.player_in.name}</span></p>)}{strategy.key === "single_transfer" && <p className="muted">One change.{recommendation.recommended_strategy === "single_transfer" ? " The strongest net gain." : " Compare the net gain."}</p>}</> : <><h2>No available move.</h2><p className="muted">No transfer option was found for this strategy.</p></>}
+                            {strategy.key === "no_transfer" ? <><h2>Keep your current squad.</h2><p className="muted">Keep the same starting XI and captain.</p></> : strategy.available ? <>{strategy.moves.map((move, index) => <p className={index === 0 ? "strategy-move-title" : "muted"} key={`${move.player_out.player_id}-${move.player_in.player_id}`}><span>{move.player_out.name}</span><span className="move-arrow" aria-label="to"> → </span><span>{move.player_in.name}</span></p>)}{strategy.key === "single_transfer" && <p className="muted">One change.{recommendation.recommended_strategy === "single_transfer" ? " The strongest net gain." : " Compare the net gain."}</p>}</> : <><h2>No available move.</h2><p className="muted">No transfer option was found for this strategy.</p></>}
                         </div>
                         <hr className="rule" />
                         <div className="metrics strategy-costs">
                             <div><p className="eyebrow">RAW GAIN</p><p className="metric-value">{strategy.raw == null ? "—" : `${strategy.raw > 0 ? "+" : ""}${strategy.raw.toFixed(2)}`}</p></div>
                             <div><p className="eyebrow">TRANSFER HIT</p><p className="metric-value">{strategy.cost == null ? "—" : `${strategy.cost > 0 ? "−" : ""}${strategy.cost} pts`}</p></div>
                         </div>
+                        {strategy.projection && <div className="strategy-total"><span>Projected XI points</span><strong>{strategy.projection.after_points.toFixed(2)}</strong></div>}
                     </article>)}
+                </section>
+                <section className="panel forecast-breakdown"><div className="panel-heading"><h2>Gameweek breakdown</h2><span className="small-note">Points include captain ×2</span></div><p className="small-note">Incoming players inherit the outgoing player’s lineup slot and captaincy. Transfer hits apply once, in the first forecast gameweek.</p>
+                    <div className="forecast-table-scroll"><table><thead><tr><th scope="col">Gameweek</th><th scope="col">Keep XI</th><th scope="col">Single XI</th><th scope="col">Single hit</th><th scope="col">Single net gain</th><th scope="col">Double XI</th><th scope="col">Double hit</th><th scope="col">Double net gain</th></tr></thead><tbody>{recommendation.baseline.gameweeks.map((week, index) => {
+                        const single = recommendation.single_transfer?.projection.gameweeks[index];
+                        const double = recommendation.double_transfer?.projection.gameweeks[index];
+                        return <tr key={week.gameweek}><th scope="row">GW {week.gameweek}</th><td>{week.after_points.toFixed(2)}</td><td>{single?.after_points.toFixed(2) ?? "—"}</td><td>{single ? `${single.transfer_hit ? "−" : ""}${single.transfer_hit}` : "—"}</td><td>{single?.net_gain.toFixed(2) ?? "—"}</td><td>{double?.after_points.toFixed(2) ?? "—"}</td><td>{double ? `${double.transfer_hit ? "−" : ""}${double.transfer_hit}` : "—"}</td><td>{double?.net_gain.toFixed(2) ?? "—"}</td></tr>;
+                    })}</tbody><tfoot><tr><th scope="row">Total</th><td>{recommendation.baseline.after_points.toFixed(2)}</td><td>{recommendation.single_transfer?.projection.after_points.toFixed(2) ?? "—"}</td><td>{recommendation.single_transfer ? `${recommendation.single_transfer.transfer_cost ? "−" : ""}${recommendation.single_transfer.transfer_cost}` : "—"}</td><td>{recommendation.single_transfer?.net_score_gain.toFixed(2) ?? "—"}</td><td>{recommendation.double_transfer?.projection.after_points.toFixed(2) ?? "—"}</td><td>{recommendation.double_transfer ? `${recommendation.double_transfer.transfer_cost ? "−" : ""}${recommendation.double_transfer.transfer_cost}` : "—"}</td><td>{recommendation.double_transfer?.net_score_gain.toFixed(2) ?? "—"}</td></tr></tfoot></table></div>
                 </section>
                 <section className="decision-explanation">
                     <div><p className="eyebrow accent">WHY {recommendation.recommended_strategy === "single_transfer" ? "SINGLE WINS" : recommendation.recommended_strategy === "double_transfer" ? "DOUBLE WINS" : "HOLD WINS"}</p><h2>{recommendation.reason.summary}</h2></div>

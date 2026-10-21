@@ -70,7 +70,7 @@ class ArchiveIntegrationTests(unittest.TestCase):
                     self.assertEqual(client.get('/api/players').status_code,200)
                     self.assertEqual(client.get('/api/data-quality').json()['official_fpl_through_gameweek'],7)
                     self.assertEqual(client.post('/api/recommendations/strategy',json={'current_gameweek':-1,'owned_player_ids':[]}).status_code,422)
-                    response = client.post('/api/recommendations/strategy',json={'current_gameweek':7,'owned_player_ids':owned,'free_transfers':1,'bank_tenths':10})
+                    response = client.post('/api/recommendations/strategy',json={'current_gameweek':7,'owned_player_ids':owned,'free_transfers':1,'bank_tenths':10, 'starting_player_ids':[owned[i] for i in [0,2,3,4,7,8,9,10,12,13,14]], 'bench_player_ids':[owned[i] for i in [1,5,6,11]], 'captain_id':owned[12], 'vice_captain_id':owned[13]})
                     self.assertEqual(response.status_code,200,response.text)
                     self.assertEqual(response.json()['score_units'],'expected_fpl_points')
             finally:

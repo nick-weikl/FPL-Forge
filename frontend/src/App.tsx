@@ -187,7 +187,7 @@ export default function App() {
 
                     <Route
                         path="/overview"
-                        element={<OverviewPage data={data} selectedPlayers={selectedPlayers} currentGameweek={currentGameweek} freeTransfers={freeTransfers} bankMillions={bankMillions} />}
+                        element={<OverviewPage lineup={lineup} data={data} selectedPlayers={selectedPlayers} currentGameweek={currentGameweek} freeTransfers={freeTransfers} bankMillions={bankMillions} />}
                     />
 
                     <Route
@@ -234,6 +234,7 @@ export default function App() {
                         path="/transfer-lab"
                         element={
                             <RecommendationPage
+                                lineup={lineup}
                                 selectedPlayers={selectedPlayers}
                                 error={error}
                                 setError={setError}

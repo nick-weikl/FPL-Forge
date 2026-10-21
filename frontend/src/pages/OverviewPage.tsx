@@ -3,11 +3,14 @@ import { Link } from "react-router";
 import FixtureMatrix from "../components/FixtureMatrix";
 import type { Dashboard } from "../types/dashboard";
 import type { Player } from "../types/player";
-import type { StrategyResponse } from "../types/recommendation";
+import type { Lineup } from "../utils/lineup";
+import { validStarters } from "../utils/lineup";
+import type { StrategyRequest, StrategyResponse } from "../types/recommendation";
 import { getTransferStrategy } from "../services/api";
 import "./OverviewPage.css";
 
 interface Props {
+    lineup: Lineup;
     data: Dashboard;
     selectedPlayers: Player[];
     currentGameweek: string;
@@ -15,12 +18,13 @@ interface Props {
     bankMillions: string;
 }
 
-export default function OverviewPage({data, selectedPlayers, currentGameweek, freeTransfers, bankMillions}: Props) {
+export default function OverviewPage({lineup, data, selectedPlayers, currentGameweek, freeTransfers, bankMillions}: Props) {
     const counts = Object.fromEntries(["Goalkeeper", "Defender", "Midfielder", "Attacker"].map(position => [position, selectedPlayers.filter(player => player.position === position).length]));
     const gameweek = Number(currentGameweek), transfers = Number(freeTransfers), bank = Number(bankMillions);
     const settingsValid = currentGameweek.trim() !== "" && freeTransfers.trim() !== "" && bankMillions.trim() !== "" && Number.isInteger(gameweek) && gameweek >= 1 && gameweek <= 38 && Number.isInteger(transfers) && transfers >= 0 && transfers <= 5 && Number.isFinite(bank) && bank >= 0 && Math.abs(bank * 10 - Math.round(bank * 10)) < 0.00001;
-    const ready = selectedPlayers.length === 15 && settingsValid;
-    const requestKey = JSON.stringify({current_gameweek: gameweek, free_transfers: transfers, bank_tenths: Math.round(bank * 10), owned_player_ids: selectedPlayers.map(player => player.id), candidates_per_player: 10});
+    const ready = selectedPlayers.length === 15 && settingsValid && validStarters(lineup.starters, selectedPlayers) && !!lineup.captainId && !!lineup.viceCaptainId;
+    const request: StrategyRequest = {starting_player_ids: lineup.starters, bench_player_ids: lineup.bench, captain_id: lineup.captainId ?? 0, vice_captain_id: lineup.viceCaptainId ?? 0, current_gameweek: gameweek, free_transfers: transfers, bank_tenths: Math.round(bank * 10), owned_player_ids: selectedPlayers.map(player => player.id), candidates_per_player: 10};
+    const requestKey = JSON.stringify(request);
     const [analysis, setAnalysis] = useState<{key: string; result?: StrategyResponse; error?: string}>({key: ""});
     useEffect(() => {
         if (!ready) return;
@@ -53,7 +57,7 @@ export default function OverviewPage({data, selectedPlayers, currentGameweek, fr
         <section className="overview-next-move" aria-label="Your next transfer decision" aria-live="polite">
             <div><p className="eyebrow">YOUR NEXT MOVE{result && ` / ${labels[result.recommended_strategy]}`}</p>
                 {moves.length ? moves.map(move => <h2 key={move.player_out.player_id}>{move.player_out.name} → {move.player_in.name}</h2>) : <h2>{!ready ? "Build your squad. Set your plan." : pending ? "Analyzing your squad…" : error ? "Analysis unavailable" : "Keep your current squad."}</h2>}
-                <p>{!ready ? "Choose 15 players and valid transfer settings to see your recommendation." : error ?? result?.reason.summary}</p>
+                <p>{!ready ? "Choose your squad, starting XI and valid transfer settings to see your recommendation." : error ?? result?.reason.summary}</p>
             </div>
             <div><p className="overview-gain">{result ? `${result.best_net_score_gain > 0 ? "+" : ""}${result.best_net_score_gain.toFixed(2)}` : "—"}</p><p className="eyebrow">EXPECTED NET FPL POINT GAIN</p></div>
             <Link className="forge-button forge-button--secondary" to="/transfer-lab">Open Transfer Lab</Link>

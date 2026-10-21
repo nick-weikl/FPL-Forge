@@ -28,6 +28,7 @@ def build_forecasts(db, current_gameweek, horizon=5):
     fixtures = list(db.scalars(select(Fixture).where(Fixture.season == SEASON)))
     past_counts = Counter()
     future_counts = Counter()
+    future_by_week = defaultdict(Counter)
     for f in fixtures:
         if f.gameweek is None:
             continue
@@ -35,6 +36,7 @@ def build_forecasts(db, current_gameweek, horizon=5):
             past_counts.update([f.home_team_id, f.away_team_id])
         if current_gameweek < f.gameweek <= min(38, current_gameweek + horizon):
             future_counts.update([f.home_team_id, f.away_team_id])
+            future_by_week[f.gameweek].update([f.home_team_id, f.away_team_id])
     points, observations = defaultdict(int), Counter()
     for stat in db.scalars(select(FPLMatchStat).join(Fixture).where(
             Fixture.season == SEASON, Fixture.status == 'FT',
@@ -59,10 +61,14 @@ def build_forecasts(db, current_gameweek, horizon=5):
                   'team_id': player.team_id, 'team_name': player.team.name,
                   'price_tenths': player.price_tenths, 'overall_score': round(forecast, 4),
                   'expected_points': round(forecast, 4), 'can_buy': eligible,
-                  'observed_matches': observations[player.id]}
+                  'observed_matches': observations[player.id],
+                  'gameweek_points': {week: round(points[player.id] / past_counts[player.team_id] * future_by_week[week][player.team_id], 4)
+                                     for week in range(current_gameweek + 1, min(38, current_gameweek + horizon) + 1)}}
+        record['overall_score'] = record['expected_points'] = round(sum(record['gameweek_points'].values()), 4)
         # Injured/unavailable owned players can still be sold; do not project them as available.
         if player.availability_status in ('i', 's', 'u') or player.chance_of_playing == 0:
             record['overall_score'] = record['expected_points'] = 0.0
+            record['gameweek_points'] = {week: 0.0 for week in record['gameweek_points']}
         by_id[player.id] = record
         rankings[player.position].append(record)
     for ranking in rankings.values():

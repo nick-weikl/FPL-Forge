@@ -1,5 +1,9 @@
 export interface StrategyRequest {
   current_gameweek: number;
+  starting_player_ids: number[];
+  bench_player_ids: number[];
+  captain_id: number;
+  vice_captain_id: number;
   bank_tenths: number;
   free_transfers: number;
   owned_player_ids: number[];
@@ -23,7 +27,14 @@ export interface TransferMove {
     score_gain: number;
 }
 
+export interface Projection {
+    before_points: number; after_points: number; transfer_hit: number; net_gain: number;
+    gameweeks: {gameweek: number; before_points: number; after_points: number; raw_gain: number; transfer_hit: number; net_gain: number}[];
+}
+
 export interface StrategyResponse {
+    baseline: Projection;
+    lineup_mode: "fixed_starting_xi";
     recommended_strategy:
         | "single_transfer"
         | "double_transfer"
@@ -54,6 +65,7 @@ export interface StrategyResponse {
             available_budget_tenths: number;
             remaining_bank_tenths: number;
         };
+        projection: Projection;
         raw_score_gain: number;
         transfer_cost: number;
         net_score_gain: number;
@@ -65,6 +77,7 @@ export interface StrategyResponse {
             combined_score_gain: number;
             remaining_bank_tenths: number;
         };
+        projection: Projection;
         raw_score_gain: number;
         transfer_cost: number;
         net_score_gain: number;

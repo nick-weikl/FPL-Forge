@@ -17,6 +17,9 @@ class SellingPricesHTTPTests(unittest.TestCase):
         self.payload = {
             'current_gameweek': 7, 'free_transfers': 0, 'bank_tenths': 1,
             'owned_player_ids': list(range(1119, 1134)),
+            'starting_player_ids': list(range(1119, 1130)),
+            'bench_player_ids': list(range(1130, 1134)),
+            'captain_id': 1119, 'vice_captain_id': 1120,
             'selling_prices_tenths': {str(pid): price for pid, price in zip(range(1119, 1134), [45,49,52,57,50,50,55,66,97,55,49,79,156,78,60])},
         }
 

@@ -53,3 +53,16 @@ test("malformed storage and stale or duplicate IDs cannot corrupt the XI", () =>
     assert.equal(validStarters(lineup.starters, players), true);
     assert.equal(new Set([...lineup.starters,...lineup.bench]).size, 15);
 });
+test("captain and vice selections persist and follow a starter substitution", () => {
+    const lineup = {...reconcileLineup(empty, players), captainId: 13, viceCaptainId: 14};
+    const swapped = swapStarter(lineup, 13, 12, players);
+    assert.equal(swapped.captainId,12);
+    assert.equal(swapped.viceCaptainId,14);
+    assert.deepEqual(reconcileLineup(readLineup(JSON.stringify(swapped)), players),swapped);
+});
+test("old saved lineups receive distinct starting captains and repair stale choices", () => {
+    const lineup = reconcileLineup({...empty, captainId:999, viceCaptainId:999},players);
+    assert.ok(lineup.starters.includes(lineup.captainId!));
+    assert.ok(lineup.starters.includes(lineup.viceCaptainId!));
+    assert.notEqual(lineup.captainId,lineup.viceCaptainId);
+});

@@ -9,3 +9,6 @@
 .planner-note .small-note { color: var(--color-quiet); }
 @media (max-width: 1100px) { .planner-controls { grid-template-columns: repeat(3, minmax(0, 1fr)); } .planner-legend { grid-column: 1 / -1; } }
 @media (max-width: 600px) { .planner-controls { grid-template-columns: 1fr; gap: 16px; } .planner-legend { gap: 8px; } .planner-legend > .eyebrow { margin-right: 0; } .planner-note { align-items: start; flex-direction: column; gap: 12px; padding-bottom: 0; } }
+
+.planner-legend { flex-wrap: wrap; }
+.planner-note { flex-wrap: wrap; gap: 16px 48px; }

@@ -94,6 +94,11 @@ def recommend_transfer_strategy(
         free_transfers=
             request.free_transfers,
 
+        starting_player_ids=request.starting_player_ids,
+        bench_player_ids=request.bench_player_ids,
+        captain_id=request.captain_id,
+        vice_captain_id=request.vice_captain_id,
+
         candidates_per_player=
             request.candidates_per_player
     )

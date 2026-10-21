@@ -18,30 +18,33 @@
 .decision-explanation > div { display: flex; flex-direction: column; gap: 8px; }
 @media (max-width: 1100px) { .recommendation-heading { grid-template-columns: 1fr; } .starting-point { max-width: 528px; width: 100%; } .recommendation-settings { grid-template-columns: 1fr; } .strategy-costs { gap: 12px; } }
 @media (max-width: 750px) { .strategy-board { grid-template-columns: 1fr; } .strategy-card { min-height: 0; } .decision-explanation { grid-template-columns: 1fr; gap: 16px; } }
+
+.analysis-lineup { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.analysis-lineup > div { display: grid; gap: 8px; }
+.analysis-lineup .forge-button { flex-shrink: 0; }
+.forecast-breakdown { display: grid; gap: 16px; }
+.forecast-table-scroll { min-width: 0; overflow-x: auto; }
+.forecast-breakdown table { width: 100%; min-width: 760px; border-collapse: collapse; text-align: right; font-variant-numeric: tabular-nums; font-size: 13px; }
+.forecast-breakdown th, .forecast-breakdown td { padding: 12px 10px; border-bottom: 1px solid var(--color-border); }
+.forecast-breakdown th:first-child { text-align: left; }
+.forecast-breakdown thead { color: var(--color-muted); }
+.forecast-breakdown tfoot { color: var(--color-lime); font-weight: 600; }
+.strategy-total { display: flex; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--color-border); font-size: 13px; }
+.strategy-moves { overflow-wrap: anywhere; }
+.strategy-gain { font-size: clamp(40px, 5vw, 72px); overflow-wrap: anywhere; }
+.selling-values summary { cursor: pointer; }
+.selling-values .recommendation-fields { margin-top: 16px; }
+@media (max-width: 1000px) { .strategy-board { grid-template-columns: 1fr; } .strategy-card { min-height: 0; } .strategy-gain { font-size: 56px; } }
 @media (max-width: 600px) {
-  .recommendation-heading h1 { font-size: 32px; line-height: 40px; }
-  .recommendation-heading { gap: 24px; }
-  .starting-point { padding: 16px; }
-  .starting-point > .eyebrow { display: none; }
-  .starting-point .metrics { gap: 16px; }
-  .recommendation-settings { display: contents; }
-  .recommendation-fields { gap: 8px; }
-  .recommendation-fields .field { padding: 10px; }
-  .recommendation-fields .eyebrow { font-size: 9px; line-height: 14px; }
-  .recommendation-submit { order: 5; width: 100%; }
-  .strategy-board { gap: 24px; }
-  .strategy-card--best { order: -1; }
-  .strategy-card--best .strategy-label { color: var(--color-lime); }
-  .strategy-card--best .strategy-gain { font-size: 80px; line-height: 86px; }
-  .strategy-card--best .strategy-move-title { font-size: 32px; line-height: 40px; font-weight: 700; }
-  .strategy-card--best .strategy-move-title > span { display: block; }
-  .strategy-card--best .move-arrow { font-size: 0; }
-  .strategy-card--best .move-arrow::after { content: '↓'; font-size: 32px; }
-  .strategy-card:not(.strategy-card--best) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; }
-  .strategy-card:not(.strategy-card--best) .strategy-gain { font-size: 20px; line-height: 28px; }
-  .strategy-card:not(.strategy-card--best) .strategy-gain-label, .strategy-card:not(.strategy-card--best) > .rule { display: none; }
-  .strategy-card:not(.strategy-card--best) .strategy-moves, .strategy-card:not(.strategy-card--best) .strategy-costs { grid-column: 1 / -1; }
-  .strategy-card:not(.strategy-card--best) .strategy-moves { gap: 4px; }
-  .strategy-card:not(.strategy-card--best) .strategy-move-title, .strategy-card:not(.strategy-card--best) h2 { font: 400 14px/22px 'DM Sans', sans-serif; }
-  .strategy-card:not(.strategy-card--best) .strategy-costs .metric-value { font-size: 14px; line-height: 22px; }
+ .recommendation-heading h1 { font-size: 32px; line-height: 40px; }
+ .recommendation-heading { gap: 24px; }
+ .starting-point { padding: 16px; }
+ .starting-point .metrics { gap: 12px; }
+ .recommendation-settings { padding: 16px; gap: 16px; }
+ .recommendation-fields { grid-template-columns: 1fr; gap: 12px; }
+ .recommendation-submit { width: 100%; }
+ .strategy-board { gap: 16px; }
+ .strategy-gain { font-size: 56px; }
+ .analysis-lineup { align-items: stretch; flex-direction: column; gap: 16px; }
+ .forecast-breakdown .panel-heading { align-items: start; flex-direction: column; gap: 8px; }
 }

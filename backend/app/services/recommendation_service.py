@@ -46,9 +46,9 @@ def public_player(record):
             'score': round(record['overall_score'], 2)}
 
 
-def make_move(outgoing, incoming):
+def make_move(outgoing, incoming, multiplier=1):
     return {'player_out': public_player(outgoing), 'player_in': public_player(incoming),
-            'score_gain': round(incoming['overall_score'] - outgoing['overall_score'], 2)}
+            'score_gain': round((incoming['overall_score'] - outgoing['overall_score']) * multiplier, 2)}
 
 
 def candidates(context, outgoing):
@@ -68,10 +68,11 @@ def single_options(context):
     for outgoing in context['owned']:
         budget = context['selling'][outgoing['player_id']] + context['bank']
         for incoming in candidates(context, outgoing):
-            gain = incoming['overall_score'] - outgoing['overall_score']
+            multiplier = context.get('multipliers', {}).get(outgoing['player_id'], 1)
+            gain = (incoming['overall_score'] - outgoing['overall_score']) * multiplier
             if gain <= 0 or incoming['price_tenths'] > budget or not legal_clubs(context, [outgoing], [incoming]):
                 continue
-            move = make_move(outgoing, incoming)
+            move = make_move(outgoing, incoming, multiplier)
             move.update(recommendation_strength=get_recommendation_strength(gain),
                         available_budget_tenths=budget, remaining_bank_tenths=budget - incoming['price_tenths'])
             result.append(move)
@@ -84,12 +85,16 @@ def double_options(context):
     seen = set()
     for out1, out2 in combinations(context['owned'], 2):
         budget = context['selling'][out1['player_id']] + context['selling'][out2['player_id']] + context['bank']
+        weight1 = context.get('multipliers', {}).get(out1['player_id'], 1)
+        weight2 = context.get('multipliers', {}).get(out2['player_id'], 1)
+        if weight1 == weight2 == 0:
+            continue
         first = [p for p in candidates(context, out1) if p['price_tenths'] <= budget]
         second = [p for p in candidates(context, out2) if p['price_tenths'] <= budget]
         # Rankings descend by score, enabling safe bounds without losing cheap enablers.
         for in1 in first:
             for in2 in second:
-                gain = round(in1['overall_score'] + in2['overall_score'] - out1['overall_score'] - out2['overall_score'], 2)
+                gain = round((in1['overall_score'] - out1['overall_score']) * weight1 + (in2['overall_score'] - out2['overall_score']) * weight2, 2)
                 if gain <= 0 or (len(best) == 5 and gain < best[-1]['combined_score_gain']):
                     break
                 cost = in1['price_tenths'] + in2['price_tenths']
@@ -99,10 +104,12 @@ def double_options(context):
                     continue
                 key = (tuple(sorted([out1['player_id'], out2['player_id']])),
                        tuple(sorted([in1['player_id'], in2['player_id']])))
+                if 'multipliers' in context:
+                    key = (out1['player_id'], in1['player_id'], out2['player_id'], in2['player_id'])
                 if key in seen:
                     continue
                 seen.add(key)
-                best.append({'transfers': [make_move(out1, in1), make_move(out2, in2)],
+                best.append({'transfers': [make_move(out1, in1, weight1), make_move(out2, in2, weight2)],
                              'combined_score_gain': gain, 'remaining_bank_tenths': budget - cost})
                 best.sort(key=lambda p: -p['combined_score_gain'])
                 del best[5:]
@@ -174,12 +181,17 @@ def build_strategy_reason(recommended_strategy, single_transfer, double_transfer
             'double_transfer_cost': double_transfer['transfer_cost'] if double_transfer else 0, 'double_net_gain': double}
 
 
-def get_transfer_strategy(current_gameweek, owned_player_ids, bank_tenths=0, free_transfers=1, candidates_per_player=10, selling_prices_tenths=None):
+def get_transfer_strategy(current_gameweek, owned_player_ids, bank_tenths=0, free_transfers=1, candidates_per_player=10, selling_prices_tenths=None, starting_player_ids=None, bench_player_ids=None, captain_id=None, vice_captain_id=None):
     if not 0 <= free_transfers <= 5:
         return {'error': 'Free transfers must be 0–5'}
     context = prepare_context(current_gameweek, owned_player_ids, bank_tenths, selling_prices_tenths)
     if 'error' in context:
         return context
+    if context['horizon_gameweeks'] == 0:
+        return {'error': 'There are no future gameweeks in this season to forecast'}
+    validation = configure_lineup(context, starting_player_ids, bench_player_ids, captain_id, vice_captain_id)
+    if validation:
+        return validation
     singles, doubles = single_options(context), double_options(context)
     single = double = None
     if singles:
@@ -193,6 +205,56 @@ def get_transfer_strategy(current_gameweek, owned_player_ids, bank_tenths=0, fre
     choices = [('no_transfer', 0), ('single_transfer', single['net_score_gain'] if single else 0),
                ('double_transfer', double['net_score_gain'] if double else 0)]
     strategy, gain = max(choices, key=lambda item: item[1])
-    return {**metadata(context), 'recommended_strategy': strategy, 'best_net_score_gain': gain,
+    baseline = lineup_breakdown(context, [], 0)
+    if single:
+        single['projection'] = lineup_breakdown(context, [single['transfer']], single['transfer_cost'])
+    if double:
+        double['projection'] = lineup_breakdown(context, double['transfer_pair']['transfers'], double['transfer_cost'])
+    return {**metadata(context), 'baseline': baseline, 'lineup_mode': 'fixed_starting_xi', 'recommended_strategy': strategy, 'best_net_score_gain': gain,
             'free_transfers': free_transfers, 'single_transfer': single, 'double_transfer': double,
             'reason': build_strategy_reason(strategy, single, double)}
+
+
+def configure_lineup(context, starters, bench, captain, vice):
+    if not isinstance(starters, list) or not isinstance(bench, list) or len(starters) != 11 or len(bench) != 4:
+        return {'error': 'Choose a starting XI and four substitutes on My Squad before analysis'}
+    ids = starters + bench
+    if len(set(ids)) != 15 or set(ids) != context['owned_ids']:
+        return {'error': 'Starting XI and bench must contain every owned player exactly once'}
+    if captain == vice or captain not in starters or vice not in starters:
+        return {'error': 'Choose different captain and vice-captain from the starting XI'}
+    positions = Counter(context['by_id'][pid]['position'] for pid in starters)
+    if positions['Goalkeeper'] != 1 or not 3 <= positions['Defender'] <= 5 or not 2 <= positions['Midfielder'] <= 5 or not 1 <= positions['Attacker'] <= 3:
+        return {'error': 'Invalid starting formation: choose one goalkeeper, at least three defenders, two midfielders and one forward'}
+    if context['by_id'][bench[0]]['position'] != 'Goalkeeper':
+        return {'error': 'The first bench slot must be the reserve goalkeeper'}
+    context['multipliers'] = {pid: (2 if pid == captain else 1 if pid in starters else 0) for pid in ids}
+    context['starters'] = starters
+    context['captain'] = captain
+    context['vice_captain'] = vice
+    context['warnings'] = [warning for warning in context['warnings'] if not warning.startswith('Gains assume')]
+    context['warnings'] += [
+        'Forecast uses your fixed starting XI. Incoming players inherit the outgoing player’s starting or bench slot and captaincy; lineups are not re-optimized.',
+        'Bench points, automatic substitutions and vice-captain fallback are excluded. Captain points count twice; chips are not modeled.'
+    ]
+    return None
+
+
+def lineup_breakdown(context, moves, hit):
+    replacements = {move['player_out']['player_id']: move['player_in']['player_id'] for move in moves}
+    rows = []
+    # The same selected XI and captain apply to every week; hits are charged once.
+    weeks = sorted({week for record in context['by_id'].values() for week in record.get('gameweek_points', {})})
+    for index, week in enumerate(weeks):
+        before = after = 0.0
+        for pid in context['starters']:
+            multiplier = context['multipliers'][pid]
+            before += context['by_id'][pid]['gameweek_points'].get(week, 0) * multiplier
+            after += context['by_id'][replacements.get(pid, pid)]['gameweek_points'].get(week, 0) * multiplier
+        raw = after - before
+        cost = hit if index == 0 else 0
+        rows.append({'gameweek': week, 'before_points': round(before, 4), 'after_points': round(after, 4),
+                     'raw_gain': round(raw, 4), 'transfer_hit': cost, 'net_gain': round(raw - cost, 4)})
+    return {'gameweeks': rows, 'before_points': round(sum(row['before_points'] for row in rows), 2),
+            'after_points': round(sum(row['after_points'] for row in rows), 2),
+            'transfer_hit': hit, 'net_gain': round(sum(row['raw_gain'] for row in rows) - hit, 2)}
