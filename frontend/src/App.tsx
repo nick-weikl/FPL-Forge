@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import type { Player } from "./types/player";
-import { Navigate, Route, Routes, NavLink } from "react-router";
+import { Navigate, Route, Routes, NavLink, useLocation } from "react-router";
 import SquadPage from "./pages/SquadPage";
 import RecommendationPage from "./pages/RecommendationPage";
 import "./App.css"
 import PlayerExplorerPage from "./pages/PlayerExplorerPage";
 import FixturePlannerPage from "./pages/FixturePlannerPage";
 import OverviewPage from "./pages/OverviewPage";
+import { useDashboard } from "./hooks/useDashboard";
+import DataState from "./components/DataState";
+import { reconcilePlayers } from "./utils/squad";
 
 
 function readSavedInput(key: string, fallback: string): string {
@@ -18,9 +21,12 @@ function readSavedInput(key: string, fallback: string): string {
 }
 
 export default function App() {
+    const location = useLocation();
+    const [lookback, setLookback] = useState(5);
+    const {data, loading, error: dataError, retry} = useDashboard(lookback);
     const [error, setError] = useState<string | null>(null);
-    const [currentGameweek, setCurrentGameweek] = useState<string>(
-        () => readSavedInput("fpl-forge-gameweek", "2")
+    const [gameweekOverride, setCurrentGameweek] = useState<string>(
+        () => readSavedInput("fpl-forge-gameweek", "")
     );
 
     const [freeTransfers, setFreeTransfers] = useState<string>(
@@ -31,7 +37,7 @@ export default function App() {
         () => readSavedInput("fpl-forge-bank", "1.0")
     );
 
-    const [selectedPlayers, setSelectedPlayers] = useState<Player[]>(() => {
+    const [savedPlayers, setSelectedPlayers] = useState<Player[]>(() => {
         try {
             const savedSquad = localStorage.getItem("fpl-forge-squad");
 
@@ -41,15 +47,28 @@ export default function App() {
 
             const parsedSquad: unknown = JSON.parse(savedSquad);
 
-            return Array.isArray(parsedSquad) ? parsedSquad : [];
+            return Array.isArray(parsedSquad) ? parsedSquad.filter((player): player is Player =>
+                player !== null && typeof player === "object" && typeof player.id === "number" && Number.isInteger(player.id)
+            ) : [];
         } catch {
             return [];
         }
     });
 
+    const currentGameweek = gameweekOverride || (data?.latest_completed_gameweek?.toString() ?? "");
+    const selectedPlayers = useMemo(() => {
+        return reconcilePlayers(savedPlayers, data?.players);
+    }, [data, savedPlayers]);
+
+    useEffect(() => {
+        if (!data) return;
+        try { localStorage.setItem("fpl-forge-squad", JSON.stringify(selectedPlayers)); }
+        catch (error) { console.error("Could not save squad", error); }
+    }, [data, selectedPlayers]);
+
     useEffect(() => {
         try {
-            localStorage.setItem("fpl-forge-gameweek", currentGameweek);
+            if (currentGameweek) localStorage.setItem("fpl-forge-gameweek", currentGameweek);
             localStorage.setItem("fpl-forge-free-transfers", freeTransfers);
             localStorage.setItem("fpl-forge-bank", bankMillions);
         } catch (error) {
@@ -87,15 +106,16 @@ export default function App() {
         }
 
         setSelectedPlayers((previousPlayers) => {
-            const alreadySelected = previousPlayers.some(
+            const currentPlayers = reconcilePlayers(previousPlayers, data?.players);
+            const alreadySelected = currentPlayers.some(
                 (selectedPlayer) => selectedPlayer.id === player.id
             );
 
-            if (alreadySelected || previousPlayers.length >= 15) {
-                return previousPlayers
+            if (alreadySelected || currentPlayers.length >= 15) {
+                return currentPlayers
             }
 
-            return [...previousPlayers, player]
+            return [...currentPlayers, player]
         })
     }
 
@@ -103,7 +123,7 @@ export default function App() {
     function handleRemovePlayer(playerId: number) {
         setError(null)
         setSelectedPlayers((previousPlayers) => {
-            const remainingPlayers = previousPlayers.filter(
+            const remainingPlayers = reconcilePlayers(previousPlayers, data?.players).filter(
                 (selectedPlayer) => selectedPlayer.id !== playerId
             );
 
@@ -123,11 +143,14 @@ export default function App() {
                     <NavLink to="/squad" onClick={() => setError(null)}><span className="desktop-label">My squad</span><span className="mobile-label">Squad</span></NavLink>
                     <NavLink to="/transfer-lab" onClick={() => setError(null)}><span className="desktop-label">Transfer lab</span><span className="mobile-label">Transfers</span></NavLink>
                 </nav>
-                <div className="header-account"><span className="eyebrow">GW {currentGameweek.padStart(2, "0")} / DEMO</span><span className="account-avatar">N</span></div>
+                <div className="header-account"><span className="eyebrow">{data ? `${data.season} / DATA GW ${data.latest_completed_gameweek ?? "—"}` : "CONNECTING"}</span><span className="account-avatar">N</span></div>
             </header>
 
             <main className="app-main">
-                <Routes>
+                <DataState loading={loading} error={dataError} retry={retry} />
+                {data && savedPlayers.length !== selectedPlayers.length && <p className="forge-state" role="status">Unavailable saved players have been excluded. Review your current squad.</p>}
+                {error && location.pathname === "/player-explorer" && <p className="forge-state forge-state--error" role="alert">{error}</p>}
+                {data && <Routes>
                     <Route
                         path="/"
                         element={<Navigate to="/squad" replace />}
@@ -135,17 +158,17 @@ export default function App() {
 
                     <Route
                         path="/overview"
-                        element={<OverviewPage />}
+                        element={<OverviewPage data={data} selectedPlayers={selectedPlayers} currentGameweek={currentGameweek} freeTransfers={freeTransfers} bankMillions={bankMillions} />}
                     />
 
                     <Route
                         path="/fixture-planner"
-                        element={<FixturePlannerPage />}
+                        element={<FixturePlannerPage data={data} />}
                     />
 
                     <Route
                         path="/player-explorer"
-                        element={<PlayerExplorerPage />}
+                        element={<PlayerExplorerPage data={data} lookback={lookback} setLookback={setLookback} selectedPlayers={selectedPlayers} onAddPlayer={handleAddPlayer} />}
                     />
 
                     <Route
@@ -162,10 +185,10 @@ export default function App() {
                                 )}
 
                                 <SquadPage
+                                    availablePlayers={data.players}
                                     selectedPlayers={selectedPlayers}
                                     onAddPlayer={handleAddPlayer}
                                     onRemovePlayer={handleRemovePlayer}
-                                    bankMillions={bankMillions}
                                     disabled={false}
                                 />
                             </>
@@ -188,8 +211,8 @@ export default function App() {
                             />
                         }
                     />
-                </Routes>
-                <footer className="page-footer"><span>FPL FORGE / FIELDWORK</span><span>ILLUSTRATIVE CONTENT · DESIGN CONCEPT</span></footer>
+                </Routes>}
+                <footer className="page-footer"><span>FPL FORGE / FIELDWORK</span><span>{data ? `DATABASE DATA / ${data.season} / THROUGH GW ${data.latest_completed_gameweek ?? "—"}` : "DATABASE CONNECTION REQUIRED"}</span></footer>
             </main>
         </div>
     );

@@ -50,3 +50,13 @@ python -B -m unittest discover -s tests -v
 ```
 
 Unit tests use isolated SQLite databases and never connect to production. The optional full-archive integration test validates and imports the local `data/fpl/2026-27` archive twice into an isolated database and verifies idempotency and point totals. Frontend validation: `npm run build` and `npm run lint` from `frontend/`.
+
+## Database-backed frontend pages
+
+`GET /api/dashboard?lookback_gameweeks=5` supplies the current season's players, current prices, official FPL point/minute/goal/assist aggregates, recent gameweek minutes, club directory, and complete fixture schedule. Set the lookback to 38 for season-to-date totals. Missing observations remain null rather than appearing as a confirmed zero. Fixtures use UTC timestamps; null gameweeks remain explicitly unassigned.
+
+Overview, Player Explorer, Fixture Planner, and the squad picker share this response. Saved squads are reconciled by player ID with the current database roster, so changed prices and clubs are reflected without trusting old cached objects. Squad selections and transfer settings stay in local browser storage; they are user inputs, not a connected FPL manager account. Overview's recommendation uses the existing strategy endpoint only for a complete squad and valid settings.
+
+The planner's estimated difficulty combines the existing attacking/defensive opponent measures from stored results. It is labelled as an estimate, not official FPL difficulty. A club/gameweek cell renders every matching fixture, preserving blanks and doubles. No schema migration or database write is needed for these pages.
+
+Frontend squad-cache regression tests run with `npm test` from `frontend/` (Node 22.6+ for TypeScript stripping).

@@ -1,171 +1,39 @@
-import { getPlayers } from "../services/api";
 import type { Player } from "../types/player";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-interface PlayerPickerProps {
+interface Props {
+    players: Player[];
     selectedPlayers: Player[];
-    onAddPlayer: (player: Player) => void
-    onRemovePlayer: (playerId: number) => void
-    disabled: boolean
+    onAddPlayer: (player: Player) => void;
+    onRemovePlayer: (playerId: number) => void;
+    disabled: boolean;
 }
 
-export default function PlayerPicker(props: PlayerPickerProps) {
-    const [players, setPlayers] = useState<Player[]>([])
-    const [loading, setIsLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
-    const [searchTerm, setSearchTerm] = useState<string>("")
-    const [positionFilter, setPositionFilter] = useState<string>("")
-
-
-    useEffect(() => {
-        async function loadPlayers() {
-            try {
-                const result = await getPlayers()
-                setPlayers(result)
-            }
-            catch (error) {
-                setError("Could not load players. Please try again")
-                console.error("Error", error)
-            }
-            finally {
-                setIsLoading(false)
-            }
-        }
-
-        loadPlayers();
-    }, []);
-
-    const filteredPlayers = players.filter((player) => {
-        const matchesName = player.name
-            .toLowerCase()
-            .includes(searchTerm.trim().toLowerCase());
-
-        const matchesPosition =
-            positionFilter === "" || player.position === positionFilter;
-
-        const alreadySelected = props.selectedPlayers.some(
-            (selectedPlayer) => selectedPlayer.id === player.id
-        );
-
-        return matchesName && matchesPosition && !alreadySelected;
-    });
-
-    const positionOrder: Record<string, number> = {
-        Goalkeeper: 0,
-        Defender: 1,
-        Midfielder: 2,
-        Attacker: 3,
-    };
-
-    const sortedPlayers = [...filteredPlayers].sort((a, b) => {
-        const positionDifference =
-            (positionOrder[a.position] ?? 99) -
-            (positionOrder[b.position] ?? 99);
-
-        return positionDifference || a.name.localeCompare(b.name);
-    });
-
-    return (
-    <>
+export default function PlayerPicker({players, selectedPlayers, onAddPlayer, disabled}: Props) {
+    const [search, setSearch] = useState("");
+    const [position, setPosition] = useState("");
+    const [club, setClub] = useState("");
+    const [limit, setLimit] = useState(50);
+    const clubs = [...new Map(players.map(player => [player.team_id, player.team_name])).entries()].sort((a,b) => (a[1] ?? "").localeCompare(b[1] ?? ""));
+    const selectedIds = new Set(selectedPlayers.map(player => player.id));
+    const order: Record<string, number> = {Goalkeeper: 0, Defender: 1, Midfielder: 2, Attacker: 3};
+    const filtered = players.filter(player => !selectedIds.has(player.id) && player.name.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase()) && (!position || player.position === position) && (!club || player.team_id === Number(club)))
+        .sort((a,b) => (order[a.position] ?? 99) - (order[b.position] ?? 99) || a.name.localeCompare(b.name));
+    return <>
         <h2>Add to your squad</h2>
-
         <div className="picker-filters">
-            <div className="field">
-                <label className="eyebrow" htmlFor="player-search">SEARCH PLAYERS</label>
-
-                <input
-                    type="search"
-                    value={searchTerm}
-                    onChange={(event) => {
-                        setSearchTerm(event.target.value);
-                    }}
-                    id="player-search"
-                    placeholder="Search name…"
-                />
-            </div>
-
+            <label className="field" htmlFor="player-search"><span className="eyebrow">SEARCH PLAYERS</span><input id="player-search" type="search" placeholder="Search name…" value={search} onChange={event => {setSearch(event.target.value); setLimit(50);}} /></label>
             <div className="picker-filter-row">
-
-                <select
-                    id="player-position"
-                    aria-label="Position"
-                    value={positionFilter}
-                    onChange={(event) => {
-                        setPositionFilter(event.target.value);
-                    }}
-                >
-                    <option value="">All Positions</option>
-                    <option value="Goalkeeper">Goalkeepers</option>
-                    <option value="Defender">Defenders</option>
-                    <option value="Midfielder">Midfielders</option>
-                    <option value="Attacker">Attackers</option>
-                </select>
-                <select aria-label="Club" disabled><option>All clubs</option></select>
+                <select aria-label="Position" value={position} onChange={event => {setPosition(event.target.value); setLimit(50);}}><option value="">All positions</option>{[["Goalkeeper","Goalkeepers"],["Defender","Defenders"],["Midfielder","Midfielders"],["Attacker","Forwards"]].map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select>
+                <select aria-label="Club" value={club} onChange={event => {setClub(event.target.value); setLimit(50);}}><option value="">All clubs</option>{clubs.map(([id,name]) => <option key={id} value={id}>{name}</option>)}</select>
             </div>
         </div>
-
-        {loading && (
-            <div
-                className="forge-state forge-state--loading"
-                role="status"
-            >
-                <strong className="forge-state-title">
-                    Loading players…
-                </strong>
-                <p>Fetching the player list.</p>
-            </div>
-        )}
-
-        {error && (
-            <p
-                className="forge-state forge-state--error"
-                role="alert"
-            >
-                {error}
-            </p>
-        )}
-
-        {!loading && !error && (
-            <>
-                {filteredPlayers.length === 0 && (
-                    <div className="forge-state forge-state--empty">
-                        <strong className="forge-state-title">
-                            No players match your filters.
-                        </strong>
-                        <p>Try another name or position. Selected players are hidden.</p>
-                    </div>
-                )}
-
-                <ul>
-                    {sortedPlayers.map((player) => {
-                        const isSelected = props.selectedPlayers.some(
-                            (selectedPlayer) => selectedPlayer.id === player.id
-                        );
-
-                        return (
-                            <li key={player.id}>
-                                <span className="picker-player-name">
-                                    {player.name}
-                                    <span className="small-note">{player.team_name ?? "Unknown team"} · {player.position}</span>
-                                </span>
-                                <span className="picker-price">£{(player.price_tenths / 10).toFixed(1)}m</span>
-                                <button
-                                aria-label={`${isSelected ? "Remove" : "Add"} ${player.name}`}
-                                onClick={() => {
-                                    if (isSelected) {
-                                        props.onRemovePlayer(player.id)
-                                    } else {
-                                        props.onAddPlayer(player)
-                                    }
-                                }}
-                                disabled={props.disabled}
-                                >{isSelected ? "−" : "+"}</button>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </>
-        )}
-    </>
-);
+        {!filtered.length && <p className="forge-state" role="status">No players match your filters. Selected players are hidden.</p>}
+        <ul>{filtered.slice(0,limit).map(player => <li key={player.id}>
+            <span className="picker-player-name">{player.name}<span className="small-note">{player.team_name ?? "Unknown team"} · {player.position}</span></span>
+            <span className="picker-price">{player.price_tenths == null ? "—" : `£${(player.price_tenths / 10).toFixed(1)}m`}</span>
+            <button aria-label={`Add ${player.name}`} onClick={() => onAddPlayer(player)} disabled={disabled || selectedPlayers.length >= 15}>+</button>
+        </li>)}</ul>
+        {filtered.length > limit && <button className="forge-button forge-button--secondary" onClick={() => setLimit(previous => previous + 50)}>Show more players</button>}
+    </>;
 }

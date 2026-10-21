@@ -4,13 +4,17 @@ import "./SquadPage.css";
 
 interface SquadPageProps {
     selectedPlayers: Player[];
+    availablePlayers: Player[];
     onAddPlayer: (player: Player) => void;
     onRemovePlayer: (playerId: number) => void;
-    bankMillions: string;
     disabled: boolean;
 }
 
-export default function SquadPage({ selectedPlayers, onAddPlayer, onRemovePlayer, bankMillions, disabled }: SquadPageProps) {
+export default function SquadPage({ availablePlayers, selectedPlayers, onAddPlayer, onRemovePlayer, disabled }: SquadPageProps) {
+    const remainingBankTenths = 1000 - selectedPlayers.reduce(
+        (total, player) => total + player.price_tenths,
+        0,
+    );
     const goalkeeperCount = selectedPlayers.filter(player => player.position === "Goalkeeper").length;
     const defenderCount = selectedPlayers.filter(player => player.position === "Defender").length;
     const midfielderCount = selectedPlayers.filter(player => player.position === "Midfielder").length;
@@ -21,7 +25,7 @@ export default function SquadPage({ selectedPlayers, onAddPlayer, onRemovePlayer
             <header className="page-heading"><p className="eyebrow">SQUAD WORKBENCH</p><h1>Build the team behind your next move.</h1><p>Your selected players, positional balance and player picker in one place.</p></header>
             <div className="squad-summary">
                 <div><p className="eyebrow">SELECTED</p><p className="metric-value accent">{selectedPlayers.length} / 15</p></div>
-                <div><p className="eyebrow">BANK</p><p className="metric-value">£{bankMillions || "—"}m</p></div>
+                <div><p className="eyebrow">BANK</p><p className="metric-value">£{(remainingBankTenths / 10).toFixed(1)}m</p></div>
                 <div><p className="eyebrow">POSITION CHECK</p><p className="metric-value">{goalkeeperCount} / {defenderCount} / {midfielderCount} / {attackerCount}</p></div>
                 <div><p className="eyebrow">CLUB LIMIT</p><p className="metric-value">Maximum 3</p></div>
             </div>
@@ -49,7 +53,7 @@ export default function SquadPage({ selectedPlayers, onAddPlayer, onRemovePlayer
                     </div></div>
                     <p className="small-note">Select and remove players using the picker and squad controls.</p>
                 </section>
-                <section className="squad-picker panel"><PlayerPicker selectedPlayers={selectedPlayers} onAddPlayer={onAddPlayer} onRemovePlayer={onRemovePlayer} disabled={disabled} /></section>
+                <section className="squad-picker panel"><PlayerPicker players={availablePlayers} selectedPlayers={selectedPlayers} onAddPlayer={onAddPlayer} onRemovePlayer={onRemovePlayer} disabled={disabled} /></section>
             </div>
         </div>
     );

@@ -97,3 +97,6 @@ def api_test():
 
 from app.routes.data_quality import router as data_quality_router
 app.include_router(data_quality_router)
+
+from app.routes.dashboard import router as dashboard_router
+app.include_router(dashboard_router)

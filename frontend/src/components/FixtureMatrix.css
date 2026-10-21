@@ -16,3 +16,5 @@
 .planner-matrix--compact th:first-child { width: 25%; }
 .planner-matrix--compact thead th { height: 24px; }
 .planner-matrix--compact tbody tr { border: 0; height: 52px; }
+
+.planner-fixture + .planner-fixture { margin-top: 4px; }

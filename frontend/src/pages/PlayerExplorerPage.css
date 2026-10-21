@@ -29,3 +29,6 @@
 .minutes-labels { display: flex; justify-content: space-between; color: var(--color-quiet); }
 @media (max-width: 1200px) { .explorer-workspace { grid-template-columns: 160px minmax(0, 1fr); } .explorer-focus { grid-column: 2; } }
 @media (max-width: 800px) { .explorer-heading { grid-template-columns: 1fr; } .explorer-workspace { grid-template-columns: 1fr; } .explorer-focus { grid-column: auto; } .explorer-positions { flex-direction: row; flex-wrap: wrap; } .explorer-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; } .explorer-filters > .eyebrow, .explorer-positions, .explorer-filters > .small-note { grid-column: 1 / -1; } .explorer-filters .rule { display: none; } }
+.player-focus-button { padding: 4px 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.player-focus-button:focus-visible { outline: 2px solid var(--color-lime); outline-offset: 3px; }
+.player-initials { font: 700 64px/1 var(--font-heading); color: var(--color-blue); }

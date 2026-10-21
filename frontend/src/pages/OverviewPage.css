@@ -22,3 +22,8 @@
 @media (max-width: 1100px) { .overview-next-move { grid-template-columns: 1fr auto; } .overview-next-move button { grid-column: 1 / -1; } .overview-gameweek > strong { font-size: 100px; line-height: 110px; } .overview-planning { grid-template-columns: 1fr; } }
 @media (max-width: 800px) { .overview-hero { grid-template-columns: 1fr; } .overview-context { max-width: 472px; width: 100%; } }
 @media (max-width: 600px) { .overview-intro h1 { font-size: 40px; line-height: 46px; } .overview-actions { width: 100%; } .overview-actions button { width: auto; flex: 1; } .overview-next-move { grid-template-columns: 1fr; padding: 20px; } .overview-next-move h2 { font-size: 26px; line-height: 34px; } }
+.overview-actions .forge-button { min-width: 180px; display: inline-flex; justify-content: center; align-items: center; text-decoration: none; }
+.overview-next-move > .forge-button { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+
+@media (max-width: 1100px) { .overview-next-move > .forge-button { grid-column: 1 / -1; } }
+@media (max-width: 600px) { .overview-actions .forge-button { min-width: 0; flex: 1; } }
