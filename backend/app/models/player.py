@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
-
 from app.database import Base
+from sqlalchemy import Column, DateTime, ForeignKey, Index, Integer, String
+from sqlalchemy.orm import relationship
 
 
 class Player(Base):
@@ -9,24 +8,34 @@ class Player(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    external_api_id = Column(Integer, unique=True, nullable=False)
+    external_api_id = Column(Integer, nullable=True)
 
     name = Column(String, nullable=False)
     position = Column(String, nullable=True)
 
-    team_id = Column(
-        Integer,
-        ForeignKey("teams.id"),
-        nullable=False
-    )
+    team_id = Column(Integer, ForeignKey("teams.id"), nullable=False)
 
     price_tenths = Column(Integer, nullable=True)
+
+    price_updated_at = Column(DateTime(timezone=True), nullable=True)
+    availability_status = Column(String(10), nullable=True)
+    chance_of_playing = Column(Integer, nullable=True)
+
+    fpl_player_id = Column(Integer, nullable=True)
+
+    fpl_position = Column(String(20), nullable=True)
+
+    fpl_season = Column(String(7), nullable=True)
+
+    fpl_price_gameweek = Column(Integer, nullable=True)
+
+    __table_args__ = (
+        Index("uq_players_api_season_id", "fpl_season", "external_api_id", unique=True),
+        Index("uq_players_fpl_season_id", "fpl_season", "fpl_player_id", unique=True),
+    )
 
     # Relationship back to Team
     team = relationship("Team", back_populates="players")
 
     # One player can have stats from many matches
-    match_stats = relationship(
-        "PlayerMatchStat",
-        back_populates="player"
-    )
+    match_stats = relationship("PlayerMatchStat", back_populates="player")

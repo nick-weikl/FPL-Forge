@@ -1,15 +1,11 @@
-from fastapi import APIRouter, Query
-
-from app.services.team_service import sync_premier_league_teams
-from app.services.player_service import sync_premier_league_players
+from app.security import require_admin
 from app.services.fixture_service import sync_premier_league_fixtures
 from app.services.player_match_stat_service import sync_completed_fixture_stats
+from app.services.player_service import sync_premier_league_players
+from app.services.team_service import sync_premier_league_teams
+from fastapi import APIRouter, Depends, Query
 
-
-router = APIRouter(
-    prefix="/sync",
-    tags=["Sync"]
-)
+router = APIRouter(prefix="/sync", tags=["Sync"], dependencies=[Depends(require_admin)])
 
 
 @router.post("/teams")
@@ -28,9 +24,5 @@ def sync_fixtures():
 
 
 @router.post("/player-fixture-stats/batch")
-def sync_player_fixture_stats_batch(
-    current_gameweek: int = Query(default=1, ge=1)
-):
-    return sync_completed_fixture_stats(
-        current_gameweek
-    )
+def sync_player_fixture_stats_batch(current_gameweek: int = Query(default=1, ge=1, le=38)):
+    return sync_completed_fixture_stats(current_gameweek)

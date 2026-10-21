@@ -1,106 +1,84 @@
-from fastapi import APIRouter, Depends, HTTPException
-from app.services.recommendation_service import get_transfer_candidates, get_best_squad_transfer, get_best_double_transfer, get_transfer_strategy
-from app.schemas.recommendation import TransferRecommendationRequest, SquadOptimizationRequest, DoubleTransferRecommendationRequest, TransferStrategyRequest
-
-router = APIRouter(
-    prefix="/api/recommendations",
-    tags=["Recommendations"]
+from app.schemas.recommendation import (
+    DoubleTransferRecommendationRequest,
+    SquadOptimizationRequest,
+    TransferRecommendationRequest,
+    TransferStrategyRequest,
 )
+from app.services.recommendation_service import (
+    get_best_double_transfer,
+    get_best_squad_transfer,
+    get_transfer_candidates,
+    get_transfer_strategy,
+)
+from fastapi import APIRouter, HTTPException
+
+router = APIRouter(prefix="/api/recommendations", tags=["Recommendations"])
+
 
 @router.post("/transfers/{player_id}")
-def get_transfer_candidates_route(
-    player_id: int,
-    request: TransferRecommendationRequest
-):
+def get_transfer_candidates_route(player_id: int, request: TransferRecommendationRequest):
     result = get_transfer_candidates(
         current_player_id=player_id,
         current_gameweek=request.current_gameweek,
         owned_player_ids=request.owned_player_ids,
+        selling_prices_tenths=request.selling_prices_tenths,
         bank_tenths=request.bank_tenths,
-        limit=request.limit
+        limit=request.limit,
     )
 
     if isinstance(result, dict) and "error" in result:
-        raise HTTPException(
-            status_code=400,
-            detail=result["error"]
-        )
+        raise HTTPException(status_code=400, detail=result["error"])
 
     return result
 
 
 @router.post("/squad-transfer")
-def get_best_squad_transfer_route(
-    request: SquadOptimizationRequest
-):
+def get_best_squad_transfer_route(request: SquadOptimizationRequest):
     result = get_best_squad_transfer(
         current_gameweek=request.current_gameweek,
         owned_player_ids=request.owned_player_ids,
-        bank_tenths=request.bank_tenths
+        selling_prices_tenths=request.selling_prices_tenths,
+        bank_tenths=request.bank_tenths,
     )
 
     if isinstance(result, dict) and "error" in result:
-        raise HTTPException(
-            status_code=400,
-            detail=result
-        )
+        raise HTTPException(status_code=400, detail=result)
 
     return result
 
 
 @router.post("/squad-transfer-pair")
-def recommend_double_transfer(
-    request:
-        DoubleTransferRecommendationRequest
-):
+def recommend_double_transfer(request: DoubleTransferRecommendationRequest):
     result = get_best_double_transfer(
-        current_gameweek=
-            request.current_gameweek,
-        owned_player_ids=
-            request.owned_player_ids,
-        bank_tenths=
-            request.bank_tenths,
-        candidates_per_player=
-            request.candidates_per_player
+        current_gameweek=request.current_gameweek,
+        owned_player_ids=request.owned_player_ids,
+        selling_prices_tenths=request.selling_prices_tenths,
+        bank_tenths=request.bank_tenths,
+        candidates_per_player=request.candidates_per_player,
     )
 
     if "error" in result:
-        raise HTTPException(
-            status_code=400,
-            detail=result
-        )
+        raise HTTPException(status_code=400, detail=result)
 
     return result
 
 
 @router.post("/strategy")
-def recommend_transfer_strategy(
-    request: TransferStrategyRequest
-):
+def recommend_transfer_strategy(request: TransferStrategyRequest):
     result = get_transfer_strategy(
-        current_gameweek=
-            request.current_gameweek,
-
-        owned_player_ids=
-            request.owned_player_ids,
-
-        bank_tenths=
-            request.bank_tenths,
-
-        free_transfers=
-            request.free_transfers,
-
-        candidates_per_player=
-            request.candidates_per_player
+        current_gameweek=request.current_gameweek,
+        owned_player_ids=request.owned_player_ids,
+        selling_prices_tenths=request.selling_prices_tenths,
+        bank_tenths=request.bank_tenths,
+        free_transfers=request.free_transfers,
+        starting_player_ids=request.starting_player_ids,
+        bench_player_ids=request.bench_player_ids,
+        captain_id=request.captain_id,
+        vice_captain_id=request.vice_captain_id,
+        candidates_per_player=request.candidates_per_player,
     )
 
-    if (
-        isinstance(result, dict)
-        and "error" in result
-    ):
-        raise HTTPException(
-            status_code=400,
-            detail=result
-        )
+    if isinstance(result, dict) and "error" in result:
+        raise HTTPException(status_code=400, detail=result)
 
     return result

@@ -1,10 +1,11 @@
-from app.database import SessionLocal
-from app.models import PlayerMatchStat
-from app.models.fixture import Fixture
-from app.models import Player
-from app.services.football_api import get_player_match_stats
 import time
+
 import requests
+from app.database import SessionLocal
+from app.models import Player, PlayerMatchStat, Team
+from app.models.fixture import Fixture
+from app.services.football_api import SEASON, get_player_match_stats
+from app.services.fpl_price_service import FPL_SEASON
 
 
 def sync_player_match_stats(fixture_id):
@@ -15,31 +16,46 @@ def sync_player_match_stats(fixture_id):
     skipped = 0
 
     try:
-        fixture = (
-            db.query(Fixture)
-            .filter(Fixture.id == fixture_id)
-            .first()
-        )
+        fixture = db.query(Fixture).filter(Fixture.id == fixture_id).first()
 
         if not fixture:
-            return {
-                "error": "Fixture not found"
-            }
+            return {"error": "Fixture not found"}
+
+        if fixture.season != SEASON:
+            return {"error": "Fixture belongs to another season"}
+
+        if fixture.status != "FT":
+            return {"error": "Fixture has not finished"}
 
         external_id = fixture.external_api_id
 
         data = get_player_match_stats(external_id)
 
-        for team_item in data["response"]:
-            for player_item in team_item["players"]:
+        if data.get("errors"):
+            raise ValueError(f"API-Sports returned errors: {data['errors']}")
 
+        if not isinstance(data.get("response"), list) or not data["response"]:
+            return {"error": f"No match statistics returned for fixture {fixture_id}"}
+
+        teams_by_api = {
+            team.external_api_id: team
+            for team in db.query(Team).filter(Team.fpl_season == FPL_SEASON)
+        }
+        for team_item in data["response"]:
+            represented = teams_by_api.get(team_item["team"]["id"])
+            if represented is None or represented.id not in (
+                fixture.home_team_id,
+                fixture.away_team_id,
+            ):
+                raise ValueError("API-Sports stats refer to a club outside this fixture")
+            for player_item in team_item["players"]:
                 player_data = player_item["player"]
                 api_player_id = player_data["id"]
 
                 player = (
                     db.query(Player)
                     .filter(
-                        Player.external_api_id == api_player_id
+                        Player.external_api_id == api_player_id, Player.fpl_season == FPL_SEASON
                     )
                     .first()
                 )
@@ -48,10 +64,7 @@ def sync_player_match_stats(fixture_id):
                     skipped += 1
                     continue
 
-                stats_data = player_item.get(
-                    "statistics",
-                    []
-                )
+                stats_data = player_item.get("statistics", [])
 
                 if not stats_data:
                     skipped += 1
@@ -68,89 +81,36 @@ def sync_player_match_stats(fixture_id):
                     db.query(PlayerMatchStat)
                     .filter(
                         PlayerMatchStat.player_id == player.id,
-                        PlayerMatchStat.fixture_id == fixture.id
+                        PlayerMatchStat.fixture_id == fixture.id,
                     )
                     .first()
                 )
 
+                values = {
+                    "team_id": represented.id,
+                    "minutes": stats["games"]["minutes"] or 0,
+                    "goals": stats["goals"]["total"] or 0,
+                    "assists": stats["goals"]["assists"] or 0,
+                    "shots": stats["shots"]["total"] or 0,
+                    "shots_on_target": stats["shots"]["on"] or 0,
+                    "key_passes": stats["passes"]["key"] or 0,
+                    "tackles": stats["tackles"]["total"] or 0,
+                    "interceptions": stats["tackles"]["interceptions"] or 0,
+                    "yellow_cards": stats["cards"]["yellow"] or 0,
+                    "red_cards": stats["cards"]["red"] or 0,
+                    "rating": rating,
+                }
                 if existing_stat:
-                    existing_stat.minutes = (
-                        stats["games"]["minutes"] or 0
-                    )
-
-                    existing_stat.goals = (
-                        stats["goals"]["total"] or 0
-                    )
-
-                    existing_stat.assists = (
-                        stats["goals"]["assists"] or 0
-                    )
-
-                    existing_stat.shots = (
-                        stats["shots"]["total"] or 0
-                    )
-
-                    existing_stat.shots_on_target = (
-                        stats["shots"]["on"] or 0
-                    )
-
-                    existing_stat.key_passes = (
-                        stats["passes"]["key"] or 0
-                    )
-
-                    existing_stat.tackles = (
-                        stats["tackles"]["total"] or 0
-                    )
-
-                    existing_stat.interceptions = (
-                        stats["tackles"]["interceptions"] or 0
-                    )
-
-                    existing_stat.yellow_cards = (
-                        stats["cards"]["yellow"] or 0
-                    )
-
-                    existing_stat.red_cards = (
-                        stats["cards"]["red"] or 0
-                    )
-
-                    existing_stat.rating = rating
-
+                    for field, value in values.items():
+                        setattr(existing_stat, field, value)
                     updated += 1
-
                 else:
-                    new_stat = PlayerMatchStat(
-                        player_id=player.id,
-                        fixture_id=fixture.id,
-                        minutes=stats["games"]["minutes"] or 0,
-                        goals=stats["goals"]["total"] or 0,
-                        assists=stats["goals"]["assists"] or 0,
-                        shots=stats["shots"]["total"] or 0,
-                        shots_on_target=stats["shots"]["on"] or 0,
-                        key_passes=stats["passes"]["key"] or 0,
-                        tackles=stats["tackles"]["total"] or 0,
-                        interceptions=(
-                            stats["tackles"]["interceptions"] or 0
-                        ),
-                        yellow_cards=(
-                            stats["cards"]["yellow"] or 0
-                        ),
-                        red_cards=(
-                            stats["cards"]["red"] or 0
-                        ),
-                        rating=rating
-                    )
-
-                    db.add(new_stat)
+                    db.add(PlayerMatchStat(player_id=player.id, fixture_id=fixture.id, **values))
                     added += 1
 
         db.commit()
 
-        return {
-            "added": added,
-            "updated": updated,
-            "skipped": skipped
-        }
+        return {"added": added, "updated": updated, "skipped": skipped}
 
     except Exception:
         db.rollback()
@@ -160,73 +120,63 @@ def sync_player_match_stats(fixture_id):
         db.close()
 
 
-import time
-import requests
-
-
 def sync_completed_fixture_stats(current_gameweek):
     db = SessionLocal()
 
-    total_added = 0
-    total_updated = 0
-    total_skipped = 0
-
     try:
-        completed_fixtures = (
+        fixtures = (
             db.query(Fixture)
             .filter(
+                Fixture.season == SEASON,
                 Fixture.status == "FT",
-                Fixture.gameweek <= current_gameweek
+                Fixture.gameweek <= current_gameweek,
             )
-            .order_by(
-                Fixture.gameweek,
-                Fixture.fixture_date
-            )
+            .order_by(Fixture.fixture_date, Fixture.id)
             .all()
         )
 
-        fixture_ids = [
-            fixture.id
-            for fixture in completed_fixtures
-        ]
+        fixture_ids = [fixture.id for fixture in fixtures]
 
     finally:
         db.close()
 
-    for fixture_id in fixture_ids:
-        while True:
+    totals = {
+        "season": SEASON,
+        "through_gameweek": current_gameweek,
+        "fixtures_selected": len(fixture_ids),
+        "fixtures_processed": 0,
+        "added": 0,
+        "updated": 0,
+        "skipped": 0,
+        "failed_fixtures": [],
+    }
+
+    for index, fixture_id in enumerate(fixture_ids, start=1):
+        print(f"Importing fixture {index}/{len(fixture_ids)} (database ID {fixture_id})")
+
+        for attempt in range(3):
             try:
-                result = sync_player_match_stats(
-                    fixture_id
-                )
-
-                if "error" in result:
-                    break
-
-                total_added += result.get("added", 0)
-                total_updated += result.get("updated", 0)
-                total_skipped += result.get("skipped", 0)
-
-                # Conservative delay for lower-tier API limits
-                time.sleep(0.5)
-
+                result = sync_player_match_stats(fixture_id)
                 break
 
-            except requests.exceptions.HTTPError as e:
-                if e.response is not None and e.response.status_code == 429:
-                    print(
-                        f"Rate limit reached on fixture {fixture_id}. "
-                        "Waiting 60 seconds before retrying..."
-                    )
+            except requests.exceptions.HTTPError as error:
+                rate_limited = error.response is not None and error.response.status_code == 429
 
-                    time.sleep(0.5)
-                    continue
+                if not rate_limited or attempt == 2:
+                    raise
 
-                raise
+                print("Rate limited. Retrying in 30 seconds...")
+                time.sleep(30)
 
-    return {
-        "fixtures_processed": len(fixture_ids),
-        "added": total_added,
-        "updated": total_updated,
-        "skipped": total_skipped
-    }
+        if "error" in result:
+            totals["failed_fixtures"].append({"fixture_id": fixture_id, "error": result["error"]})
+            continue
+
+        totals["fixtures_processed"] += 1
+
+        for key in ("added", "updated", "skipped"):
+            totals[key] += result.get(key, 0)
+
+        time.sleep(0.5)
+
+    return totals
