@@ -1,4 +1,6 @@
 import type { Player } from "../types/player";
+import LineupEditor from "../components/LineupEditor";
+import type { Lineup } from "../utils/lineup";
 import PlayerPicker from "../components/PlayerPicker";
 import TeamImport from "../components/TeamImport";
 import type { ImportedTeam, TeamImportPreview } from "../types/teamImport";
@@ -6,6 +8,8 @@ import "./SquadPage.css";
 
 interface SquadPageProps {
     selectedPlayers: Player[];
+    lineup: Lineup;
+    onLineupChange: (lineup: Lineup) => void;
     bankMillions: string;
     setBankMillions: (value: string) => void;
     importedTeam: ImportedTeam | null;
@@ -16,7 +20,7 @@ interface SquadPageProps {
     disabled: boolean;
 }
 
-export default function SquadPage({ bankMillions, setBankMillions, importedTeam, onImport, availablePlayers, selectedPlayers, onAddPlayer, onRemovePlayer, disabled }: SquadPageProps) {
+export default function SquadPage({ lineup, onLineupChange, bankMillions, setBankMillions, importedTeam, onImport, availablePlayers, selectedPlayers, onAddPlayer, onRemovePlayer, disabled }: SquadPageProps) {
     const marketValueTenths = selectedPlayers.reduce(
         (total, player) => total + player.price_tenths,
         0,
@@ -43,6 +47,7 @@ export default function SquadPage({ bankMillions, setBankMillions, importedTeam,
                 <div><p className="eyebrow">POSITION CHECK</p><p className="metric-value">{goalkeeperCount} / {defenderCount} / {midfielderCount} / {attackerCount}</p></div>
                 <div><p className="eyebrow">MARKET VALUE</p><p className="metric-value">£{(marketValueTenths / 10).toFixed(1)}m</p></div>
             </div>
+            <LineupEditor players={selectedPlayers} lineup={lineup} onChange={onLineupChange} />
             <div className="squad-workspace">
                 <aside className="squad-roster panel">
                     <p className="eyebrow accent">YOUR 15</p>
@@ -53,12 +58,12 @@ export default function SquadPage({ bankMillions, setBankMillions, importedTeam,
                     {selectedPlayers.length === 0 && <p className="small-note">Add players to build your squad.</p>}
                 </aside>
                 <section className="squad-pitch panel">
-                    <div className="panel-heading"><h2>Your squad on the pitch</h2><p className="eyebrow accent">{selectedPlayers.length} / 15</p></div>
+                    <div className="panel-heading"><h2>Your starting XI on the pitch</h2><p className="eyebrow accent">{lineup.starters.length} / 11</p></div>
                     <div className="squad-pitch-scroll"><div className="squad-pitch-field">
                         <img className="pitch-markings" src="/figma/tactical-pitch.svg" alt="" />
-                        {selectedPlayers.length === 0 ? <div className="forge-state forge-state--empty squad-empty"><strong className="forge-state-title">Your squad starts here.</strong><p>Add players using the picker.</p></div> : <div className="squad-position-groups">
+                        {lineup.starters.length === 0 ? <div className="forge-state forge-state--empty squad-empty"><strong className="forge-state-title">Your starting XI starts here.</strong><p>Complete your squad using the picker to set a lineup.</p></div> : <div className="squad-position-groups">
                             {[['Goalkeeper', 'GK'], ['Defender', 'DEF'], ['Midfielder', 'MID'], ['Attacker', 'FWD']].map(([position, label]) => <section className="squad-position-group" key={position} aria-label={position}>
-                                <ul className="squad-player-tiles">{selectedPlayers.filter(player => player.position === position).map(player => <li className="squad-player-tile" key={player.id}>
+                                <ul className="squad-player-tiles">{selectedPlayers.filter(player => lineup.starters.includes(player.id) && player.position === position).map(player => <li className="squad-player-tile" key={player.id}>
                                     <strong>{player.name}</strong><span className="eyebrow">{player.team_name ?? "Unknown team"} / {label}</span>
                                     <div className="tile-value"><span>£{(player.price_tenths / 10).toFixed(1)}m</span><button type="button" className="tile-remove" onClick={() => onRemovePlayer(player.id)} disabled={disabled} aria-label={`Remove ${player.name}`}>×</button></div>
                                 </li>)}</ul>

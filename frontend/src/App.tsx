@@ -9,6 +9,8 @@ import FixturePlannerPage from "./pages/FixturePlannerPage";
 import OverviewPage from "./pages/OverviewPage";
 import { useDashboard } from "./hooks/useDashboard";
 import DataState from "./components/DataState";
+import { readLineup, reconcileLineup } from "./utils/lineup";
+import type { Lineup } from "./utils/lineup";
 import { reconcilePlayers } from "./utils/squad";
 import { importedTeamMetadata, readImportedTeam } from "./utils/teamImport";
 import type { ImportedTeam, TeamImportPreview } from "./types/teamImport";
@@ -24,6 +26,7 @@ function readSavedInput(key: string, fallback: string): string {
 
 export default function App() {
     const location = useLocation();
+    const [savedLineup, setLineup] = useState<Lineup>(() => readLineup(readSavedInput("fpl-forge-lineup", "null")));
     const [lookback, setLookback] = useState(5);
     const {data, loading, error: dataError, retry} = useDashboard(lookback);
     const [importedTeam, setImportedTeam] = useState<ImportedTeam | null>(readImportedTeam);
@@ -63,6 +66,13 @@ export default function App() {
         return reconcilePlayers(savedPlayers, data?.players);
     }, [data, savedPlayers]);
 
+    const lineup = useMemo(() => reconcileLineup(savedLineup, selectedPlayers), [savedLineup, selectedPlayers]);
+    useEffect(() => {
+        if (!data) return;
+        try { localStorage.setItem("fpl-forge-lineup", JSON.stringify(lineup)); }
+        catch (error) { console.error("Could not save lineup", error); }
+    }, [data, lineup]);
+
     useEffect(() => {
         if (!data) return;
         try { localStorage.setItem("fpl-forge-squad", JSON.stringify(selectedPlayers)); }
@@ -87,6 +97,7 @@ export default function App() {
 
     function handleTeamImport(preview: TeamImportPreview) {
         setSelectedPlayers(preview.players);
+        setLineup(reconcileLineup({starters: preview.players.slice(0, 11).map(player => player.id), bench: preview.players.slice(11).map(player => player.id)}, preview.players));
         setBankMillions((preview.bank_tenths / 10).toFixed(1));
         if (preview.analysis_gameweek !== null) setCurrentGameweek(preview.analysis_gameweek.toString());
         setImportedTeam(importedTeamMetadata(preview));
@@ -203,6 +214,8 @@ export default function App() {
                                 )}
 
                                 <SquadPage
+                                    lineup={lineup}
+                                    onLineupChange={setLineup}
                                     bankMillions={bankMillions}
                                     setBankMillions={setBankMillions}
                                     importedTeam={importedTeam}
