@@ -1,5 +1,5 @@
 from typing import Annotated
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 PositiveID = Annotated[int, Field(strict=True, gt=0)]
 Money = Annotated[int, Field(strict=True, ge=0)]
@@ -12,6 +12,22 @@ class TransferRecommendationRequest(BaseModel):
     owned_player_ids: list[PositiveID] = Field(min_length=15, max_length=15)
     selling_prices_tenths: dict[PositiveID, Money] = Field(default_factory=dict)
     limit: int = Field(default=5, ge=1, le=50, strict=True)
+
+    @field_validator('selling_prices_tenths', mode='before')
+    @classmethod
+    def normalize_selling_price_ids(cls, value):
+        # FastAPI validates decoded JSON, whose object keys are always strings.
+        # Convert only canonical integer keys; keep strict validation on values.
+        if not isinstance(value, dict):
+            return value
+        normalized = {}
+        for key, price in value.items():
+            if isinstance(key, str) and key.isascii() and key.isdecimal() and str(int(key)) == key:
+                key = int(key)
+            if key in normalized:
+                raise ValueError('Duplicate selling-price player ID')
+            normalized[key] = price
+        return normalized
 
     @model_validator(mode='after')
     def validate_squad_ids(self):

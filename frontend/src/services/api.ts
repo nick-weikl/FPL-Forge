@@ -1,3 +1,4 @@
+import { apiErrorMessage } from "../utils/apiError";
 import type { Dashboard } from "../types/dashboard";
 import type { Player } from "../types/player";
 import type { StrategyRequest, StrategyResponse } from "../types/recommendation";
@@ -15,9 +16,7 @@ export async function getTransferStrategy(request: StrategyRequest, signal?: Abo
 
         if (!response.ok) {
             const body = await response.json().catch(() => null);
-            const detail = body?.detail;
-            const message = typeof detail === "string" ? detail : detail?.error;
-            throw new Error(message ?? `Request failed (${response.status}). Check your settings and data coverage.`)
+            throw new Error(apiErrorMessage(body, response.status))
         }
 
         const data = await response.json();
@@ -38,9 +37,7 @@ export async function getPlayers() : Promise<Player[]> {
 
         if (!response.ok) {
             const body = await response.json().catch(() => null);
-            const detail = body?.detail;
-            const message = typeof detail === "string" ? detail : detail?.error;
-            throw new Error(message ?? `Request failed (${response.status}). Check your settings and data coverage.`)
+            throw new Error(apiErrorMessage(body, response.status))
         }
 
         const data = await response.json();

@@ -196,7 +196,7 @@ export default function RecommendationPage({
             </div>
             <div className="recommendation-settings">
                 <div className="recommendation-fields">
-                    <label className="field" htmlFor="gameweek"><span className="eyebrow">CURRENT GAMEWEEK</span><input type="number" value={currentGameweek} onChange={(event) => { setCurrentGameweek(event.target.value); setRecommendation(null); setError(null); }} disabled={isLoading} id="gameweek" /></label>
+                    <label className="field" htmlFor="gameweek"><span className="eyebrow">LAST COMPLETED GAMEWEEK</span><input type="number" value={currentGameweek} onChange={(event) => { setCurrentGameweek(event.target.value); setRecommendation(null); setError(null); }} disabled={isLoading} id="gameweek" /></label>
                     <label className="field" htmlFor="free-transfers"><span className="eyebrow">FREE TRANSFERS</span><input type="number" value={freeTransfers} onChange={(event) => { setFreeTransfers(event.target.value); setRecommendation(null); setError(null); }} disabled={isLoading} id="free-transfers" /></label>
                     <label className="field" htmlFor="bank"><span className="eyebrow">BANK / £m</span><input type="number" step="0.1" value={bankMillions} onChange={(event) => { setBankMillions(event.target.value); setRecommendation(null); setError(null); }} disabled={isLoading} id="bank" /></label>
                 </div>
