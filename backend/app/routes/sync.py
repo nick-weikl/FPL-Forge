@@ -29,7 +29,7 @@ def sync_fixtures():
 
 @router.post("/player-fixture-stats/batch")
 def sync_player_fixture_stats_batch(
-    current_gameweek: int = Query(default=1, ge=1)
+    current_gameweek: int = Query(default=1, ge=1, le=38)
 ):
     return sync_completed_fixture_stats(
         current_gameweek

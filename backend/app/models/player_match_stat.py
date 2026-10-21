@@ -21,6 +21,9 @@ class PlayerMatchStat(Base):
         nullable=False
     )
 
+    # Club represented in this fixture; never infer it from the current roster.
+    team_id = Column(Integer, ForeignKey("teams.id"), nullable=True)
+
     minutes = Column(Integer, default=0)
 
     goals = Column(Integer, default=0)

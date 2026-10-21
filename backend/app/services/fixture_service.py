@@ -138,12 +138,15 @@ def sync_premier_league_fixtures():
 
             fixture.gameweek = gameweek
             fixture.fixture_date = fixture_date
-            fixture.status = source["status"]["short"]
+            fixture.fpl_fixture_id = fpl_fixture["id"]
+            fixture.status = "FT" if fpl_fixture["finished"] else ("LIVE" if fpl_fixture["started"] else "NS")
             fixture.home_team_id = home.id
             fixture.away_team_id = away.id
-            fixture.home_score = item["goals"]["home"]
-            fixture.away_score = item["goals"]["away"]
+            fixture.home_score = fpl_fixture["team_h_score"]
+            fixture.away_score = fpl_fixture["team_a_score"]
 
+        if set(fpl_by_pair) != seen_pairs:
+            raise ValueError("API-Sports fixture coverage is incomplete; no fixture changes saved")
         db.commit()
 
         return {

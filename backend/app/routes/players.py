@@ -57,6 +57,9 @@ def get_players(
             "team_id": player.team_id,
             "team_name": player.team.name if player.team else None,
             "price_tenths": player.price_tenths,
+            "price_updated_at": player.price_updated_at,
+            "availability_status": player.availability_status,
+            "api_linked": player.external_api_id is not None,
         }
         for player in players
     ]
@@ -69,7 +72,7 @@ def get_player(
 ):
     player = (
         db.query(Player)
-        .filter(Player.id == player_id)
+        .filter(Player.id == player_id, Player.fpl_season == FPL_SEASON)
         .first()
     )
 
@@ -90,7 +93,7 @@ def get_player_summary_route(
 ):
     player = (
         db.query(Player)
-        .filter(Player.id == player_id)
+        .filter(Player.id == player_id, Player.fpl_season == FPL_SEASON)
         .first()
     )
 
@@ -112,7 +115,7 @@ def get_player_recent_form_route(
 ):
     player = (
         db.query(Player)
-        .filter(Player.id == player_id)
+        .filter(Player.id == player_id, Player.fpl_season == FPL_SEASON)
         .first()
     )
 
@@ -138,7 +141,7 @@ def get_player_upcoming_fixtures(
 ):
     player = (
         db.query(Player)
-        .filter(Player.id == player_id)
+        .filter(Player.id == player_id, Player.fpl_season == FPL_SEASON)
         .first()
     )
 
@@ -165,7 +168,7 @@ def get_player_analytics_route(
 ):
     player = (
         db.query(Player)
-        .filter(Player.id == player_id)
+        .filter(Player.id == player_id, Player.fpl_season == FPL_SEASON)
         .first()
     )
 

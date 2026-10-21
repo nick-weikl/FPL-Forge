@@ -31,6 +31,7 @@ export default function RecommendationPage({
     setBankMillions,
 }: RecommendationPageProps) {
     const [recommendation, setRecommendation] = useState<StrategyResponse | null>(null);
+    const [sellingPrices, setSellingPrices] = useState<Record<number, string>>({});
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const strategyLabels: Record<string, string> = {
         single_transfer: "Single transfer",
@@ -89,7 +90,7 @@ export default function RecommendationPage({
             return
         }
         const transferCount = Number(freeTransfers)
-        if (!Number.isInteger(transferCount) || transferCount < 0) {
+        if (!Number.isInteger(transferCount) || transferCount < 0 || transferCount > 5) {
             setError("Enter a valid number of transfers")
             return
         }
@@ -134,6 +135,18 @@ export default function RecommendationPage({
         }
            
 
+        const sellingPricesTenths: Record<number, number> = {};
+        for (const player of selectedPlayers) {
+            const text = sellingPrices[player.id]?.trim();
+            if (!text) continue;
+            const value = Number(text);
+            const tenths = Math.round(value * 10);
+            if (!Number.isFinite(value) || value < 0 || Math.abs(value * 10 - tenths) > 0.00001) {
+                setError(`Enter ${player.name}'s selling value in £0.1m increments.`);
+                return;
+            }
+            sellingPricesTenths[player.id] = tenths;
+        }
         setIsLoading(true)
 
 
@@ -142,7 +155,8 @@ export default function RecommendationPage({
             current_gameweek: gameweek,
             bank_tenths: bankTenths,
             free_transfers: transferCount, 
-            candidates_per_player: 10, 
+            candidates_per_player: 10,
+            selling_prices_tenths: sellingPricesTenths,
             owned_player_ids: selectedPlayers.map((player) => player.id),   
             }
 
@@ -154,7 +168,7 @@ export default function RecommendationPage({
         }
         catch (error) {
             console.error("Failed", error)
-            setError("Could not fetch a recommendation. Please try again")
+            setError(error instanceof Error ? error.message : "Could not fetch a recommendation. Please try again")
         }
         finally {
             setIsLoading(false)
@@ -188,10 +202,27 @@ export default function RecommendationPage({
                 </div>
                 <button className="forge-button recommendation-submit" onClick={handleGetRecommendation} disabled={isLoading || selectedPlayers.length !== 15}>{isLoading ? "Analysing…" : "Run analysis"}</button>
             </div>
+            <details className="panel">
+                <summary>Player selling values</summary>
+                <p>Enter the selling values shown in your FPL squad, in £m. Blank values use current market prices and may overestimate your budget.</p>
+                <div className="recommendation-fields">
+                    {selectedPlayers.map(player => <label key={player.id} className="field">
+                        <span>{player.name} / £m</span>
+                        <input type="number" min="0" step="0.1" disabled={isLoading}
+                            placeholder={(player.price_tenths / 10).toFixed(1)}
+                            value={sellingPrices[player.id] ?? ""}
+                            onChange={event => { setSellingPrices(previous => ({...previous, [player.id]: event.target.value})); setRecommendation(null); }} />
+                    </label>)}
+                </div>
+            </details>
             {isLoading && <div className="forge-state forge-state--loading" role="status"><strong className="forge-state-title">Comparing transfer options…</strong><p>Your recommendation will appear here when it is ready.</p></div>}
             {!recommendation && !isLoading && !error && <div className="forge-state forge-state--empty"><strong className="forge-state-title">Your recommendation will appear here.</strong><p>{selectedPlayers.length !== 15 ? "Complete your 15-player squad on My Squad to get started." : "Check your settings, then select Run analysis."}</p></div>}
             {error && <p className="forge-state forge-state--error" role="alert">{error}</p>}
             {recommendation && <>
+                <div className="panel" role="status">
+                    <p>Expected FPL points over the next {recommendation.horizon_gameweeks} gameweeks. Official points through GW{recommendation.data_quality.official_fpl_through_gameweek ?? "—"}.</p>
+                    {recommendation.warnings.map(warning => <p key={warning} className="small-note">{warning}</p>)}
+                </div>
                 <section className="strategy-board" aria-label="Transfer strategy comparison">
                     {([
                         { key: "no_transfer", label: "00 / NO TRANSFER", raw: 0, net: 0, cost: 0, moves: [], available: true },
@@ -200,7 +231,7 @@ export default function RecommendationPage({
                     ]).map(strategy => <article key={strategy.key} className={`strategy-card panel${recommendation.recommended_strategy === strategy.key ? " strategy-card--best" : ""}${strategy.key === "no_transfer" ? " strategy-card--hold" : ""}`}>
                         <p className="eyebrow strategy-label">{strategy.label}{recommendation.recommended_strategy === strategy.key && " · BEST"}</p>
                         <p className="strategy-gain">{strategy.net == null ? "—" : `${strategy.net > 0 ? "+" : ""}${strategy.net.toFixed(2)}`}</p>
-                        <p className="eyebrow strategy-gain-label">NET FORGE SCORE GAIN</p>
+                        <p className="eyebrow strategy-gain-label">EXPECTED NET FPL POINT GAIN</p>
                         <hr className="rule" />
                         <div className="strategy-moves">
                             {strategy.key === "no_transfer" ? <><h2>Keep your current squad.</h2><p className="muted">Carry the same 15 into the next gameweek.</p></> : strategy.available ? <>{strategy.moves.map((move, index) => <p className={index === 0 ? "strategy-move-title" : "muted"} key={`${move.player_out.player_id}-${move.player_in.player_id}`}><span>{move.player_out.name}</span><span className="move-arrow" aria-label="to"> → </span><span>{move.player_in.name}</span></p>)}{strategy.key === "single_transfer" && <p className="muted">One change.{recommendation.recommended_strategy === "single_transfer" ? " The strongest net gain." : " Compare the net gain."}</p>}</> : <><h2>No available move.</h2><p className="muted">No transfer option was found for this strategy.</p></>}
@@ -214,7 +245,7 @@ export default function RecommendationPage({
                 </section>
                 <section className="decision-explanation">
                     <div><p className="eyebrow accent">WHY {recommendation.recommended_strategy === "single_transfer" ? "SINGLE WINS" : recommendation.recommended_strategy === "double_transfer" ? "DOUBLE WINS" : "HOLD WINS"}</p><h2>{recommendation.reason.summary}</h2></div>
-                    <div><p>{recommendation.reason.decision_detail}</p><p className="small-note">{remainingBankTenths !== null ? `Bank after recommended strategy: £${(remainingBankTenths / 10).toFixed(1)}m / ` : ""}{strategyLabels[recommendation.recommended_strategy]} / Demo prices and budget values</p></div>
+                    <div><p>{recommendation.reason.decision_detail}</p><p className="small-note">{remainingBankTenths !== null ? `Bank after recommended strategy: £${(remainingBankTenths / 10).toFixed(1)}m / ` : ""}{strategyLabels[recommendation.recommended_strategy]} / Current FPL prices; check selling values</p></div>
                 </section>
             </>}
         </div>

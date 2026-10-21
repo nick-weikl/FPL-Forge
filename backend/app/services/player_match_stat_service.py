@@ -1,7 +1,7 @@
 from app.database import SessionLocal
 from app.models import PlayerMatchStat
 from app.models.fixture import Fixture
-from app.models import Player
+from app.models import Player, Team
 from app.services.football_api import get_player_match_stats
 import time
 import requests
@@ -49,7 +49,13 @@ def sync_player_match_stats(fixture_id):
                 "error": f"No match statistics returned for fixture {fixture_id}"
             }
 
+        teams_by_api = {
+            team.external_api_id: team for team in db.query(Team).filter(Team.fpl_season == FPL_SEASON)
+        }
         for team_item in data["response"]:
+            represented = teams_by_api.get(team_item["team"]["id"])
+            if represented is None or represented.id not in (fixture.home_team_id, fixture.away_team_id):
+                raise ValueError("API-Sports stats refer to a club outside this fixture")
             for player_item in team_item["players"]:
 
                 player_data = player_item["player"]
@@ -94,6 +100,7 @@ def sync_player_match_stats(fixture_id):
                 )
 
                 if existing_stat:
+                    existing_stat.team_id = represented.id
                     existing_stat.minutes = (
                         stats["games"]["minutes"] or 0
                     )
@@ -142,6 +149,7 @@ def sync_player_match_stats(fixture_id):
                     new_stat = PlayerMatchStat(
                         player_id=player.id,
                         fixture_id=fixture.id,
+                        team_id=represented.id,
                         minutes=stats["games"]["minutes"] or 0,
                         goals=stats["goals"]["total"] or 0,
                         assists=stats["goals"]["assists"] or 0,

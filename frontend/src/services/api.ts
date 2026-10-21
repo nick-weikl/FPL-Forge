@@ -1,7 +1,7 @@
 import type { Player } from "../types/player";
 import type { StrategyRequest, StrategyResponse } from "../types/recommendation";
 
-const base_url = "http://127.0.0.1:8000/api"
+const base_url = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000/api"
 
 export async function getTransferStrategy(request: StrategyRequest) : Promise<StrategyResponse> {
     try {
@@ -12,7 +12,10 @@ export async function getTransferStrategy(request: StrategyRequest) : Promise<St
         })
 
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
+            const body = await response.json().catch(() => null);
+            const detail = body?.detail;
+            const message = typeof detail === "string" ? detail : detail?.error;
+            throw new Error(message ?? `Request failed (${response.status}). Check your settings and data coverage.`)
         }
 
         const data = await response.json();
@@ -32,7 +35,10 @@ export async function getPlayers() : Promise<Player[]> {
         })
 
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
+            const body = await response.json().catch(() => null);
+            const detail = body?.detail;
+            const message = typeof detail === "string" ? detail : detail?.error;
+            throw new Error(message ?? `Request failed (${response.status}). Check your settings and data coverage.`)
         }
 
         const data = await response.json();

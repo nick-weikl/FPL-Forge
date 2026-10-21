@@ -4,6 +4,7 @@ from typing import Optional
 
 from app.database import get_db
 from app.models.fixture import Fixture
+from app.services.football_api import SEASON
 from app.services.player_match_stat_service import sync_player_match_stats
 
 
@@ -21,7 +22,7 @@ def get_fixtures(
     team_id: Optional[int] = None,
     gameweek: Optional[int] = None
 ):
-    query = db.query(Fixture)
+    query = db.query(Fixture).filter(Fixture.season == SEASON)
 
     if home_team_id is not None:
         query = query.filter(Fixture.home_team_id == home_team_id)
@@ -30,7 +31,7 @@ def get_fixtures(
         query = query.filter(Fixture.away_team_id == away_team_id)
 
     if gameweek is not None:
-        query = query.filter(Fixture.gameweek == gameweek)
+        query = query.filter(Fixture.season == SEASON, Fixture.gameweek == gameweek)
 
     if team_id is not None:
         query = query.filter(
@@ -47,7 +48,7 @@ def get_fixtures_by_gameweek(
 ):
     fixtures = (
         db.query(Fixture)
-        .filter(Fixture.gameweek == gameweek)
+        .filter(Fixture.season == SEASON, Fixture.gameweek == gameweek)
         .all()
     )
 
@@ -62,6 +63,7 @@ def get_fixtures_by_team(
     fixtures = (
         db.query(Fixture)
         .filter(
+            Fixture.season == SEASON,
             (Fixture.home_team_id == team_id) | (Fixture.away_team_id == team_id)
         )
         .all()
@@ -79,6 +81,7 @@ def get_fixtures_by_team_and_gameweek(
     fixtures = (
         db.query(Fixture)
         .filter(
+            Fixture.season == SEASON,
             ((Fixture.home_team_id == team_id) | (Fixture.away_team_id == team_id)) &
             (Fixture.gameweek == gameweek)
         )
@@ -88,6 +91,6 @@ def get_fixtures_by_team_and_gameweek(
     return fixtures
 
 
-@router.get("/{fixture_id}/player-stats-test")
+@router.post("/{fixture_id}/sync-player-stats")
 def test_player_stats(fixture_id: int):
     return sync_player_match_stats(fixture_id)

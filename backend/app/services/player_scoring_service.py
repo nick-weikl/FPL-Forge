@@ -343,6 +343,9 @@ def get_all_player_metrics(
 
 
 def calculate_fixture_score(average_fixture_difficulty):
+    # No remaining fixtures means no future fixture contribution.
+    if average_fixture_difficulty is None:
+        return 0.0
     fixture_score = (
         (5 - average_fixture_difficulty) / 4
     ) * 10

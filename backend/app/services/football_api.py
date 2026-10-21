@@ -9,7 +9,7 @@ API_KEY = os.getenv("API_KEY")
 
 BASE_URL = "https://v3.football.api-sports.io"
 LEAGUE_ID = 39
-SEASON = 2026
+SEASON = int(os.getenv("FPL_SEASON_START", "2026"))
 
 headers = {
     "x-apisports-key": API_KEY

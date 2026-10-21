@@ -10,15 +10,17 @@ class Team(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     # ID supplied by the external football API
-    external_api_id = Column(Integer, unique=True, nullable=True)
+    external_api_id = Column(Integer, nullable=True)
 
-    name = Column(String, unique=True, nullable=False)
+    name = Column(String, nullable=False)
     short_name = Column(String, nullable=True)
 
     fpl_team_id = Column(Integer, nullable=True)
     fpl_season = Column(String(7), nullable=True)
 
     __table_args__ = (
+        Index("uq_teams_api_season_id", "fpl_season", "external_api_id", unique=True),
+        Index("uq_teams_name_season", "fpl_season", "name", unique=True),
         Index(
             "uq_teams_fpl_season_id",
             "fpl_season",

@@ -25,6 +25,7 @@ def get_all_team_strengths(
         fixtures = (
             db.query(Fixture)
             .filter(
+                Fixture.season == SEASON,
                 Fixture.status == "FT",
                 Fixture.gameweek <= current_gameweek
             )

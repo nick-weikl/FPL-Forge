@@ -7,6 +7,7 @@ from app.services.fpl_price_service import (
     get_fpl_players
 )
 import re
+from datetime import datetime, timezone
 import unicodedata
 from collections import defaultdict
 from sqlalchemy.orm import joinedload
@@ -115,6 +116,15 @@ def sync_premier_league_players(data=None, db=None):
                 item["fpl_team_id"]
             ].id
             player.price_tenths = item["price_tenths"]
+            player.price_updated_at = datetime.now(timezone.utc)
+            raw_player = next(row for row in data["elements"] if row["id"] == item["fpl_player_id"])
+            player.availability_status = raw_player.get("status")
+            player.chance_of_playing = raw_player.get("chance_of_playing_next_round")
+            db.flush()
+            from app.models.fpl_data import PlayerPriceSnapshot
+            db.add(PlayerPriceSnapshot(player_id=player.id, team_id=player.team_id,
+                       position=player.position, price_tenths=player.price_tenths,
+                       observed_at=player.price_updated_at, source="official_fpl_bootstrap"))
 
             # These are current prices, not a historical GW snapshot.
             player.fpl_price_gameweek = None

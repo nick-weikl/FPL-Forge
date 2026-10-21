@@ -24,9 +24,9 @@ def get_player_summary(
             .join(
                 Fixture,
                 PlayerMatchStat.fixture_id == Fixture.id,
-                Fixture.season == SEASON,
             )
             .filter(
+                Fixture.season == SEASON,
                 PlayerMatchStat.player_id == player_id,
                 Fixture.gameweek <= current_gameweek
             )

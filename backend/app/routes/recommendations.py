@@ -16,6 +16,7 @@ def get_transfer_candidates_route(
         current_player_id=player_id,
         current_gameweek=request.current_gameweek,
         owned_player_ids=request.owned_player_ids,
+        selling_prices_tenths=request.selling_prices_tenths,
         bank_tenths=request.bank_tenths,
         limit=request.limit
     )
@@ -36,6 +37,7 @@ def get_best_squad_transfer_route(
     result = get_best_squad_transfer(
         current_gameweek=request.current_gameweek,
         owned_player_ids=request.owned_player_ids,
+        selling_prices_tenths=request.selling_prices_tenths,
         bank_tenths=request.bank_tenths
     )
 
@@ -58,6 +60,7 @@ def recommend_double_transfer(
             request.current_gameweek,
         owned_player_ids=
             request.owned_player_ids,
+        selling_prices_tenths=request.selling_prices_tenths,
         bank_tenths=
             request.bank_tenths,
         candidates_per_player=
@@ -84,6 +87,7 @@ def recommend_transfer_strategy(
         owned_player_ids=
             request.owned_player_ids,
 
+        selling_prices_tenths=request.selling_prices_tenths,
         bank_tenths=
             request.bank_tenths,
 

@@ -49,3 +49,6 @@ frontend/.env.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+# Reproducible source archives and local database backups
+backend/data/fpl/
+backend/backups/

@@ -4,6 +4,7 @@ export interface StrategyRequest {
   free_transfers: number;
   owned_player_ids: number[];
   candidates_per_player: number;
+  selling_prices_tenths?: Record<number, number>;
 }
 
 export interface TransferPlayer {
@@ -29,6 +30,13 @@ export interface StrategyResponse {
         | "no_transfer";
 
     best_net_score_gain: number;
+    score_units: "expected_fpl_points";
+    horizon_gameweeks: number;
+    warnings: string[];
+    data_quality: {
+        official_fpl_through_gameweek: number | null;
+        api_sports_through_gameweek: number | null;
+    };
     free_transfers: number;
 
     reason: {

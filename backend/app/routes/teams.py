@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.team import Team
+from app.services.fpl_price_service import FPL_SEASON
 from app.services.fixture_difficulty_service import get_team_strength
 from app.services.fixture_difficulty_service import get_fixture_difficulty
 
@@ -15,7 +16,7 @@ router = APIRouter(
 
 @router.get("")
 def get_teams(db: Session = Depends(get_db)):
-    teams = db.query(Team).all()
+    teams = db.query(Team).filter(Team.fpl_season == FPL_SEASON).all()
 
     return teams
 
@@ -27,7 +28,7 @@ def get_team(
 ):
     team = (
         db.query(Team)
-        .filter(Team.id == team_id)
+        .filter(Team.id == team_id, Team.fpl_season == FPL_SEASON)
         .first()
     )
 

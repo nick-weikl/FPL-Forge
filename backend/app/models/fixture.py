@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Index
 from sqlalchemy.orm import relationship
 
 from app.database import Base
@@ -10,6 +10,13 @@ class Fixture(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     external_api_id = Column(Integer, unique=True, nullable=False)
+
+    fpl_fixture_id = Column(Integer, nullable=True)
+
+    __table_args__ = (
+        Index("uq_fixtures_fpl_season_id", "season", "fpl_fixture_id", unique=True),
+        Index("uq_fixtures_season_pair", "season", "home_team_id", "away_team_id", unique=True),
+    )
 
     gameweek = Column(Integer, nullable=True)
 

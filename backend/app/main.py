@@ -16,7 +16,8 @@ from app.routes.recommendations import router as recommendations_router
 from app.routes.squads import router as squads_router
 from fastapi.middleware.cors import CORSMiddleware
 
-Base.metadata.create_all(bind=engine)
+# Apply schema changes explicitly with: python -m app.scripts.migrate
+# Importing the HTTP application never changes the database schema.
 
 app = FastAPI()
 app.add_middleware(
@@ -93,3 +94,6 @@ def api_test():
 # def get_match_stats(fixture_id: int):
 #     return get_match_stats(fixture_id)
 
+
+from app.routes.data_quality import router as data_quality_router
+app.include_router(data_quality_router)
