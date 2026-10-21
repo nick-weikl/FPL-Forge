@@ -33,3 +33,15 @@
 .squad-picker .forge-state { padding: 16px; }
 @media (max-width: 1250px) { .squad-workspace { grid-template-columns: 200px minmax(0, 1fr); } .squad-picker { grid-column: 2; } }
 @media (max-width: 800px) { .squad-workspace { grid-template-columns: 1fr; } .squad-picker { grid-column: auto; } .squad-roster { display: grid; grid-template-columns: 1fr 1fr; } .squad-roster > p { grid-column: 1 / -1; } .squad-summary { grid-template-columns: 1fr 1fr; } }
+
+.team-import { display: flex; flex-direction: column; gap: 16px; }
+.team-import-form { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.team-import-form .field { flex: 1; max-width: 360px; }
+.team-import-preview { display: flex; flex-direction: column; gap: 16px; }
+.team-import-scroll { overflow-x: auto; }
+.team-import-preview table { width: 100%; min-width: 520px; border-collapse: collapse; text-align: left; font-size: 13px; }
+.team-import-preview th, .team-import-preview td { padding: 10px 12px; border-bottom: 1px solid var(--color-border); }
+.team-import-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.team-import-preview ul { padding-left: 20px; }
+.squad-bank-field { max-width: 520px; }
+@media (max-width: 600px) { .team-import-form { align-items: stretch; } .team-import-form .field, .team-import-form .forge-button { flex: 1 1 100%; max-width: none; } }

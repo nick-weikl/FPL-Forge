@@ -100,3 +100,6 @@ app.include_router(data_quality_router)
 
 from app.routes.dashboard import router as dashboard_router
 app.include_router(dashboard_router)
+
+from app.routes.team_import import router as team_import_router
+app.include_router(team_import_router)

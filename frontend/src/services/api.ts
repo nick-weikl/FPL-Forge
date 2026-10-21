@@ -54,3 +54,10 @@ export async function getDashboard(lookbackGameweeks = 5, signal?: AbortSignal):
     if (!response.ok) throw new Error(`Could not load season data (${response.status}). Check that the backend is running and try again.`);
     return response.json();
 }
+
+export async function previewTeamImport(entryId: number, signal?: AbortSignal): Promise<import("../types/teamImport").TeamImportPreview> {
+    const response = await fetch(`${base_url}/fpl/teams/${entryId}/preview`, {signal});
+    const body = await response.json().catch(() => null);
+    if (!response.ok) throw new Error(apiErrorMessage(body, response.status));
+    return body;
+}

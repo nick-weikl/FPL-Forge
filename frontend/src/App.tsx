@@ -10,6 +10,8 @@ import OverviewPage from "./pages/OverviewPage";
 import { useDashboard } from "./hooks/useDashboard";
 import DataState from "./components/DataState";
 import { reconcilePlayers } from "./utils/squad";
+import { importedTeamMetadata, readImportedTeam } from "./utils/teamImport";
+import type { ImportedTeam, TeamImportPreview } from "./types/teamImport";
 
 
 function readSavedInput(key: string, fallback: string): string {
@@ -24,6 +26,7 @@ export default function App() {
     const location = useLocation();
     const [lookback, setLookback] = useState(5);
     const {data, loading, error: dataError, retry} = useDashboard(lookback);
+    const [importedTeam, setImportedTeam] = useState<ImportedTeam | null>(readImportedTeam);
     const [error, setError] = useState<string | null>(null);
     const [gameweekOverride, setCurrentGameweek] = useState<string>(
         () => readSavedInput("fpl-forge-gameweek", "")
@@ -77,6 +80,19 @@ export default function App() {
     }, [currentGameweek, freeTransfers, bankMillions]);
 
 
+    useEffect(() => {
+        try { localStorage.setItem("fpl-forge-import", JSON.stringify(importedTeam)); }
+        catch (error) { console.error("Could not save import details", error); }
+    }, [importedTeam]);
+
+    function handleTeamImport(preview: TeamImportPreview) {
+        setSelectedPlayers(preview.players);
+        setBankMillions((preview.bank_tenths / 10).toFixed(1));
+        if (preview.analysis_gameweek !== null) setCurrentGameweek(preview.analysis_gameweek.toString());
+        setImportedTeam(importedTeamMetadata(preview));
+        setError(null);
+    }
+
     function handleAddPlayer(player: Player) {
         setError(null)
 
@@ -105,6 +121,7 @@ export default function App() {
             return;
         }
 
+        setImportedTeam(previous => previous ? {...previous, edited: true} : null);
         setSelectedPlayers((previousPlayers) => {
             const currentPlayers = reconcilePlayers(previousPlayers, data?.players);
             const alreadySelected = currentPlayers.some(
@@ -122,6 +139,7 @@ export default function App() {
 
     function handleRemovePlayer(playerId: number) {
         setError(null)
+        setImportedTeam(previous => previous ? {...previous, edited: true} : null);
         setSelectedPlayers((previousPlayers) => {
             const remainingPlayers = reconcilePlayers(previousPlayers, data?.players).filter(
                 (selectedPlayer) => selectedPlayer.id !== playerId
@@ -185,6 +203,10 @@ export default function App() {
                                 )}
 
                                 <SquadPage
+                                    bankMillions={bankMillions}
+                                    setBankMillions={setBankMillions}
+                                    importedTeam={importedTeam}
+                                    onImport={handleTeamImport}
                                     availablePlayers={data.players}
                                     selectedPlayers={selectedPlayers}
                                     onAddPlayer={handleAddPlayer}

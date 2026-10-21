@@ -1,17 +1,23 @@
 import type { Player } from "../types/player";
 import PlayerPicker from "../components/PlayerPicker";
+import TeamImport from "../components/TeamImport";
+import type { ImportedTeam, TeamImportPreview } from "../types/teamImport";
 import "./SquadPage.css";
 
 interface SquadPageProps {
     selectedPlayers: Player[];
+    bankMillions: string;
+    setBankMillions: (value: string) => void;
+    importedTeam: ImportedTeam | null;
+    onImport: (preview: TeamImportPreview) => void;
     availablePlayers: Player[];
     onAddPlayer: (player: Player) => void;
     onRemovePlayer: (playerId: number) => void;
     disabled: boolean;
 }
 
-export default function SquadPage({ availablePlayers, selectedPlayers, onAddPlayer, onRemovePlayer, disabled }: SquadPageProps) {
-    const remainingBankTenths = 1000 - selectedPlayers.reduce(
+export default function SquadPage({ bankMillions, setBankMillions, importedTeam, onImport, availablePlayers, selectedPlayers, onAddPlayer, onRemovePlayer, disabled }: SquadPageProps) {
+    const marketValueTenths = selectedPlayers.reduce(
         (total, player) => total + player.price_tenths,
         0,
     );
@@ -23,11 +29,19 @@ export default function SquadPage({ availablePlayers, selectedPlayers, onAddPlay
     return (
         <div className="squad-page page-stack">
             <header className="page-heading"><p className="eyebrow">SQUAD WORKBENCH</p><h1>Build the team behind your next move.</h1><p>Your selected players, positional balance and player picker in one place.</p></header>
+            <TeamImport onImport={onImport} initialTeamId={importedTeam?.entry_id} />
+            {importedTeam && <section className="panel" role="status" aria-label="Imported squad source">
+                <p><strong>{importedTeam.team_name} · #{importedTeam.entry_id}</strong> · {importedTeam.season} · As of the GW{importedTeam.gameweek} deadline</p>
+                <p className="small-note">Imported deadline: {new Date(importedTeam.deadline_time).toLocaleString()}. Recorded bank: £{(importedTeam.bank_tenths / 10).toFixed(1)}m. Transfers after this deadline may not be included. This is not a live FPL account connection.</p>
+                {importedTeam.edited && <p className="small-note">You have edited this squad since importing it.</p>}
+                {Number(bankMillions) * 10 !== importedTeam.bank_tenths && <p className="small-note">Your bank has been edited since the import.</p>}
+            </section>}
+            <label className="field squad-bank-field"><span className="eyebrow">BANK / £m</span><input type="number" min="0" step="0.1" value={bankMillions} onChange={event => setBankMillions(event.target.value)} /><span className="small-note">Shared with Transfer Lab. Update this if you made transfers after the imported deadline. Market price changes do not alter your bank.</span></label>
             <div className="squad-summary">
                 <div><p className="eyebrow">SELECTED</p><p className="metric-value accent">{selectedPlayers.length} / 15</p></div>
-                <div><p className="eyebrow">BANK</p><p className="metric-value">£{(remainingBankTenths / 10).toFixed(1)}m</p></div>
+                <div><p className="eyebrow">BANK</p><p className="metric-value">{bankMillions.trim() && Number.isFinite(Number(bankMillions)) && Number(bankMillions) >= 0 ? `£${Number(bankMillions).toFixed(1)}m` : "—"}</p></div>
                 <div><p className="eyebrow">POSITION CHECK</p><p className="metric-value">{goalkeeperCount} / {defenderCount} / {midfielderCount} / {attackerCount}</p></div>
-                <div><p className="eyebrow">CLUB LIMIT</p><p className="metric-value">Maximum 3</p></div>
+                <div><p className="eyebrow">MARKET VALUE</p><p className="metric-value">£{(marketValueTenths / 10).toFixed(1)}m</p></div>
             </div>
             <div className="squad-workspace">
                 <aside className="squad-roster panel">
