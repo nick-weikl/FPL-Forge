@@ -39,3 +39,10 @@ jobs:
       - run: ruff check ..
       - run: ruff format --check ..
       - run: python -m unittest discover -s tests -v
+
+  containers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build --tag fpl-forge-backend:ci backend
+      - run: docker build --tag fpl-forge-frontend:ci frontend

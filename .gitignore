@@ -79,3 +79,11 @@ backend/player_link_report.json
 *.swp
 *.swo
 *~
+
+# Private deployment/runtime variable files and local release verification artifacts
+*.env
+*.env.*
+!*.env.example
+!.env.example
+deploy/private/
+output/

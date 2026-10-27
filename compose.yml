@@ -1,18 +1,26 @@
-# This is a deployment template, not a database provisioning or ingestion job.
+# Same-origin application stack. Database provisioning and ingestion are explicit operator tasks.
 services:
   backend:
+    image: ${BACKEND_IMAGE:-fpl-forge-backend:local}
     build: ./backend
+    init: true
+    cpus: 1.0
+    mem_limit: 512m
+    pids_limit: 128
+    stop_grace_period: 45s
     restart: unless-stopped
     environment:
       APP_ENV: production
       DATABASE_URL: ${DATABASE_URL:?Set a populated PostgreSQL URL with a read-only application role}
-      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,backend}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:?Set explicit public and internal health-check hosts}
       CORS_ORIGINS: ""
       ENABLE_ADMIN_SYNC: "false"
       REQUESTS_PER_MINUTE: "10000"
       FPL_SEASON_START: ${FPL_SEASON_START:-2026}
     expose:
       - "8000"
+    cap_drop:
+      - ALL
     read_only: true
     tmpfs:
       - /tmp
@@ -29,11 +37,31 @@ services:
       interval: 30s
       timeout: 6s
       retries: 3
+      start_period: 20s
   frontend:
+    image: ${FRONTEND_IMAGE:-fpl-forge-frontend:local}
     build: ./frontend
+    init: true
+    cpus: 0.5
+    mem_limit: 128m
+    pids_limit: 64
+    stop_grace_period: 15s
     restart: unless-stopped
     ports:
-      - "127.0.0.1:8080:80"
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:8080"
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx:mode=1777
+      - /var/run:mode=1777
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 6s
+      retries: 3
+      start_period: 20s
     depends_on:
       backend:
         condition: service_healthy

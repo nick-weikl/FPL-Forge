@@ -1,14 +1,18 @@
 import os
 
 os.environ.setdefault("DATABASE_URL", "sqlite://")
+import hashlib
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 from app.config import Settings
 from app.database import Base, get_db
 from app.main import create_app
+from app.migrations import v001
+from app.models.fpl_data import FPLMatchStat
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -133,6 +137,45 @@ class DeploymentGuardTests(unittest.TestCase):
             self.assertEqual(self.client.get("/health/ready").status_code, 503)
         Base.metadata.create_all(engine)
         self.assertEqual(self.client.get("/health/ready").json(), {"status": "ready"})
+        FPLMatchStat.__table__.drop(engine)
+        with self.assertLogs("fpl_forge", level="WARNING"):
+            self.assertEqual(self.client.get("/health/ready").status_code, 503)
+        self.assertEqual(self.client.get("/health/live").status_code, 200)
+        engine.dispose()
+
+    def test_production_readiness_requires_matching_migration_ledger(self):
+        engine = create_engine(
+            "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
+        )
+        Base.metadata.create_all(engine)
+        factory = sessionmaker(bind=engine)
+        app = create_app(settings(environment="production"))
+
+        def dependency():
+            with factory() as db:
+                yield db
+
+        app.dependency_overrides[get_db] = dependency
+        client = TestClient(app)
+        with self.assertLogs("fpl_forge", level="WARNING"):
+            self.assertEqual(client.get("/health/ready").status_code, 503)
+        checksum = hashlib.sha256(Path(v001.__file__).read_bytes()).hexdigest()
+        with engine.begin() as connection:
+            connection.execute(
+                text("CREATE TABLE schema_migrations (version TEXT PRIMARY KEY, checksum TEXT)")
+            )
+            connection.execute(
+                text("INSERT INTO schema_migrations VALUES (:v, :c)"),
+                {"v": "001_fpl_history", "c": checksum},
+            )
+        self.assertEqual(client.get("/health/ready").status_code, 200)
+        with engine.begin() as connection:
+            connection.execute(text("UPDATE schema_migrations SET checksum = 'modified'"))
+        with self.assertLogs("fpl_forge", level="WARNING"):
+            response = client.get("/health/ready")
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json(), {"status": "unavailable"})
+        self.assertNotIn("modified", response.text)
         engine.dispose()
 
     def test_production_configuration_fails_closed(self):

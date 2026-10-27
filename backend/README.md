@@ -1,6 +1,8 @@
 # FPL Forge backend
 
-Run commands from `backend/` with the project's Python environment. Set `DATABASE_URL` in `backend/.env` (or the process environment). `FPL_SEASON_START` defaults to `2026`. Credentials and downloaded data are ignored by Git.
+Run commands from `backend/` with the project's Python environment. Set `DATABASE_URL` in `backend/.env` (or the process environment). `FPL_SEASON_START` defaults to `2026`. Credentials and downloaded data are ignored by Git. Use `requirements-dev.txt` for tests and operator smoke checks; runtime images install `requirements.txt`. Use a read-only role for the running web application and a separate operator role for explicitly authorized updates.
+
+See [database recovery](../DATABASE_RECOVERY.md), [manual refresh](../MANUAL_REFRESH.md) and [deployment](../DEPLOYMENT.md) for the reviewed operator workflows. No new provider retrieval is authorized while the permission decision remains pending.
 
 ## Database updates
 
@@ -68,3 +70,7 @@ Frontend squad-cache regression tests run with `npm test` from `frontend/` (Node
 ### Read-only PostgreSQL recommendation check
 
 With development dependencies and the configured local database, run `python -m app.scripts.check_recommendations` from `backend`. It generates a legal inexpensive sample squad, enforces PostgreSQL read-only connections, and checks the real strategy endpoint for free-transfer settings 0, 1 and 2, budgets, club/position rules, captain/bench weighting, one-time hits, missing coverage and simulated stale prices. The stale scenario changes only the checker’s in-memory clock. It never retrieves provider data or changes stored prices. This is an arithmetic/integrity check, not a predictive backtest.
+
+## Health and deployment readiness
+
+`/health/live` is independent of PostgreSQL. `/health/ready` checks the columns of every required application table; in production it also requires the exact migration versions/checksums in the shared registry. It returns a safe HTTP 503 if a table, column or migration is missing or different. Startup never repairs those conditions. Readiness does not establish roster completeness or freshness; inspect `/api/data-quality` and use the read-only integrity checker separately.

@@ -1,0 +1,9 @@
+# Optional overlay for a provider-specific PostgreSQL CA certificate.
+# Use with -f compose.yml -f deploy/compose.database-tls.example.yml on every Compose command.
+services:
+  backend:
+    volumes:
+      - type: bind
+        source: ${DATABASE_CA_FILE:?Set the absolute path to the verified provider CA certificate}
+        target: /run/secrets/postgres-ca.crt
+        read_only: true

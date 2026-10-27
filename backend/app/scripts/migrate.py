@@ -5,10 +5,8 @@ import hashlib
 from pathlib import Path
 
 from app.database import engine
-from app.migrations import v001
+from app.migrations import MIGRATIONS
 from sqlalchemy import inspect, text
-
-MIGRATIONS = [("001_fpl_history", v001)]
 
 
 def migrate(check=False):
@@ -27,6 +25,11 @@ def migrate(check=False):
         if inspect(connection).has_table("schema_migrations"):
             applied = dict(
                 connection.execute(text("SELECT version, checksum FROM schema_migrations")).all()
+            )
+        unknown = sorted(applied.keys() - {version for version, _ in MIGRATIONS})
+        if unknown:
+            raise RuntimeError(
+                f"Database contains migrations unknown to this release: {', '.join(unknown)}"
             )
         pending = []
         for version, module in MIGRATIONS:

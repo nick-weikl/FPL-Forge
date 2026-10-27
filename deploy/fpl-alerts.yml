@@ -1,0 +1,18 @@
+groups:
+  - name: fpl-forge
+    rules:
+      - alert: FPLForgeNotReady
+        expr: probe_success{job="fpl-forge-readiness"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: FPL Forge readiness has failed for two minutes
+          description: Check frontend/backend health, database access and migration integrity. Readiness does not establish data freshness.
+      - alert: FPLForgeProbeMissing
+        expr: absent(probe_success{job="fpl-forge-readiness"})
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: FPL Forge readiness monitoring has stopped reporting

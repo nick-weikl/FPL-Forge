@@ -1,0 +1,12 @@
+# Mount as the blackbox-exporter configuration after hosting is selected.
+modules:
+  fpl_ready:
+    prober: http
+    timeout: 10s
+    http:
+      method: GET
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - '"status"\s*:\s*"ready"'
+      tls_config:
+        insecure_skip_verify: false

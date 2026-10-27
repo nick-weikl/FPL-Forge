@@ -1,9 +1,13 @@
+import hashlib
 import logging
+from pathlib import Path
 
 from app.config import Settings
 from app.database import get_db
 from app.middleware import RequestGuard
-from app.models import Fixture, Player
+from app.migrations import MIGRATIONS
+from app.models import Fixture, Player, PlayerMatchStat, Team
+from app.models.fpl_data import FPLImport, FPLMatchStat, PlayerPriceSnapshot
 from app.routes.dashboard import router as dashboard_router
 from app.routes.data_quality import router as data_quality_router
 from app.routes.fixtures import router as fixtures_router
@@ -80,8 +84,27 @@ def create_app(settings=None):
     def ready(db: Session = Depends(get_db)):
         try:
             db.execute(text("SELECT 1"))
-            db.execute(select(Player.id).limit(1))
-            db.execute(select(Fixture.id).limit(1))
+            # Check every required column without loading application records.
+            for model in (
+                Team,
+                Player,
+                Fixture,
+                PlayerMatchStat,
+                FPLMatchStat,
+                FPLImport,
+                PlayerPriceSnapshot,
+            ):
+                db.execute(select(model).limit(0))
+            if settings.environment == "production":
+                applied = dict(
+                    db.execute(text("SELECT version, checksum FROM schema_migrations")).all()
+                )
+                expected = {
+                    version: hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest()
+                    for version, module in MIGRATIONS
+                }
+                if applied != expected:
+                    raise RuntimeError("Database migrations do not match this release")
         except Exception:
             logger.warning("Readiness check failed")
             return JSONResponse({"status": "unavailable"}, 503)

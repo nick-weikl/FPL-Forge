@@ -1,0 +1,9 @@
+# For Caddy installed on the same host as the loopback-bound Compose frontend.
+# Supply FPL_FORGE_DOMAIN through the host service environment, not a public frontend variable.
+{$FPL_FORGE_DOMAIN} {
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:8080
+    header Strict-Transport-Security "max-age=31536000"
+}
+# Configure certificate storage/renewal, global request limits and log retention on the host.
+# Nginx sees this proxy as its socket peer; enforce per-client limits at this HTTPS edge.
