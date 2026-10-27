@@ -6,6 +6,17 @@ from app.services.football_api import SEASON
 from app.services.fpl_price_service import FPL_SEASON
 from sqlalchemy import func, select
 
+PRICE_MAX_AGE = timedelta(days=7)
+
+
+def has_current_price(player, now):
+    observed = player.price_updated_at
+    if observed is None or player.price_tenths is None or player.price_tenths <= 0:
+        return False
+    if observed.tzinfo is None:
+        observed = observed.replace(tzinfo=timezone.utc)
+    return timedelta(0) <= now - observed <= PRICE_MAX_AGE
+
 
 def get_data_quality(db):
     now = datetime.now(timezone.utc)
@@ -34,7 +45,13 @@ def get_data_quality(db):
         .join(Fixture)
         .where(Fixture.season == SEASON, PlayerMatchStat.team_id.is_(None))
     )
+    players = list(db.scalars(select(Player).where(Player.fpl_season == FPL_SEASON)))
+    unusable_prices = sum(not has_current_price(player, now) for player in players)
     warnings = []
+    if unusable_prices:
+        warnings.append(
+            f"{unusable_prices} players have missing, invalid or outdated prices (older than seven days or dated in the future); they are excluded from incoming transfers. Refresh prices before acting."
+        )
     if stale:
         warnings.append(
             f"{stale} past fixtures still lack a final status; refresh official fixtures."
@@ -53,6 +70,7 @@ def get_data_quality(db):
         )
     return {
         "season": FPL_SEASON,
+        "unusable_price_players": unusable_prices,
         "official_fpl_through_gameweek": fpl_gw,
         "api_sports_through_gameweek": api_gw,
         "past_unfinished_fixtures": stale,

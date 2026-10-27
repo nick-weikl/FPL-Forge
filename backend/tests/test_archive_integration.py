@@ -1,11 +1,12 @@
 """Optional integration against a locally downloaded official archive."""
 
+import json
 import os
 
 os.environ.setdefault("DATABASE_URL", "sqlite://")
 import unittest
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from unittest.mock import patch
 
@@ -26,7 +27,15 @@ ARCHIVE = Path(__file__).resolve().parents[1] / "data/fpl/2026-27"
 )
 class ArchiveIntegrationTests(unittest.TestCase):
     def test_full_archive_is_atomic_idempotent_and_forecasts(self):
-        payloads, _, _ = load_archive(ARCHIVE, 7)
+        payloads, _, observed_at = load_archive(ARCHIVE, 7)
+        # Archive tests must remain reproducible after the stored prices expire.
+        clocks = []
+        for module in ["fpl_forecast_service", "data_quality_service"]:
+            clock = patch(f"app.services.{module}.datetime", wraps=datetime)
+            mocked = clock.start()
+            self.addCleanup(clock.stop)
+            mocked.now.return_value = observed_at + timedelta(seconds=1)
+            clocks.append(mocked)
         engine = create_engine(
             "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
         )
@@ -133,6 +142,14 @@ class ArchiveIntegrationTests(unittest.TestCase):
                     )
                     self.assertEqual(response.status_code, 200, response.text)
                     self.assertEqual(response.json()["score_units"], "expected_fpl_points")
+                    for clock in clocks:
+                        clock.now.return_value = observed_at + timedelta(days=8)
+                    stale = client.post(
+                        "/api/recommendations/strategy", json=json.loads(response.request.content)
+                    )
+                    self.assertEqual(stale.status_code, 400, stale.text)
+                    self.assertIn("no incoming players", stale.json()["detail"]["error"])
+                    self.assertNotIn("recommended_strategy", stale.json()["detail"])
             finally:
                 app.dependency_overrides.clear()
             import_archive(db, ARCHIVE, 7, True)

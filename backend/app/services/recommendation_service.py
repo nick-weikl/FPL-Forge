@@ -42,6 +42,14 @@ def prepare_context(current_gameweek, owned_player_ids, bank_tenths, selling_pri
             "missing_player_ids": missing,
             "data_quality": result["data_quality"],
         }
+    if result["data_quality"].get("unusable_price_players", 0) and not any(
+        player["can_buy"] and player["player_id"] not in owned_player_ids
+        for player in result["by_id"].values()
+    ):
+        return {
+            "error": "Transfer analysis unavailable: no incoming players have both usable prices and eligible official history/availability. Refresh prices and check data coverage before comparing transfers.",
+            "data_quality": result["data_quality"],
+        }
     owned = [result["by_id"][pid] for pid in owned_player_ids]
     result.update(
         owned=owned,

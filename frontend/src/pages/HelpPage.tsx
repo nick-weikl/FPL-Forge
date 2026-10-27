@@ -44,10 +44,11 @@ export default function HelpPage(props: {
           Transfer hits are deducted once.
         </p>
         <p>
-          The forecast uses recent official FPL points per club fixture, including non-appearances,
-          and upcoming fixture counts. It is a simple baseline, not a calibrated prediction or an
-          opponent-adjusted model. Injuries, rotation, future form and uncertain minutes can make
-          the result inaccurate.
+          The forecast uses recent official FPL points per recorded player fixture and the current
+          club’s upcoming fixture counts. Recorded non-appearances count as zero. Missing records
+          are excluded, so short histories are less reliable. It is a simple baseline, not a
+          calibrated prediction or an opponent-adjusted model. Injuries, rotation, future form and
+          uncertain minutes can make the result inaccurate.
         </p>
         <p>
           Your XI stays fixed over the forecast horizon. Incoming players inherit the outgoing

@@ -53,6 +53,8 @@ export interface StrategyResponse {
   horizon_gameweeks: number;
   warnings: string[];
   data_quality: {
+    unusable_price_players?: number;
+    past_unfinished_fixtures?: number;
     official_fpl_through_gameweek: number | null;
     api_sports_through_gameweek: number | null;
   };

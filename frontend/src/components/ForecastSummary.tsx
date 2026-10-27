@@ -1,4 +1,5 @@
 import type { StrategyResponse } from "../types/recommendation";
+import ForecastDataWarnings from "./ForecastDataWarnings";
 export default function ForecastSummary({ result }: { result: StrategyResponse }) {
   const weeks = result.baseline.gameweeks;
   const period = weeks.length
@@ -41,12 +42,14 @@ export default function ForecastSummary({ result }: { result: StrategyResponse }
           actual selling values may be lower, so the suggested move may be unaffordable.
         </p>
       )}
+      <ForecastDataWarnings quality={result.data_quality} />
       <details>
         <summary>Method, coverage & limitations</summary>
         <p>
           Official FPL results through GW{result.data_quality.official_fpl_through_gameweek ?? "—"}.
-          Recent points per club fixture are projected across upcoming fixture counts. The estimate
-          does not adjust for opposition or model future rotation.
+          Recent points per recorded player fixture are projected across upcoming fixture counts.
+          The estimate does not adjust for opposition or model future rotation. Recorded DNPs count
+          as zero; missing fixture records are excluded, so short histories are less reliable.
         </p>
         <ul>
           {result.warnings.map((warning) => (

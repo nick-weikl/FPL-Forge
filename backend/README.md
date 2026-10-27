@@ -35,9 +35,13 @@ Do not use the legacy destructive rebuild to refresh a season. Use the archive i
 
 Transfer recommendations use a transparent baseline in **expected FPL points**:
 
-`recent FPL points / club fixtures in the last up to five gameweeks × club fixtures in the next five gameweeks`
+`recent FPL points / recorded player fixtures in the last up to five gameweeks × current club fixtures in the next five gameweeks`
 
-DNPs count as zero. Estimates are not calibrated predictions. The model does not optimize the starting XI, bench, captaincy, chips or the future value of banked transfers. It uses the current roster/prices and therefore is not a historical backtest. Injured/suspended/unavailable players are excluded from buying; known unavailable owned players can still be sold. Unknown history blocks analysis rather than silently declaring no upgrade. Missing official lookback gameweeks also block analysis. Responses include coverage, horizon, assumptions and model units.
+Model `recent_fpl_points_baseline_v2` uses each player’s recorded fixture opportunities, so a club transfer does not divide old-club points by the new club’s fixture count. Recorded DNPs count as zero, including zero-minute rows with an unknown historical club. Missing records are unknown and excluded; short histories can produce less reliable estimates.
+
+Estimates are not calibrated predictions. The model uses the selected starting XI and doubles the selected captain. Incoming players inherit the outgoing slot and captaincy. It does not optimize future lineups or model bench points, automatic substitutions, vice-captain fallback, chips or the future value of banked transfers. It uses the current roster/prices and therefore is not a historical backtest. Injured/suspended/unavailable players are excluded from buying; known unavailable owned players can still be sold. Unknown history blocks analysis rather than silently declaring no upgrade. Missing official lookback gameweeks also block analysis. Responses include coverage, horizon, assumptions and model units.
+
+Incoming prices must be positive, observed within seven days, and not dated in the future. Unusable prices and past unfinished fixtures produce visible freshness warnings on Overview and Transfer Lab. If unusable prices leave no eligible incoming players, analysis returns an actionable error instead of recommending a hold. Partial candidate coverage still permits analysis with a warning.
 
 A transfer hit subtracts four **FPL points** from the baseline gain. Double transfers search every feasible candidate pair; `candidates_per_player` is accepted for client compatibility but no longer truncates the search. Actual `selling_prices_tenths` can be supplied per owned player. Omitted selling values explicitly assume current market prices. The frontend allows those values to be entered before analysis.
 
@@ -60,3 +64,7 @@ Overview, Player Explorer, Fixture Planner, and the squad picker share this resp
 The planner's estimated difficulty combines the existing attacking/defensive opponent measures from stored results. It is labelled as an estimate, not official FPL difficulty. A club/gameweek cell renders every matching fixture, preserving blanks and doubles. No schema migration or database write is needed for these pages.
 
 Frontend squad-cache regression tests run with `npm test` from `frontend/` (Node 22.6+ for TypeScript stripping).
+
+### Read-only PostgreSQL recommendation check
+
+With development dependencies and the configured local database, run `python -m app.scripts.check_recommendations` from `backend`. It generates a legal inexpensive sample squad, enforces PostgreSQL read-only connections, and checks the real strategy endpoint for free-transfer settings 0, 1 and 2, budgets, club/position rules, captain/bench weighting, one-time hits, missing coverage and simulated stale prices. The stale scenario changes only the checker’s in-memory clock. It never retrieves provider data or changes stored prices. This is an arithmetic/integrity check, not a predictive backtest.

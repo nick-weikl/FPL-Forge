@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import ForecastDataWarnings from "../components/ForecastDataWarnings";
 import FixtureMatrix from "../components/FixtureMatrix";
 import type { Dashboard } from "../types/dashboard";
 import type { Player } from "../types/player";
@@ -246,6 +247,7 @@ export default function OverviewPage({
           Estimates are not guaranteed. Check selling values and the full breakdown in Transfer Lab.
         </p>
       )}
+      {result && <ForecastDataWarnings quality={result.data_quality} />}
       <div className="overview-planning">
         <section className="panel overview-runway">
           <div className="panel-heading">
